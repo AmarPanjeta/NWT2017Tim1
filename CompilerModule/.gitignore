@@ -1,12 +1,3 @@
-### * ###
-
-### !*/ ###
-
-RemoteSystemsTempFiles/
-.metadata/
-.recommenders/
-.gitignore~
-
 target/
 !.mvn/wrapper/maven-wrapper.jar
 
@@ -31,7 +22,3 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
-
-### !.gitignore ###
-
-### !UsersModule/** ###
