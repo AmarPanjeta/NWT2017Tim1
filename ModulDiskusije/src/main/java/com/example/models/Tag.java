@@ -28,4 +28,9 @@ public class Tag {
 	}
 	
 	public Tag(){};
+	
+	public Tag(Long id,String title){
+		this.name=title;
+		this.id=id;
+	}
 }
