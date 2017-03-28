@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.Scanner;
 
+import javax.servlet.ServletException;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,4 +45,29 @@ public class CodeController {
 		}
 		return result;
 	}
+	
+	@RequestMapping("gccversion")
+	public String gccVersion() throws ServletException{
+		Runtime r=Runtime.getRuntime();
+		ProcessBuilder pb=new ProcessBuilder("g++","--version");
+		String result;
+		try {
+			Process p = pb.start();
+			p.waitFor();
+			InputStream is=p.getInputStream();
+			Scanner s=new Scanner(is).useDelimiter("\\A");
+			result=s.hasNext()? s.next():"";
+			
+		} catch (Exception e) {
+			throw new ServletException("Greska!");
+		}
+		return result;
+	}
+	
+	@RequestMapping("threads")
+	public String activeThreads(){
+		return "Broj trenutno aktivnih tredova unutar JVMa:"+Integer.toString(Thread.activeCount());
+	}
+	
+	
 }
