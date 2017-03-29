@@ -55,8 +55,11 @@ public class Comment {
 		
 	}
 	
-	public Comment(Long id, String text){
+	public Comment(Long id, String text, Long UsrId){
 		this.id = id;
 		this.text = text;
+		TutorialUser tu = new TutorialUser(UsrId);
+		
+		
 	}
 }

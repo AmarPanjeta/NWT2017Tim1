@@ -11,6 +11,8 @@ import com.example.models.Tag;
 @RepositoryRestResource(path="comments", collectionResourceRel="comments")
 public interface CommentRepository extends CrudRepository<Comment, Long>{
 
+	//List<Comment> findByNameLike(@Param(value="ime")String string);
+
 //public List<Comment> findFirst10ByName(String name);
 	
 }

@@ -12,7 +12,7 @@ public class Tag {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	private String Text;
+	private String text;
 	
 	
 	
@@ -29,13 +29,13 @@ public class Tag {
 
 
 	public String getText() {
-		return Text;
+		return text;
 	}
 
 
 
 	public void setText(String text) {
-		Text = text;
+		this.text = text;
 	}
 
 
@@ -48,7 +48,7 @@ public class Tag {
 	public Tag(long id, String text)
 	{
 		this.id = id;
-		this.Text = text;
+		this.text = text;
 	}
 
 }
