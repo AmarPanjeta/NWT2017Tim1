@@ -3,12 +3,17 @@ package Models;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class RegisteredUser {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -46,7 +51,8 @@ public class RegisteredUser {
 	public void setAdministratorPrivileges(Boolean administratorPrivileges) {
 		this.administratorPrivileges = administratorPrivileges;
 	}
-
+	
+	@JsonIgnore
 	public List<Task> getTasks() {
 		return tasks;
 	}
@@ -55,6 +61,7 @@ public class RegisteredUser {
 		this.tasks = tasks;
 	}
 	
+	@JsonIgnore
 	public List<Solution> getSolutions() {
 		return solutions;
 	}

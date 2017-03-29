@@ -31,5 +31,9 @@ public class TutorialUser {
 	public TutorialUser()
 	{}
 	
-
+	public TutorialUser(Long id)
+	{
+		this.id = id;
+		
+	}
 }
