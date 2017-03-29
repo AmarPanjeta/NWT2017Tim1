@@ -44,5 +44,11 @@ public class Tag {
 	{
 		
 	}
+	
+	public Tag(long id, String text)
+	{
+		this.id = id;
+		this.Text = text;
+	}
 
 }

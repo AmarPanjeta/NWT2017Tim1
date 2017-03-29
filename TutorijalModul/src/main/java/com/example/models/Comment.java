@@ -54,4 +54,9 @@ public class Comment {
 	{
 		
 	}
+	
+	public Comment(Long id, String text){
+		this.id = id;
+		this.text = text;
+	}
 }

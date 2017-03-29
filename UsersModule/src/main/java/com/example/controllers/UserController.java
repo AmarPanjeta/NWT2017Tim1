@@ -5,14 +5,25 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
 
+import javax.servlet.ServletException;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.models.RegisteredUser;
+import com.example.repositories.UserRepository;
+import com.example.services.HashService;
+
 @RestController
 @RequestMapping("user")
 public class UserController {
+	
+	@Autowired
+	UserRepository ur;
 	
 	@RequestMapping("/do")
 	public void doCode(@RequestParam(value="command",required=false) String command){
@@ -27,8 +38,8 @@ public class UserController {
 				Scanner s= new Scanner(is).useDelimiter("\\A");
 				System.out.println(s.hasNext() ? s.next(): "nema");
 			}
-			
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -50,5 +61,47 @@ public class UserController {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
+	}
+	
+	@RequestMapping("/register")
+	public void register(@RequestBody UserRegisterBody user) throws ServletException{
+		
+		if(user.email==null || user.email.isEmpty()||user.username==null || user.username.isEmpty()||user.password==null || user.password.isEmpty()){
+			throw new ServletException("Polja nisu popunjena!");
+		}
+		
+		int numberOfUsers=ur.userexists(user.username, user.email);
+		if(numberOfUsers>0) throw new ServletException("Username ili email su zauzeti!");
+		
+		RegisteredUser newUser= new RegisteredUser();
+		newUser.setUsername(user.username);
+		newUser.setEmail(user.email);
+		// OVDJE TREBA HASHIRATI PASSWORD
+		newUser.setPassword(HashService.hashPassword(user.password));
+		newUser.setVerified(false);
+		ur.save(newUser);
+		
+	}
+	
+	@RequestMapping("/login")
+	public String login(@RequestBody UserLoginBody login) throws ServletException{
+		
+		RegisteredUser user=ur.findUserByUsername(login.username);
+		
+		if(!HashService.checkPassword(login.password, user.getPassword())) throw new ServletException("Netacna pristupna sifra");
+		else return "some token";
+	}
+	
+	@SuppressWarnings("unused")
+	private static class UserRegisterBody{
+		public String username;
+		public String password;
+		public String email;
+	}
+	
+	@SuppressWarnings("unused")
+	private static class UserLoginBody{
+		public String username;
+		public String password;
 	}
 }
