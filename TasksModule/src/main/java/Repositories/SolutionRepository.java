@@ -11,7 +11,7 @@ import Models.Solution;
 
 @RepositoryRestResource(path="solutions",collectionResourceRel="solutions")
 public interface SolutionRepository extends CrudRepository<Solution, Long>{
-		
+	
 	//vraca sva rjesenja na neki zadatak
 	@Query("select s from Solution s, Task t where t.id=:id and s.task=t")
 	public List<Solution> getAllTaskSolutions(@Param("id") long id);
