@@ -2,13 +2,13 @@ package com.example;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
-@EnableDiscoveryClient
+@EnableEurekaServer
 @SpringBootApplication
-public class UsersModuleApplication {
+public class ServiceRegistryModuleApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(UsersModuleApplication.class, args);
+		SpringApplication.run(ServiceRegistryModuleApplication.class, args);
 	}
 }
