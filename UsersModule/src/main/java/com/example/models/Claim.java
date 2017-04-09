@@ -29,6 +29,14 @@ public class Claim {
 	@ManyToOne
 	private RegisteredUser userid;
 
+	public RegisteredUser getUserid() {
+		return userid;
+	}
+
+	public void setUserid(RegisteredUser userid) {
+		this.userid = userid;
+	}
+
 	public long getId() {
 		return id;
 	}
