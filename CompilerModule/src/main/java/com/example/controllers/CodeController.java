@@ -6,9 +6,12 @@ import java.util.Scanner;
 
 import javax.servlet.ServletException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.example.datamodels.CodeClass;
 import com.example.datamodels.ResultClass;
@@ -16,6 +19,9 @@ import com.example.datamodels.ResultClass;
 @RestController
 @RequestMapping("compiler")
 public class CodeController {
+	
+	@Autowired
+	RestTemplate restTemplate;
 	
 	@RequestMapping("run")
 	public ResultClass runCode(@RequestBody CodeClass code){
@@ -69,5 +75,21 @@ public class CodeController {
 		return "Broj trenutno aktivnih tredova unutar JVMa:"+Integer.toString(Thread.activeCount());
 	}
 	
+	@RequestMapping("gug")
+	public String gug(){
+		String odg = restTemplate.getForObject("http://www.google.com", String.class);
+		return odg;
+	}
 	
+	@RequestMapping("eureka")
+	public String eureka(){
+		String odg = restTemplate.getForObject("http://compiler-client/compiler/gccversion", String.class);
+		return odg;
+	}
+	
+	@RequestMapping("users")
+	public String users(){
+		String odg=restTemplate.getForObject("http://users-client/users", String.class);
+		return odg;
+	}
 }
