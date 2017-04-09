@@ -3,6 +3,7 @@ package com.example.controllers;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Scanner;
 
 import javax.servlet.ServletException;
@@ -15,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.models.RegisteredUser;
+import com.example.models.Role;
+import com.example.repositories.ClaimRepository;
+import com.example.repositories.RoleRepository;
 import com.example.repositories.UserRepository;
 import com.example.services.HashService;
 
@@ -24,6 +28,12 @@ public class UserController {
 	
 	@Autowired
 	UserRepository ur;
+	
+	@Autowired
+	RoleRepository rr;
+	
+	@Autowired
+	ClaimRepository cr;
 	
 	@RequestMapping("/do")
 	public void doCode(@RequestParam(value="command",required=false) String command){
@@ -90,6 +100,17 @@ public class UserController {
 		
 		if(!HashService.checkPassword(login.password, user.getPassword())) throw new ServletException("Netacna pristupna sifra");
 		else return "some token";
+	}
+	
+	@RequestMapping("roles")
+	public List<Role> roles(@RequestParam("username") String username){
+		return rr.getrolesbyuser(username);
+	}
+	
+	@RequestMapping("logged")
+	public boolean logged(@RequestParam("username") String username){
+		int number=cr.getnumberofclaims(username);
+		return number==0 ? false : true ;
 	}
 	
 	@SuppressWarnings("unused")
