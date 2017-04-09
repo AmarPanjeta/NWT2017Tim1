@@ -1,5 +1,6 @@
 package com.example.controllers;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,10 @@ public class RegisteredUserController {
 	
 	@RequestMapping("/isadmin")
 	
-	public String isAdmin(@RequestParam(value="username") String username){
+	public Boolean isAdmin(@RequestParam(value="username") String username){
 		
-		String regUser=this.restTemplate.getForObject("http://users-client/users", String.class);
-		return regUser;
+		List<String> roles=this.restTemplate.getForObject("http://users-client/user/roles?username="+username,List.class);
+		return roles.contains("admin");
 	}
 
 }

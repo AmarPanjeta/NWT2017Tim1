@@ -10,6 +10,6 @@ import com.example.models.Role;
 
 public interface RoleRepository extends CrudRepository<Role, Long>{
 	
-	@Query("select distinct(r) from Role r,RegisteredUser u,UserRole ur where ur.user.username=:username and ur.role=r")
-	List<Role> getrolesbyuser(@Param("username") String username);
+	@Query("select distinct(r.name) from Role r,RegisteredUser u,UserRole ur where ur.user.username=:username and ur.role=r")
+	List<String> getrolesbyuser(@Param("username") String username);
 }

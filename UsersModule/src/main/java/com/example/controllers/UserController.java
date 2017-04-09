@@ -103,7 +103,7 @@ public class UserController {
 	}
 	
 	@RequestMapping("roles")
-	public List<Role> roles(@RequestParam("username") String username){
+	public List<String> roles(@RequestParam("username") String username){
 		return rr.getrolesbyuser(username);
 	}
 	
