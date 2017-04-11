@@ -75,12 +75,6 @@ public class CodeController {
 		return "Broj trenutno aktivnih tredova unutar JVMa:"+Integer.toString(Thread.activeCount());
 	}
 	
-	@RequestMapping("gug")
-	public String gug(){
-		String odg = restTemplate.getForObject("http://www.google.com", String.class);
-		return odg;
-	}
-	
 	@RequestMapping("eureka")
 	public String eureka(){
 		String odg = restTemplate.getForObject("http://compiler-client/compiler/gccversion", String.class);
