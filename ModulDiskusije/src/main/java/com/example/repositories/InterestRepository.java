@@ -13,9 +13,10 @@ import com.example.models.Interest;
 @RepositoryRestResource(path="interests",collectionResourceRel="interests")
 public interface InterestRepository extends CrudRepository<Interest, Long> {
 	
-	//@Modifying
-	//@Transactional
-	//@Query("delete from Interest i where i.user.id=:user and i.discussion.id=:discussion")
-	//public int deleteinterest(@Param("user") Long user, @Param("discussion") Long discussion);
+	@Modifying
+	@Transactional
+	@Query("delete from Interest i where i.regUser.username=:username and i.discuss.id=:discussion")
+	public int deleteinterest(@Param("username") String username, @Param("discussion") Long discussion);
 
+	
 }
