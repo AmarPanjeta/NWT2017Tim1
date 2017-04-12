@@ -17,4 +17,14 @@ public interface VoteRepository extends CrudRepository<Vote, Long>{
 	//@Transactional
 	//@Query("delete from Vote v where v.user.id=:user and v.comment.id=:comment")
 	//public int deletevote(@Param("user") Long user, @Param("comment") Long comment);
+	
+	@Query("select v from Vote v where v.regUser.id=:userId and v.comment.id=:commentId")
+	public Vote findVoteByUserAndComment(@Param("user") Long userId,@Param("comment") Long commentId);
+	
+	@Query("select count(v) from Vote v where v.comment.id=:id and v.number=1")
+	public int positiveVotesForComment(@Param("id") Long id);
+	
+	@Query("select count(v) from Vote v where v.comment.id=:id and v.number=-1")
+	public int negativeVotesForComment(@Param("id") Long id);
+	
 }

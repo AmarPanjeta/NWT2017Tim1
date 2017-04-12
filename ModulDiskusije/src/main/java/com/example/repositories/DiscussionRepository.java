@@ -26,7 +26,7 @@ public interface DiscussionRepository extends CrudRepository<Discussion, Long>{
 	public List<Discussion> getInterestingDiscussions(@Param("username") String username);
     
 	//DORADITI DA PRIKAZUJE TOP number PO BROJU ZAINTERESOVANIH KORISNIKA
-	@Query("select count(i.regUser.id),i.discuss.id from Interest i group by i.discuss.id")
-	public List<Object[]> getPopularDiscussions(); 
+	//@Query(value="SELECT i.id,count(ru.id) from interest i, registered_user ru where i.reg_user_id=ru.id group by i.id",nativeQuery=true)
+	//public List<?> getPopularDiscussions(); 
 
 }
