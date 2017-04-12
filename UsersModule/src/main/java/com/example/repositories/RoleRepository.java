@@ -12,4 +12,6 @@ public interface RoleRepository extends CrudRepository<Role, Long>{
 	
 	@Query("select distinct(r.name) from Role r,RegisteredUser u,UserRole ur where ur.user.username=:username and ur.role=r")
 	List<String> getrolesbyuser(@Param("username") String username);
+	
+	Role findRoleByName(String name);
 }
