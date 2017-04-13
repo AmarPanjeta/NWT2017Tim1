@@ -70,6 +70,7 @@ public class RegisteredUser {
 		this.solutions = solutions;
 	}
 
-	public RegisteredUser() {}	
+	public RegisteredUser() {}
+
 }
 

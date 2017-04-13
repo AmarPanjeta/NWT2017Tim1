@@ -40,7 +40,7 @@ public class TaskController {
 	private SolutionRepository sr;
 	
 	@Autowired
-	RestTemplate rt;
+	private RestTemplate rt;
 	
 	//vraca sve testove za zadatak sa unesenim id-em
 	@RequestMapping(value="/{id}/tests")
