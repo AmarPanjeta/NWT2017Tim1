@@ -13,6 +13,6 @@ public interface UserRoleRepository extends CrudRepository<UserRole, Long> {
 	
 	@Modifying
 	@Transactional
-	@Query("delete from UserRole where UserRole.user.username=:username and UserRole.role.name=:rolename")
+	@Query("delete from UserRole u where u.user.username=:username and u.role.name=:rolename")
 	public int removeRole(@Param("username") String username, @Param("rolename") String rolename);
 }

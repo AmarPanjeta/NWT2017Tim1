@@ -99,7 +99,7 @@ public class UserController {
 		newUser.setPassword(HashService.hashPassword(user.password));
 		newUser.setVerified(false);
 		if(ur.save(newUser)!=null){
-			rabbitTemplate.convertAndSend("users-queue", newUser.getUsername()+";"+newUser.getEmail()+";create");
+			rabbitTemplate.convertAndSend("users-queue-exchange","*.users",newUser.getUsername()+";"+newUser.getEmail()+";create");
 		}
 		
 	}
