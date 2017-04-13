@@ -17,5 +17,8 @@ public interface DiscussionTagRepository extends CrudRepository<DiscussionTag, L
 	//@Transactional
 	//@Query("delete from DiscussionTag dt where dt.discussion.id=:discussion and dt.tag.id=:tag")
 	//public int deletediscussiontag(@Param("discussion") Long discussion,@Param("tag") Long tag);
+	
+	@Query("select dt from DiscussionTag dt where dt.discuss.id=:idD and dt.tg.id=:idT")
+	public DiscussionTag findDisTagByTagAndDiscussion(@Param("idD") Long idD,@Param("idT") Long idT);
 
 }

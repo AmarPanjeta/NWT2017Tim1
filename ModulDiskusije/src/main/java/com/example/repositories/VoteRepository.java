@@ -27,4 +27,11 @@ public interface VoteRepository extends CrudRepository<Vote, Long>{
 	@Query("select count(v) from Vote v where v.comment.id=:id and v.number=-1")
 	public int negativeVotesForComment(@Param("id") Long id);
 	
+	@Query("select count(v) from Vote v,Comment c where c.regUser.id=:id and v.comment.id=c.id and v.number=-1")
+	public int negativeVotesOfUser(@Param("id") Long id);
+	
+	@Query("select count(v) from Vote v,Comment c where c.regUser.id=:id and v.comment.id=c.id and v.number=1")
+	public int positiveVotesOfUser(@Param("id") Long id);
+	
+	
 }

@@ -7,5 +7,7 @@ import com.example.models.Score;
 
 @RepositoryRestResource(path="scores",collectionResourceRel="scores")
 public interface ScoreRepository extends CrudRepository<Score, Long> {
+	
+	
 
 }

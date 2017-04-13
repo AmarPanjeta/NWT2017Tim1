@@ -18,6 +18,12 @@ public interface TagRepository extends CrudRepository<Tag, Long> {
 public List<Tag> findFirst10ByName(String name);
 
 public List<Tag> findByNameLike(String name);
+
+@Query("select t from Tag t, DiscussionTag dt where dt.discuss.id=:id and dt.tg.id=t.id")
+public List<Tag> gettagsofdiscussion(@Param("id") Long id);
+
+public Tag findByName(@Param("name")String name);
+
 }
 
 
