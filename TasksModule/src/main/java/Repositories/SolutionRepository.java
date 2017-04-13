@@ -17,11 +17,13 @@ public interface SolutionRepository extends CrudRepository<Solution, Long>{
 	public List<Solution> getAllTaskSolutions(@Param("id") long id);
 	
 	//vraca rjesenja zadatka poredana po passing
-	@Query("select s from Solution s, Task t where t.id=:id and s.task=t ORDER BY s.passing ASC")
+	@Query("select s from Solution s, Task t where t.id=:id and s.task=t ORDER BY s.passing DESC")
 	public List<Solution> findAllTaskSolutionsOrderedByPassing(@Param("id") long id);
 	
 	//vraca sva rjesenja koja je postavio korisnik na razl zadatke
 	@Query("select s from Solution s, RegisteredUser ru where ru.id=:id and s.user=ru")
 	public List<Solution> getAllUserSolutions(@Param("id") long id);
+	
+	Solution findById(@Param("id") long id);
 		
 }
