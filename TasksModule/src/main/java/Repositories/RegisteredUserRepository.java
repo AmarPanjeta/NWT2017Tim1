@@ -13,6 +13,7 @@ import Models.RegisteredUser;
 @RepositoryRestResource(path="users",collectionResourceRel="users")
 public interface RegisteredUserRepository extends CrudRepository<RegisteredUser, Long>{
 	RegisteredUser findById(@Param("id") long id);
+	RegisteredUser findByUsername(@Param("username") String username);
 	
 	//vraca usere koji su postavili rjesenje za zadatak
 	@Query("select ru from RegisteredUser ru, Task t, Solution s where s.user=ru and s.task=t and t.id=:id")
