@@ -29,7 +29,7 @@ public class RegisteredUserController {
 	private SolutionRepository sr;
 	
 	@Autowired
-	RestTemplate rt;
+	private RestTemplate rt;
 	
 	//taskovi usera sa unesenim id-em
 	@RequestMapping(value="/{id}/tasks")
@@ -73,7 +73,7 @@ public class RegisteredUserController {
 		return solutions;	
 	}
 	
-	@RequestMapping("/{username}/isadmin")
+	@RequestMapping("/{username}/isAdmin")
 	public Boolean isAdmin(@PathVariable("username") String username)
 	{		
 		List<String> roles=rt.getForObject("http://users-client/user/roles?username="+username,List.class);

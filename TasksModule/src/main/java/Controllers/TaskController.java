@@ -157,6 +157,13 @@ public class TaskController {
 			throw new Exception("Polja za unos testa nisu popunjena");
 		}
 		
+		Boolean log=rt.getForObject("http://users-client/user/logged?username="+t.getUser().getUsername(),Boolean.class);
+		
+		if(!log)
+		{
+			throw new Exception("Korisnik koji je postavio taj zadatak nije logovan.");
+		}
+		
 		Test novi=new Test();
 		novi.setInput(test.input);
 		novi.setOutput(test.output);

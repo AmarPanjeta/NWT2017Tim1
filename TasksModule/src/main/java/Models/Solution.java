@@ -9,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 public class Solution {
 	@Id
@@ -20,10 +23,12 @@ public class Solution {
 	
 	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinColumn(name="user_id")
+	//@OnDelete(action = OnDeleteAction.CASCADE)
 	private RegisteredUser user;
 	
 	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinColumn(name="task_id")
+	//@OnDelete(action = OnDeleteAction.CASCADE)
 	private Task task;
 
 	public long getId() {

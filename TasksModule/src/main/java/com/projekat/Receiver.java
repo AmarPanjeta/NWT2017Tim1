@@ -36,7 +36,7 @@ public class Receiver {
         else if(niz[2].equals("delete"))
         {
         	RegisteredUser novi=rur.findByUsername(niz[0]);
-        	rur.delete(novi.getId());
+        	if(novi.getUsername()!=null) rur.delete(novi.getId());
         }
     }
 }

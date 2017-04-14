@@ -22,10 +22,10 @@ public class RegisteredUser {
 	private String username;
 	private Boolean administratorPrivileges;
 	
-	@OneToMany(mappedBy="user")
+	@OneToMany(mappedBy="user", orphanRemoval=true)
 	private List<Task> tasks;
 	
-	@OneToMany(mappedBy="user")
+	@OneToMany(mappedBy="user", orphanRemoval=true)
 	private List<Solution> solutions;
 
 	public long getId() {

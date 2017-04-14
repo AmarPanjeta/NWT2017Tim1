@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.engine.internal.Cascade;
 import org.hibernate.engine.spi.CascadeStyle;
 
@@ -28,12 +30,13 @@ public class Task {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="user_id")
+	//@OnDelete(action = OnDeleteAction.CASCADE)
 	private RegisteredUser user;
 	
-	@OneToMany(mappedBy="task")
+	@OneToMany(mappedBy="task", orphanRemoval=true)
 	private List<Test> tests;
 	
-	@OneToMany(mappedBy="task")
+	@OneToMany(mappedBy="task", orphanRemoval=true)
 	private List<Solution> solutions;
 	
 	public long getId() {
