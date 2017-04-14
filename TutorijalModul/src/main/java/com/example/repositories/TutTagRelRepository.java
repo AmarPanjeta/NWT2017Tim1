@@ -9,4 +9,6 @@ import com.example.models.TutTagRel;
 @RepositoryRestResource(path="tuttagrels", collectionResourceRel="tuttagrels")
 public interface TutTagRelRepository extends CrudRepository<TutTagRel, Long>{
 
+	Object findDisTagByTagAndDiscussion(Long idTut, Long idTag);
+
 }

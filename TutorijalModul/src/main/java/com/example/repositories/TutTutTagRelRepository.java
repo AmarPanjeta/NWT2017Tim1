@@ -7,6 +7,6 @@ import com.example.models.Comment;
 import com.example.models.TutTutTagRel;
 
 @RepositoryRestResource(path="tuttuttagrels", collectionResourceRel="tuttuttagrels")
-public interface TutTutTagRelRepositoy extends CrudRepository<TutTutTagRel, Long>{
+public interface TutTutTagRelRepository extends CrudRepository<TutTutTagRel, Long>{
 
 }

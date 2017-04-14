@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-//ovo je Tutorial tag
+//ovo je Tutorial tag, ovo postavljaju korisnici kao bilo je korisni nije bilo korisno
 @Entity
 public class TutorialTag {
 	@Id
@@ -31,4 +31,12 @@ public class TutorialTag {
 
 	public TutorialTag()
 	{}
+	
+	
+	public TutorialTag(Long id, String Tekst)
+	{
+		this.id = id;
+		this.Text = Tekst;
+		
+	}
 }

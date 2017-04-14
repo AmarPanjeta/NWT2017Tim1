@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 
-//ovo je oznaaka
+//ovo je oznaaka kao za pocetnike, strukture i slicno
 @Entity
 public class Tag {
 	@Id

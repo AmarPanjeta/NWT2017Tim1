@@ -15,8 +15,19 @@ public class TutTutTagRel {
 		
 		@ManyToOne
 		private Tutorial tutId;
+		public void settutId(Tutorial t)
+		{
+			this.tutId = t;
+		}
+		
+		
 		@ManyToOne
 		private TutorialTag tagId;
+		public void settagId(TutorialTag t)
+		{
+			this.tagId = t;
+		}
+		
 		
 		public long getId() {
 			return id;
