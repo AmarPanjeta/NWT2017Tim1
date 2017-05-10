@@ -3,6 +3,8 @@ package com.example.controllers;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -24,6 +26,10 @@ import com.example.repositories.RoleRepository;
 import com.example.repositories.UserRepository;
 import com.example.repositories.UserRoleRepository;
 import com.example.services.HashService;
+
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 @RestController
 @RequestMapping("user")
@@ -110,7 +116,9 @@ public class UserController {
 		RegisteredUser user=ur.findUserByUsername(login.username);
 		
 		if(!HashService.checkPassword(login.password, user.getPassword())) throw new ServletException("Netacna pristupna sifra");
-		else return "some token";
+		else return Jwts.builder().setSubject(login.username)
+				.claim("roles", Arrays.asList("user")).setIssuedAt(new Date())
+				.signWith(SignatureAlgorithm.HS256, "secretkey").compact();
 	}
 	
 	@RequestMapping("roles")
@@ -167,6 +175,11 @@ public class UserController {
 	public void rabbit(){
 		//.convertAndSend("users-queue", "nova poruka");
 		rabbitTemplate.convertAndSend("users-queue-exchange","*.users","nova poruka");
+	}
+	
+	@RequestMapping("/api/neradinista")
+	public void nista(){
+		
 	}
 	
 	@SuppressWarnings("unused")
