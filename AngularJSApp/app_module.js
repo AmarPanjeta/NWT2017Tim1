@@ -2,19 +2,14 @@ var app=angular.module('OnlineKonzola',['ngRoute']);
 
 app.config(function($routeProvider) {
 	$routeProvider.when("/", {
-		templateUrl:"partials/pocetna.html",
-		controller:'pocetnaController'
+		templateUrl:"../AngularJSApp/partials/pocetna.html",
 	}).when("/tutorials", {
-		templateUrl:"partials/tutorials.html",
-		controller:'tutorialsController'
+		templateUrl:"../AngularJSApp/partials/tutorials.html",
 	}).when("/login", {
-		templateUrl:"partials/login.html",
-		controller:'loginController'
+		templateUrl:"../AngularJSApp/partials/login.html",
 	}).when("/registration", {
-		templateUrl:"partials/registration.html",
-		controller:'registrationController'
+		templateUrl:"../AngularJSApp/partials/registration.html",
 	}).when("/profile", {
-		templateUrl:"partials/profile.html",
-		controller:'profileController'
+		templateUrl:"../AngularJSApp/partials/profile.html",
 	});
 });
