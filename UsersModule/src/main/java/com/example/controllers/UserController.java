@@ -3,6 +3,8 @@ package com.example.controllers;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +29,7 @@ import com.example.repositories.UserRepository;
 import com.example.repositories.UserRoleRepository;
 import com.example.services.HashService;
 
-
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -115,10 +117,20 @@ public class UserController {
 		
 		RegisteredUser user=ur.findUserByUsername(login.username);
 		
+		
+		
 		if(!HashService.checkPassword(login.password, user.getPassword())) throw new ServletException("Netacna pristupna sifra");
-		else return Jwts.builder().setSubject(login.username)
-				.claim("roles", Arrays.asList("user")).setIssuedAt(new Date())
-				.signWith(SignatureAlgorithm.HS256, "secretkey").compact();
+		else
+		{ 
+			Claims claims=Jwts.claims().setSubject(login.username);
+			claims.put("roles", rr.getrolesbyuser(login.username));
+			/*return Jwts.builder().setSubject(login.username)
+				.claim("roles", rr.getrolesbyuser(login.username)).setIssuedAt(new Date()).setExpiration(Date.from(LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.UTC)))
+				.signWith(SignatureAlgorithm.HS256, "secretkey").compact();*/
+			
+			return Jwts.builder().setClaims(claims).setExpiration(Date.from(LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.UTC))).signWith(SignatureAlgorithm.HS256, "secretkey").compact();
+		}
+		
 	}
 	
 	@RequestMapping("roles")

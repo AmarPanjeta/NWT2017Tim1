@@ -19,7 +19,7 @@ public class UsersModuleApplication {
 		filterRegistrationBean.setFilter(new JwtFilter());
 		filterRegistrationBean.addUrlPatterns("/api/*");
 		return filterRegistrationBean;
-}
+	}
 	
 	public static void main(String[] args) {
 		SpringApplication.run(UsersModuleApplication.class, args);
