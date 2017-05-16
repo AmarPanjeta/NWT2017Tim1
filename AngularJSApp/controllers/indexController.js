@@ -1,4 +1,4 @@
-app.controller('indexController', function($log, $rootScope,$location){
+app.controller('indexController', function($log, $rootScope,$location, $scope){
 	$scope.logovann=false;
 
 	$rootScope.isActive=function(viewLocation) {
@@ -7,11 +7,11 @@ app.controller('indexController', function($log, $rootScope,$location){
 	}
 
 	$rootScope.logovan=function(){
-		return $scope.logovan;
+		return $scope.logovann;
 	}
 
 	$rootScope.login=function(){
-		$scope.logovan=true;
+		$scope.logovann=true;
 	}
 
 	$rootScope.registracija=function(){
@@ -19,10 +19,10 @@ app.controller('indexController', function($log, $rootScope,$location){
 	}
 
 	$rootScope.logout=function(){
-		$scope.logovan=false;
+		$scope.logovann=false;
 	}
 
 	$rootScope.vratiPocetnu=function(){
-		$location.path("/pocetna");
+		$location.path("/");
 	}
 });
