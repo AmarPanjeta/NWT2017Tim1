@@ -1,69 +1,42 @@
-(function() {
-    var app = angular.module('myApp', ['ui.router']);
+app.controller('loginController', function($rootScope, AuthenticationService, $log, $scope, $http, $location, $window){
 
-    app.run(function($rootScope, $location, $state, LoginService) {
-        $rootScope.$on('$stateChangeStart',
-            function(event, toState, toParams, fromState, fromParams){
-                console.log('Changed state to: ' + toState);
-            });
+	/*$rootScope.login=function(){
+		AuthenticationService.Login($scope.username, $scope.password, function(response){
+    		if (response.success) {
+    				$rootScope.token=token;
 
-        if(!LoginService.isAuthenticated()) {
-            $state.transitionTo('login');
-        }
-    });
+    				$rootScope.globals = {
+		                currentUser: {
+		                    username: username,
+		                    authdata: authdata
+		                }
+		            };
 
-    app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
-        $urlRouterProvider.otherwise('/home');
+		            $window.localStorage.setItem("authdata",$scope.username+token;
 
-        $stateProvider
-            .state('login', {
-                url : '/login',
-                templateUrl : 'login.html',
-                controller : 'LoginController'
-            })
-            .state('home', {
-                url : '/home',
-                templateUrl : 'home.html',
-                controller : 'HomeController'
-            });
-    }]);
+					$http.defaults.headers.common.Authorization='Basic'+token;
+					$log.log("logovan sam"+$scope.username);
+					$location.path('/');
+                } 
+            else {  
+                    FlashService.Error(response.message);
+                }
 
-    app.controller('LoginController', function($scope, $rootScope, $stateParams, $state, LoginService) {
-        $rootScope.title = "AngularJS Login Sample";
+    	});
+	}*/
 
-        $scope.formSubmit = function() {
-            if(LoginService.login($scope.username, $scope.password)) {
-                $scope.error = '';
-                $scope.username = '';
-                $scope.password = '';
-                $state.transitionTo('home');
-            } else {
-                $scope.error = "Incorrect username/password !";
-            }
-        };
 
-    });
 
-    app.controller('HomeController', function($scope, $rootScope, $stateParams, $state, LoginService) {
-        $rootScope.title = "AngularJS Login Sample";
+    $rootScope.login = function() {
+        $log.log($scope.userLogin);
+        AuthenticationService.Login($scope.userLogin).then(function(response) {
+            //$rootScope.token = responseToken;
+            //$window.localStorage.setItem("authdata",$scope.username+responseToken);
+            //$http.defaults.headers.common.Authorization = 'Bearer ' + responseToken;
+            //$location.path('/');
 
-    });
-
-    app.factory('LoginService', function() {
-        var admin = 'admin';
-        var pass = 'pass';
-        var isAuthenticated = false;
-
-        return {
-            login : function(username, password) {
-                isAuthenticated = username === admin && password === pass;
-                return isAuthenticated;
-            },
-            isAuthenticated : function() {
-                return isAuthenticated;
-            }
-        };
-
-    });
-
-})();
+            $log.log(response);
+            $rootScope.logovann=true;
+        });
+    }
+});

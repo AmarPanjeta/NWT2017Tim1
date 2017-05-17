@@ -8,6 +8,8 @@ import javax.servlet.ServletException;
 import javax.ws.rs.DELETE;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +22,7 @@ import com.example.models.RegisteredUser;
 import com.example.repositories.DiscussionRepository;
 import com.example.repositories.InterestRepository;
 import com.example.repositories.UserRepository;
+
 
 @RestController
 public class DiscussionController {
@@ -40,7 +43,7 @@ public class DiscussionController {
 	private RegisteredUserController ruc;
 	
 	@RequestMapping("/delete")
-	public int deleteDiscussion(@RequestParam(value="id") Long id, @RequestParam(value="username") String username){
+	public int deleteDiscussion(@RequestParam(value="id") long id, @RequestParam(value="username") String username){
 		
 		Boolean logovan=false;
 		logovan=this.restTemplate.getForObject("http://users-client/user/logged?username="+username,Boolean.class);
@@ -64,6 +67,25 @@ public class DiscussionController {
 		return 0;
 	}
 	
+	
+	
+	
+	@RequestMapping("/autordelete")
+	@PreAuthorize("hasAnyAuthority('admin','moderator')")
+	public int autorDeleteDiscussion(@RequestParam(value="id") long id){
+		Discussion d=dr.findOne(id);
+		dr.delete(d);
+		return 1;
+		
+	}
+	@RequestMapping("/newautordelete")
+	@PreAuthorize("hasAnyAuthority('admin','moderator') or @userPermissions.isOwner(#id,#username)")
+	public int autorDeleteDiscussion(@RequestParam(value="id") long id,@RequestParam(value="username") String username){
+		Discussion d=dr.findOne(id);
+		dr.delete(d);
+		return 1;
+		
+	}
 	@RequestMapping("/create")
 	public Discussion createDiscussion(@RequestBody DiscussionBody discussion) throws ServletException{
 		
@@ -88,7 +110,7 @@ public class DiscussionController {
 	}
 	
 	@RequestMapping("/changestatus")
-	public Boolean closeDiscussion(@RequestParam(value="id") Long id,@RequestParam(value="username") String username) throws ServletException{
+	public Boolean closeDiscussion(@RequestParam(value="id") long id,@RequestParam(value="username") String username) throws ServletException{
 		
 		Boolean logovan=this.restTemplate.getForObject("http://users-client/user/logged?username="+username,Boolean.class);
 		
@@ -113,6 +135,16 @@ public class DiscussionController {
 		
 		return false;
 		
+	}
+	
+	
+	@RequestMapping("/autorchangestatus")
+	@PreAuthorize("hasAnyAuthority('admin','moderator') or @userPermissions.isOwner(#id,#username)")
+	public Boolean autorCloseDiscussion(@RequestParam(value="id") long id,@RequestParam(value="username") String username) throws ServletException{
+			Discussion d=dr.findOne(id);
+			d.setOpen(!d.getOpen());
+			dr.save(d);
+			return true;		
 	}
 	
 	@RequestMapping("/userdiscussions")

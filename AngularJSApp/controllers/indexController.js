@@ -1,5 +1,5 @@
 app.controller('indexController', function($log, $rootScope,$location, $scope){
-	$scope.logovann=false;
+	$rootScope.logovann=false;
 
 	$rootScope.isActive=function(viewLocation) {
 		var active=(viewLocation === $location.url());
@@ -7,22 +7,11 @@ app.controller('indexController', function($log, $rootScope,$location, $scope){
 	}
 
 	$rootScope.logovan=function(){
-		return $scope.logovann;
-	}
-
-	$rootScope.login=function(){
-		$scope.logovann=true;
-	}
-
-	$rootScope.registracija=function(){
-		//nesto za registraciju
+		return $rootScope.logovann;
 	}
 
 	$rootScope.logout=function(){
-		$scope.logovann=false;
-	}
-
-	$rootScope.vratiPocetnu=function(){
-		$location.path("/");
+		$log.log('logout');
+		$rootScope.logovann=false;
 	}
 });
