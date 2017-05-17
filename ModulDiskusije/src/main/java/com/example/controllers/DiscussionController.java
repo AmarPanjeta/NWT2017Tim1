@@ -9,6 +9,7 @@ import javax.ws.rs.DELETE;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +22,7 @@ import com.example.models.RegisteredUser;
 import com.example.repositories.DiscussionRepository;
 import com.example.repositories.InterestRepository;
 import com.example.repositories.UserRepository;
+
 
 @RestController
 public class DiscussionController {
@@ -67,13 +69,20 @@ public class DiscussionController {
 	
 	@RequestMapping("/autordelete")
 	@PreAuthorize("hasAnyAuthority('admin','moderator')")
-	public int deleteDiscussion(@RequestParam(value="id") long id){
+	public int autorDeleteDiscussion(@RequestParam(value="id") long id){
 		Discussion d=dr.findOne(id);
 		dr.delete(d);
 		return 1;
 		
 	}
-	
+	@RequestMapping("/newautordelete")
+	@PreAuthorize("hasAnyAuthority('admin','moderator') or #username == authentication.name")
+	public int autorDeleteDiscussion(@RequestParam(value="id") long id,@RequestParam(value="username") String username){
+		Discussion d=dr.findOne(id);
+		dr.delete(d);
+		return 1;
+		
+	}
 	@RequestMapping("/create")
 	public Discussion createDiscussion(@RequestBody DiscussionBody discussion) throws ServletException{
 		
@@ -123,6 +132,16 @@ public class DiscussionController {
 		
 		return false;
 		
+	}
+	
+	
+	@RequestMapping("/autorchangestatus")
+	@PreAuthorize("hasAnyAuthority('admin','moderator')")
+	public Boolean autorCloseDiscussion(@RequestParam(value="id") long id) throws ServletException{
+			Discussion d=dr.findOne(id);
+			d.setOpen(!d.getOpen());
+			dr.save(d);
+			return true;		
 	}
 	
 	@RequestMapping("/userdiscussions")
