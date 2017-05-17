@@ -29,14 +29,15 @@ app.controller('loginController', function($rootScope, AuthenticationService, $l
 
     $rootScope.login = function() {
         $log.log($scope.userLogin);
-        AuthenticationService.Login($scope.userLogin).then(function(response) {
-            //$rootScope.token = responseToken;
-            //$window.localStorage.setItem("authdata",$scope.username+responseToken);
-            //$http.defaults.headers.common.Authorization = 'Bearer ' + responseToken;
-            //$location.path('/');
+        
+        AuthenticationService.Login($scope.userLogin.username, $scope.userLogin.password).then(function(response) {
+            $rootScope.token = response;
+            $window.localStorage.setItem("authdata",$scope.userLogin.username+response);
+            $http.defaults.headers.common.Authorization = 'Bearer ' + response;
 
             $log.log(response);
             $rootScope.logovann=true;
-        });
+            $location.path('/');
+       });
     }
 });
