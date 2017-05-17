@@ -3475,7 +3475,8 @@ table tr.cart_item td.product-add-bag .add_bag i {
 }
 table tr.cart_item td.product-remove {
 	padding-right:0;
-	text-align:right;
+	text-align:center;
+	text-align:center;
 }
 table tr.cart_item td.product-remove a {
 	font-weight:300;
