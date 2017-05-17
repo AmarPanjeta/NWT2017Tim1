@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.ws.rs.DELETE;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,7 +41,7 @@ public class DiscussionController {
 	private RegisteredUserController ruc;
 	
 	@RequestMapping("/delete")
-	public int deleteDiscussion(@RequestParam(value="id") Long id, @RequestParam(value="username") String username){
+	public int deleteDiscussion(@RequestParam(value="id") long id, @RequestParam(value="username") String username){
 		
 		Boolean logovan=false;
 		logovan=this.restTemplate.getForObject("http://users-client/user/logged?username="+username,Boolean.class);
@@ -62,6 +63,15 @@ public class DiscussionController {
 		}
 		
 		return 0;
+	}
+	
+	@RequestMapping("/autordelete")
+	@PreAuthorize("hasAnyAuthority('admin','moderator')")
+	public int deleteDiscussion(@RequestParam(value="id") long id){
+		Discussion d=dr.findOne(id);
+		dr.delete(d);
+		return 1;
+		
 	}
 	
 	@RequestMapping("/create")
@@ -88,7 +98,7 @@ public class DiscussionController {
 	}
 	
 	@RequestMapping("/changestatus")
-	public Boolean closeDiscussion(@RequestParam(value="id") Long id,@RequestParam(value="username") String username) throws ServletException{
+	public Boolean closeDiscussion(@RequestParam(value="id") long id,@RequestParam(value="username") String username) throws ServletException{
 		
 		Boolean logovan=this.restTemplate.getForObject("http://users-client/user/logged?username="+username,Boolean.class);
 		
