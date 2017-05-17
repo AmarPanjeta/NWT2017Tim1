@@ -67,6 +67,9 @@ public class DiscussionController {
 		return 0;
 	}
 	
+	
+	
+	
 	@RequestMapping("/autordelete")
 	@PreAuthorize("hasAnyAuthority('admin','moderator')")
 	public int autorDeleteDiscussion(@RequestParam(value="id") long id){
@@ -76,7 +79,7 @@ public class DiscussionController {
 		
 	}
 	@RequestMapping("/newautordelete")
-	@PreAuthorize("hasAnyAuthority('admin','moderator') or #username == authentication.name")
+	@PreAuthorize("hasAnyAuthority('admin','moderator') or @userPermissions.isOwner(#id,#username)")
 	public int autorDeleteDiscussion(@RequestParam(value="id") long id,@RequestParam(value="username") String username){
 		Discussion d=dr.findOne(id);
 		dr.delete(d);
@@ -136,8 +139,8 @@ public class DiscussionController {
 	
 	
 	@RequestMapping("/autorchangestatus")
-	@PreAuthorize("hasAnyAuthority('admin','moderator')")
-	public Boolean autorCloseDiscussion(@RequestParam(value="id") long id) throws ServletException{
+	@PreAuthorize("hasAnyAuthority('admin','moderator') or @userPermissions.isOwner(#id,#username)")
+	public Boolean autorCloseDiscussion(@RequestParam(value="id") long id,@RequestParam(value="username") String username) throws ServletException{
 			Discussion d=dr.findOne(id);
 			d.setOpen(!d.getOpen());
 			dr.save(d);
