@@ -31,9 +31,11 @@ public class JwtTokenAuthenticationProcessingFilter extends AbstractAuthenticati
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res)
 			throws AuthenticationException, IOException, ServletException {
+		if(req.getHeader("X-Resource-Server")==null){}
 		String payload = req.getHeader("Authorization");
 		if (payload == null || !payload.startsWith("Bearer ")) {
             throw new ServletException("Missing or invalid Authorization header.");
+			//return null;
         }
 		final String token = payload.substring(7); // The part after "Bearer "
 		return getAuthenticationManager().authenticate(new JwtAuthenticationToken(token));

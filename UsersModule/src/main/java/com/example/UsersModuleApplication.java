@@ -12,14 +12,16 @@ import com.example.security.JwtFilter;
 @SpringBootApplication
 public class UsersModuleApplication {
 
-	
+	/*
 	@Bean
 	public FilterRegistrationBean jwtFilter(){
 		final FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
 		filterRegistrationBean.setFilter(new JwtFilter());
 		filterRegistrationBean.addUrlPatterns("/api/*");
 		return filterRegistrationBean;
-	}
+	}*/
+	
+	
 	
 	public static void main(String[] args) {
 		SpringApplication.run(UsersModuleApplication.class, args);

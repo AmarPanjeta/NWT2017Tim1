@@ -1,5 +1,6 @@
 package com.example.controllers;
 
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 
 import java.util.List;
@@ -23,7 +24,7 @@ import com.example.repositories.DiscussionRepository;
 import com.example.repositories.InterestRepository;
 import com.example.repositories.UserRepository;
 
-
+@RequestMapping("/api")
 @RestController
 public class DiscussionController {
 
@@ -71,7 +72,7 @@ public class DiscussionController {
 	
 	
 	@RequestMapping("/autordelete")
-	@PreAuthorize("hasAnyAuthority('admin','moderator')")
+	@PreAuthorize("hasAnyAuthority('admin','moderator') and isAuthenticated()")
 	public int autorDeleteDiscussion(@RequestParam(value="id") long id){
 		Discussion d=dr.findOne(id);
 		dr.delete(d);
