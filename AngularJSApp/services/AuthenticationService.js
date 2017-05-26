@@ -4,18 +4,39 @@ app.service('AuthenticationService', function($http, $window, UserService, $log)
 
 	return service;
 
-	/*function Login(un, pw){
-        return $http.post('http://localhost:8080/users-client/user/login', {username:un, password:pw}).then(function(response){
-            return response.data; //token
-        });
-    }*/
 
+    /*$http({
+      url: 'http://localhost:8081/user/login',
+      method: 'POST',
+      transformResponse: [function (data) {
+          return data;
+      }]
+    });*/
 
-	function Login(user){
-        $log.log(user);
-        return $http.post('http://localhost:8081/user/login', user).then(function(response){
-            return response; //token
-            $log.log(response);
-        });
-    }
+	  /*function Login(un, pw){
+        return $http({
+            method: 'POST',
+            url: 'http://localhost:8081/user/login',
+            data: {"username":un, "password":pw},
+            headers: {
+                'Content-Type': 'text/plain'
+            }}).then(function(result) {
+                   $log.log(result);
+               }, function(error) {
+                   $log.log(error);
+               });
+            }*/
+
+      function Login(un,pw){
+        return $http({
+            url: 'http://localhost:8081/user/login',
+            method: 'POST',
+            data: {"username":un, "password":pw},
+            transformResponse: undefined
+          }).then(function(response){
+            return response.data;
+          });
+      }
 });
+
+
