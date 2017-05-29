@@ -8,6 +8,7 @@ import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 import javax.servlet.ServletException;
@@ -15,19 +16,24 @@ import javax.servlet.ServletException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.models.Links;
 import com.example.models.RegisteredUser;
 import com.example.models.Role;
 import com.example.models.UserRole;
 import com.example.repositories.ClaimRepository;
+import com.example.repositories.LinksRepository;
 import com.example.repositories.RoleRepository;
 import com.example.repositories.UserRepository;
 import com.example.repositories.UserRoleRepository;
 import com.example.services.HashService;
+import com.example.services.MailService;
+import com.netflix.discovery.converters.Auto;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -48,6 +54,12 @@ public class UserController {
 	
 	@Autowired
 	UserRoleRepository urr;
+	
+	@Autowired
+	LinksRepository lr;
+	
+	@Autowired 
+	MailService ms;
 	
 	@Autowired
 	RabbitTemplate rabbitTemplate;
@@ -103,12 +115,19 @@ public class UserController {
 		RegisteredUser newUser= new RegisteredUser();
 		newUser.setUsername(user.username);
 		newUser.setEmail(user.email);
-		// OVDJE TREBA HASHIRATI PASSWORD
+		
 		newUser.setPassword(HashService.hashPassword(user.password));
 		newUser.setVerified(false);
-		if(ur.save(newUser)!=null){
+		newUser = ur.save(newUser);
+		if(newUser!=null){
 			rabbitTemplate.convertAndSend("users-queue-exchange","*.users",newUser.getUsername()+";"+newUser.getEmail()+";create");
 		}
+		Links links=new Links();
+		String activation=getSaltString()+user.username+getSaltString();
+		links.setActivation(activation);
+		links.setUser(newUser);
+		lr.save(links);
+		ms.sendActivationMail(user.email, activation);
 		
 	}
 	
@@ -117,7 +136,7 @@ public class UserController {
 		
 		RegisteredUser user=ur.findUserByUsername(login.username);
 		
-		
+		if(!user.isVerified()) throw new ServletException("Morate prvo aktivirati racun!");
 		
 		if(!HashService.checkPassword(login.password, user.getPassword())) throw new ServletException("Netacna pristupna sifra");
 		else
@@ -131,6 +150,16 @@ public class UserController {
 			return Jwts.builder().setClaims(claims).setExpiration(Date.from(LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.UTC))).signWith(SignatureAlgorithm.HS256, "secretkey").compact();
 		}
 		
+	}
+	
+	@RequestMapping("/activate/{activation}")
+	public void activate(@PathVariable("activation") String activation) throws ServletException{
+		Links links = lr.findByActivation(activation);
+		if(links!=null){
+			RegisteredUser user=links.getUser();
+			user.setVerified(true);
+			ur.save(user);
+		}
 	}
 	
 	@RequestMapping("roles")
@@ -189,10 +218,29 @@ public class UserController {
 		rabbitTemplate.convertAndSend("users-queue-exchange","*.users","nova poruka");
 	}
 	
+	
 	@RequestMapping("/api/neradinista")
 	public void nista(){
 		
 	}
+	
+	@RequestMapping("/sendmail")
+	public void sendmail(){
+		ms.sendMail();
+	}
+	
+	private String getSaltString() {
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < 10) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        String saltStr = salt.toString();
+        return saltStr;
+
+    }
 	
 	@SuppressWarnings("unused")
 	private static class UserRegisterBody{

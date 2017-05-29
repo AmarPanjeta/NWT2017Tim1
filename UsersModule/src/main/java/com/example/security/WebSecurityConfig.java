@@ -13,6 +13,8 @@ import org.springframework.security.oauth2.provider.authentication.TokenExtracto
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.util.matcher.RequestHeaderRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 @Configuration
@@ -47,7 +49,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     	.and().authorizeRequests().antMatchers("/user/login").permitAll()
     	.and().authorizeRequests().antMatchers("/api/*").authenticated()
     	.and().authorizeRequests().antMatchers("/**").permitAll()
-    	.and().addFilterBefore(buildJwtTokenAuthenticationProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
+    	.and().addFilterBefore(buildJwtTokenAuthenticationProcessingFilter(), UsernamePasswordAuthenticationFilter.class)
+    	.addFilterBefore(new HeaderFilter(), BasicAuthenticationFilter.class);
     	super.configure(http);
     }
 }
