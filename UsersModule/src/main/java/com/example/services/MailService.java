@@ -45,4 +45,19 @@ public class MailService {
 			e.printStackTrace();
 		}
     }
+    
+    public void sendResetPasswordMail(String email, String forgotPassword){
+    	SimpleMailMessage msg=new SimpleMailMessage();
+    	msg.setTo(email);
+    	msg.setText("Link za reset vaseg password-a je http://localhost:8081/user/resetpassword/"+forgotPassword);
+    	msg.setReplyTo("nismomi@gmail.com");
+    	msg.setFrom("nismomi@noreply.com");
+    	try{
+    		mailSender.send(msg);
+    	} catch (Exception e) {
+			// TODO: handle exception
+    		e.printStackTrace();
+		}
+    	
+    }
 }

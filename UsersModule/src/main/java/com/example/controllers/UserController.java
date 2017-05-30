@@ -162,6 +162,51 @@ public class UserController {
 		}
 	}
 	
+	@RequestMapping("/sendrequest")
+	public void sendRequest(@RequestParam("email") String email){
+		
+		RegisteredUser user=ur.findUserByEmail(email);
+		
+		try{
+			
+			Links link=lr.findByUserUsername(user.getUsername());
+			
+			if(link==null){
+				
+				link=new Links();
+				String forgotPassword=getSaltString()+user.getUsername()+getSaltString();
+				link.setUser(user);
+				link.setForgotPassword(forgotPassword);
+				ms.sendResetPasswordMail(email, forgotPassword);
+				
+				
+			}
+			lr.save(link);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	
+	@RequestMapping("/resetpassword/{forgotPassword}")
+	public void resetPassword(@PathVariable("forgotPassword") String forgotPassword,@RequestBody ResetPasswordBody body){
+		
+		Links link=lr.findByForgotPassword(forgotPassword);
+		
+		if(link!=null){
+			
+			RegisteredUser user=link.getUser();
+			
+			if(body.password.equals(body.passwordRepeat) && body.password!=null && !body.password.equals("")){ 
+				user.setPassword(HashService.hashPassword(body.password));
+				ur.save(user);
+			}
+		
+		}
+	
+	}
+	
 	@RequestMapping("roles")
 	public List<String> roles(@RequestParam("username") String username){
 		return rr.getrolesbyuser(username);
@@ -253,5 +298,11 @@ public class UserController {
 	private static class UserLoginBody{
 		public String username;
 		public String password;
+	}
+	
+	@SuppressWarnings("unused")
+	private static class ResetPasswordBody{
+		public String password;
+		public String passwordRepeat;
 	}
 }
