@@ -1,0 +1,32 @@
+.table, .detaljnoTask{
+	background:transparent;
+	width:90%;
+	margin-left: 5%;
+	border-radius: 5px;
+}
+
+.detaljnoTask{
+	margin-top: 10%;
+}
+
+.table th,td,tr{
+	background-color: white;
+}
+
+.taskDetails{
+	background-color: transparent;
+	border:2px solid black;
+}
+
+.taskDetails button{
+	padding:0px;
+	margin: 0px;
+}
+
+#unosTaskaForma{
+	margin-top: 10%;
+}
+
+#text, #creatorsSolution{
+	height:60px;
+}

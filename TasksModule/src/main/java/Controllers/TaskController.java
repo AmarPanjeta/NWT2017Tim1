@@ -114,17 +114,17 @@ public class TaskController {
 	@RequestMapping("/addTask")
 	public void addTask(@RequestBody TaskBody task) throws Exception
 	{
-		if(task.text==null || task.creatorsSolution==null || task.username==null)
+		if(task.title==null || task.text==null || task.creatorsSolution==null || task.username==null)
 		{
 			throw new Exception("Polja za unos taska nisu popunjena");
 		}
 		
-		Boolean log=rt.getForObject("http://users-client/user/logged?username="+task.username,Boolean.class);
+		/*Boolean log=rt.getForObject("http://users-client/user/logged?username="+task.username,Boolean.class);
 		
 		if(!log)
 		{
 			throw new Exception("Korisnik sa tim username-om nije logovan.");
-		}
+		}*/
 		
 		RegisteredUser r=rur.findByUsername(task.username);
 		
@@ -134,6 +134,7 @@ public class TaskController {
 		}
 		
 		Task novi=new Task();
+		novi.setTaskTitle(task.title);
 		novi.setTaskText(task.text);
 		novi.setCreatorsSolution(task.creatorsSolution);
 		novi.setUser(r);	
@@ -157,12 +158,12 @@ public class TaskController {
 			throw new Exception("Polja za unos testa nisu popunjena");
 		}
 		
-		Boolean log=rt.getForObject("http://users-client/user/logged?username="+t.getUser().getUsername(),Boolean.class);
+		/*Boolean log=rt.getForObject("http://users-client/user/logged?username="+t.getUser().getUsername(),Boolean.class);
 		
 		if(!log)
 		{
 			throw new Exception("Korisnik koji je postavio taj zadatak nije logovan.");
-		}
+		}*/
 		
 		Test novi=new Test();
 		novi.setInput(test.input);
@@ -205,12 +206,12 @@ public class TaskController {
 			throw new Exception("Ne postoji taj task");
 		}
 		
-		Boolean log=rt.getForObject("http://users-client/user/logged?username="+t.getUser().getUsername(),Boolean.class);
+		/*Boolean log=rt.getForObject("http://users-client/user/logged?username="+t.getUser().getUsername(),Boolean.class);
 		
 		if(!log)
 		{
 			throw new Exception("Korisnik sa tim username-om nije logovan.");
-		}
+		}*/
 		
 		RegisteredUser r=rur.findByUsername(t.getUser().getUsername());
 		
@@ -237,6 +238,7 @@ public class TaskController {
 	
 	@SuppressWarnings("unused")
 	private static class TaskBody{
+		public String title;
 		public String text;
 		public String creatorsSolution;
 		public String username;

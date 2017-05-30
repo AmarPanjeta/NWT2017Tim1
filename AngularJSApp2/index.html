@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <title>C++ učionica</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../AngularJSApp2/style/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../AngularJSApp2/style/stylish-portfolio.css" rel="stylesheet">
+    <link href="../AngularJSApp2/style/tutorialsStyleIvona.css" rel="stylesheet">
+    <link href="../AngularJSApp2/style/tasksTableStyle.css" rel="stylesheet">
+
+
+
+    <!-- Custom Fonts -->
+    <link href="../AngularJSApp2/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+</head>
+
+<body ng-app="OnlineKonzola" ng-controller="indexController">
+
+    <!-- Navigation -->
+    <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i class="fa fa-bars"></i></a>
+    <nav id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
+            <li class="sidebar-brand">
+                <a href="#/" onclick=$("#menu-close").click();>C++ učionica</a>
+            </li>
+            <li>
+                <a href="#/" onclick=$("#menu-close").click();>Početna</a>
+            </li>
+            <li>
+                <a href="#/tasks" onclick=$("#menu-close").click();>Zadaci</a>
+            </li>
+            <li>
+                <a href="#/tutorials" onclick=$("#menu-close").click();>Tutorijali</a>
+            </li>
+            <li>
+                <a href="#/discussions" onclick=$("#menu-close").click();>Diskusije</a>
+            </li>
+            <li>
+                <a href="#/pwchange" ng-show="logovan()" onclick=$("#menu-close").click();>Promijeni password</a>
+            </li>
+            <li>
+                <a href="#/" ng-show="logovan()" onclick=$("#menu-close").click(); ng-click="logout()">Logout</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div ng-view id="glavni">
+    </div>
+
+    
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 col-lg-offset-1 text-center">
+                    <!--<p class="text-muted">Copyright: Tim1, Napredne web tehnologije ak.2016/17</p>-->
+                </div>
+            </div>
+        </div>
+        <a id="to-top" href="#top" class="btn btn-dark btn-lg"><i class="fa fa-chevron-up fa-fw fa-1x"></i></a>
+    </footer>
+
+
+
+
+<!--Skripte-->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
+<script src="https://code.angularjs.org/1.6.0/angular-cookies.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="../AngularJSApp2/js/jquery.js"></script>
+<script src="../AngularJSApp2/js/bootstrap.min.js"></script>
+<script src="../AngularJSApp2/js/custom.js"></script>
+<script src="../AngularJSApp2/js/angular-flash.min.js"></script>
+
+
+<script src="../AngularJSApp2/app_module.js"></script>
+
+<script src="../AngularJSApp2/controllers/indexController.js"></script>
+<script src="../AngularJSApp2/controllers/loginController.js"></script>
+<script src="../AngularJSApp2/controllers/homeController.js"></script>
+<script src="../AngularJSApp2/controllers/registrationController.js"></script>
+<script src="../AngularJSApp2/controllers/pwchangeController.js"></script>
+<script src="../AngularJSApp2/controllers/tutorialsController.js"></script>
+<script src="../AngularJSApp2/controllers/tasksController.js"></script>
+
+
+<script src="../AngularJSApp2/services/AuthenticationService.js"></script>
+
+
+</body>
+</html>
