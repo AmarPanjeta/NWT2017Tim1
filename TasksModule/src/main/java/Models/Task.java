@@ -25,6 +25,7 @@ public class Task {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	
+	private String taskTitle;
 	private String taskText;
 	private String creatorsSolution;
 	
@@ -71,6 +72,13 @@ public class Task {
 	}
 	public void setTests(List<Test> tests) {
 		this.tests = tests;
+	}
+	
+	public String getTaskTitle() {
+		return taskTitle;
+	}
+	public void setTaskTitle(String taskTitle) {
+		this.taskTitle = taskTitle;
 	}
 	
 	@JsonIgnore

@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.ws.rs.DELETE;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -148,6 +149,7 @@ public class DiscussionController {
 			return true;		
 	}
 	
+	
 	@RequestMapping("/userdiscussions")
 	public List<Discussion> userDiscussions(@RequestParam(value="username") String username,@RequestParam(value="status",required=false) Boolean status) throws ServletException{
 		
@@ -195,6 +197,7 @@ public class DiscussionController {
 		return diskusije;
 		
 	}
+	
 	
 	@RequestMapping("/addinterest")
 	public Boolean addInterest(@RequestParam(value="username") String username,@RequestParam(value="id") Long id)throws ServletException{

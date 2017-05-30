@@ -16,5 +16,7 @@ public interface UserRepository extends CrudRepository<RegisteredUser, Long>{
 	public int userexists(@Param("username") String username, @Param("email") String email);
 	
 	public RegisteredUser findUserByUsername(String username);
+	
+	public RegisteredUser findUserByEmail(String email);
 
 }

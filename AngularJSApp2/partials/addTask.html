@@ -1,0 +1,26 @@
+<div class="header">
+	<div class="col-xs-6 col-xs-offset-3">
+		<form id="unosTaskaForma" ng-submit="dodajNoviTask()" name="form" role="form">
+			<div class="form-group" ng-class="{ 'has-error': form.title.$dirty && form.title.$error.required }">
+				<label for="title">Kratki naslov zadatka:</label>
+				<input type="text" class="form-control" name="title" id="title" ng-model="noviTask.title">
+				<span ng-show="form.title.$dirty && form.title.$error.required" class="help-block">Naslov je obavezno polje!</span>
+			</div>
+			<div class="form-group" ng-class="{ 'has-error': form.text.$dirty && form.text.$error.required }">
+				<label for="text">Tekst zadatka:</label>
+				<input type="text" class="form-control" name="text" id="text" ng-model="noviTask.text">
+				<span ng-show="form.text.$dirty && form.text.$error.required" class="help-block">Tekst zadatka je obavezno polje!</span>
+			</div>
+			<div class="form-group" ng-class="{ 'has-error': form.creatorsSolution.$dirty && form.creatorsSolution.$error.required }">
+				<label for="creatorsSolution">Pocetno ispravno rjesenje zadatka:</label>
+				<input type="text" class="form-control" name="creatorsSolution" id="creatorsSolution" ng-model="noviTask.creatorsSolution">
+				<span ng-show="form.creatorsSolution.$dirty && form.creatorsSolution.$error.required" class="help-block">Pocetno rjesenje je obavezno polje!</span>
+			</div>
+
+			<div class="form-actions">
+				<button type="submit" ng-disabled="form.$invalid || dataLoading" class="btn btn-primary">Dodaj zadatak</button>
+				<img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+			</div>
+		</form>
+	</div>
+</div>

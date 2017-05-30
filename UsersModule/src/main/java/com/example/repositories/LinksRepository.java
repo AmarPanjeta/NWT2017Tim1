@@ -13,5 +13,7 @@ public interface LinksRepository extends CrudRepository<Links, Long>{
 	int countByUserUsername(String username);
 	
 	Links findByActivation(String activation);
+	
+	Links findByForgotPassword(String forgotPassword);
 
 }
