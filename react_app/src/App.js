@@ -9,6 +9,9 @@ import {UserList} from "./components/users/UserList"
 import {CreateDialog} from "./components/CreateDialog"
 import {ShowUser} from "./components/users/ShowUser"
 
+import {DiscussionList} from "./components/discussions/DiscussionList"
+import {ShowDiscussion} from "./components/discussions/ShowDiscussion"
+
 import {Header} from "./components/Header"
 
 
@@ -86,6 +89,8 @@ class App extends Component {
           <Header/>
           <Route exact path="/users" component={UserList}/>
           <Route path="/users/:id" component={ShowUser}/>
+          <Route exact path="/discussions" component={DiscussionList}/>
+          <Route path="/discussions/:id" component={ShowDiscussion}/>
           </div>
       </Router>
     )
