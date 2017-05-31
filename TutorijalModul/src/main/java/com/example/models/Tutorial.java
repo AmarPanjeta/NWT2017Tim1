@@ -10,8 +10,8 @@ public class Tutorial {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	private String Title;
-	private String Text;
+	private String title;
+	private String text;
 	private String about;
 	
 	public long getId() {
@@ -23,19 +23,19 @@ public class Tutorial {
 	}
 
 	public String getTitle() {
-		return Title;
+		return title;
 	}
 
 	public void setTitle(String title) {
-		Title = title;
+		this.title = title;
 	}
 
 	public String getText() {
-		return Text;
+		return text;
 	}
 
 	public void setText(String text) {
-		Text = text;
+		this.text = text;
 	}
 
 	public String getAbout() {

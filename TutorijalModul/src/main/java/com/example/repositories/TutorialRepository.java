@@ -10,12 +10,15 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import com.example.models.Tag;
 import com.example.models.Tutorial;
 import com.example.models.TutorialTag;
+import com.example.models.TutorialUser;
 
 @RepositoryRestResource(path="tutorials", collectionResourceRel="tutorials")
 public interface TutorialRepository extends CrudRepository<Tutorial, Long>{
 
-		List<Tutorial> findByTextLike(String string);
-		List<Tutorial> findByTitleLike(String string);
+		List<Tutorial> findByTextLike(String text);
+		List<Tutorial> findByTitleLike(String title);
+		
+		//TutorialUser findByName(@Param("name") String name);
 		
 		@Query("select t from Tutorial t, TutTagRel ttr where ttr.tutId = t.id and ttr.tagId = :id")
 		public List<Tutorial> getTutorialsByTag(@Param("id") Long id);
