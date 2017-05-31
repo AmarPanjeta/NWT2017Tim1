@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.models.Tag;
@@ -21,6 +22,9 @@ import com.example.repositories.TutorialRepository;
 import com.example.repositories.TutorialUserRepository;
 import com.example.repositories.UserTutRelRepository;
 
+
+@RestController
+@RequestMapping("tut")
 public class TutorialController {
 
 	@Autowired
