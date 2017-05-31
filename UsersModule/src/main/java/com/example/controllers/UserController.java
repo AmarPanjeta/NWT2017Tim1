@@ -174,13 +174,14 @@ public class UserController {
 			if(link==null){
 				
 				link=new Links();
-				String forgotPassword=getSaltString()+user.getUsername()+getSaltString();
-				link.setUser(user);
-				link.setForgotPassword(forgotPassword);
-				ms.sendResetPasswordMail(email, forgotPassword);
 				
 				
 			}
+			String forgotPassword=getSaltString()+user.getUsername()+getSaltString();
+			link.setUser(user);
+			link.setForgotPassword(forgotPassword);
+			ms.sendResetPasswordMail(email, forgotPassword);
+			
 			lr.save(link);
 		}
 		catch(Exception e){
