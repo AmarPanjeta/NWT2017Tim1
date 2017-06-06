@@ -1,5 +1,6 @@
 <header id="top" class="header" ng-show="!logovan()">
     <div class="text-vertical-center">
+        <div class="flashPoruka" ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
         <h1>C++ učionica</h1>
         <h3>Besplatna online konzola za učenje C++ programskog jezika</h3>        
         <br>
@@ -7,27 +8,35 @@
 
         <a href="#/login" class="btn btn-dark btn-lg logreg">Login</a>
         <a href="#/registration" class="btn btn-dark btn-lg logreg">Registracija</a>
-    </div>
-        
+    </div>    
 </header>
 
 <section id="about" class="about" ng-show="!logovan()">
     <div class="container">
         <div class="row">
            <div class="col-lg-12 text-center">
-                 <h2>Nesto about</h2>
-            </div>
-        </div>
-    </div>
+             <h2>Nesto about</h2>
+         </div>
+     </div>
+ </div>
 </section>
 
 <div ng-show="logovan()" class="header">
-    <h5>
-    Lallalala nesto logovan sam
-    Zdravo {{usernameHello}}, dobrodosli u C++ ucionicu!
-    Ovdje ce ici "novosti", novi zadaci ili slicno
-    Moj token je: {{token}}
-    </h5>
+    <div class="text-vertical-center">
+        <div class='flashPoruka' ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
+        Ovdje ce ici "novosti", novi zadaci ili slicno
+
+        <h2>
+            Zdravo {{usernameHello}}, dobrodosli u C++ ucionicu!
+        </h2>
+        <br>
+        <h4>
+            Nastavi na:
+        </h4>
+        <a href="#/tasks" class="btn btn-dark btn-lg logreg">Zadaci</a>
+        <a href="#/tutorials" class="btn btn-dark btn-lg logreg">Tutorijali</a>
+        <a href="#/discussions" class="btn btn-dark btn-lg logreg">Diskusije</a>
+    </div>
 </div>
-    
+
 

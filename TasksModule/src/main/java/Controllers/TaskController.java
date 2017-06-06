@@ -1,7 +1,9 @@
 package Controllers;
 
 import static org.mockito.Matchers.longThat;
+import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +65,13 @@ public class TaskController {
 		return testovi;
 	}
 	
+	
+	@RequestMapping("/all")
+	public Iterable<Task> returnAllTasks()
+	{
+		return tr.findAll();
+	}
+	
 	//vraca sva rjesenja za zadatak sa unesenim id-em
 	@RequestMapping(value="/{id}/solutions")
 	public List<Solution> getTaskSolutions(@PathVariable("id") long id) throws Exception
@@ -83,6 +92,28 @@ public class TaskController {
 		
 		return solutions;
 	}
+	
+	//vraca sva rjesenja za zadatak sa unesenim id-em
+		@RequestMapping(value="/{id}/numberofsolutions")
+		public int getNumberOfTaskSolutions(@PathVariable("id") long id) throws Exception
+		{
+			Task t=tr.findById(id);
+			
+			if(t.getTaskText()==null)
+			{
+				throw new Exception("Ne postoji taj task");
+			}
+			
+			List<Solution> solutions=sr.getAllTaskSolutions(id);
+			
+			if(solutions.isEmpty())
+			{
+				return 0;
+				//throw new Exception("Ne postoje rjesenja za zadatak");
+			}
+			
+			return solutions.size();
+		}
 	
 	//vraca 10 najboljih rjesenja za zadatak sa unesenim id-em
 	@RequestMapping(value="/{id}/tenBestSolutions")
@@ -137,6 +168,7 @@ public class TaskController {
 		novi.setTaskTitle(task.title);
 		novi.setTaskText(task.text);
 		novi.setCreatorsSolution(task.creatorsSolution);
+		novi.setDatumPostavljanja(new Date());
 		novi.setUser(r);	
 		
 		tr.save(novi);
@@ -195,6 +227,19 @@ public class TaskController {
 		tr.delete(id);		
 	}
 	
+	@RequestMapping("/{id}/getuser")
+	public RegisteredUser getTasksUser(@PathVariable("id") long id) throws Exception
+	{
+		Task t=tr.findById(id);
+		
+		if(t.getTaskText()==null)
+		{
+			throw new Exception("Ne postoji taj task");
+		}
+		
+		return t.getUser();
+	}
+	
 	//novo rjesenje za task
 	@RequestMapping("/{id}/addSolution")
 	public void addTaskSolution(@PathVariable("id") long id, @RequestBody SolutionBody sb) throws Exception
@@ -225,7 +270,6 @@ public class TaskController {
 		novi.setUser(r);
 		//ovo dodati uz compilermodule!!!!!!!!!!  novi.setPassing(passing);
 		sr.save(novi);
-		
 		if(!t.getSolutions().add(novi))
 		{
 			sr.delete(novi.getId());
@@ -255,5 +299,7 @@ public class TaskController {
 	private static class SolutionBody{
 		public String code;
 		public String username;
-	}	
+	}		
+	
+	
 }

@@ -16,6 +16,12 @@ body, #glavni {
     font-family: "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
+.flashPoruka{
+    width: 70%;
+    margin-left: 15%;
+    margin-top: 5%;
+}
+
 .text-vertical-center {
     display: table-cell;
     text-align: center;
@@ -243,14 +249,13 @@ footer {
 
 
 
-
-
 /*login i registracija*/
 
 #loginForma {
     position: relative;
     padding-top: 20%;
 }
+
 
 #loginForma>input{
     color:black;
@@ -270,5 +275,6 @@ footer {
 .btn-link, .btn-primary{
     font-weight: bold;
 }
+
 
 

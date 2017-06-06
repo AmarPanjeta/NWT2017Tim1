@@ -1,7 +1,8 @@
-app.service('AuthenticationService', function($http, $window, $log){
+app.service('AuthenticationService', function($http, $window, $log, $q){
 	var service={};
 	service.Login=Login;
-
+  service.IsAdmin=IsAdmin;
+  service.HasAdmin=HasAdmin;
 	return service;
 
 
@@ -33,10 +34,32 @@ app.service('AuthenticationService', function($http, $window, $log){
             method: 'POST',
             data: {"username":un, "password":pw},
             transformResponse: undefined
-          }).then(function(response){
-            return response.data;
-          });
+          }).then(handleSuccess, handleError('Login nije omogucen. Provjerite pristupne podatke.'));
       }
+
+      function IsAdmin(un){
+        var deferred=$q.defer();
+        $http.get("http://localhost:8088/user/"+un+"/isAdmin").success(function(response){
+          deferred.resolve(response);
+        });
+
+        return deferred.promise;
+      }
+
+      function HasAdmin(un){
+        return $http.get("http://localhost:8088/user/"+un+'/imaPrivilegije').then(handleSuccess, handleError('Ne znam'));
+      }
+
+//////////////////////////
+      function handleSuccess(res) {
+            return {success:true, response:res.data};
+        } 
+
+    function handleError(error) {
+            return function () {
+                return { success: false, message: error };
+            };
+    }
 });
 
 

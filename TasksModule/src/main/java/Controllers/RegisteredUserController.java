@@ -87,6 +87,19 @@ public class RegisteredUserController {
 		return log;
 	}
 	
+	@RequestMapping("/{username}/imaPrivilegije")
+	public Boolean imaPrivilegije(@PathVariable("username") String username) throws Exception
+	{
+		RegisteredUser r=rur.findByUsername(username);
+		
+		if(r.getUsername()==null)
+		{
+			throw new Exception("Ne postoji user sa tim usernameom");
+		}
+		
+		return r.getAdministratorPrivileges();	
+	}
+	
 	
 	
 	

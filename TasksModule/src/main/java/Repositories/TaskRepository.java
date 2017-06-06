@@ -16,5 +16,4 @@ public interface TaskRepository extends CrudRepository<Task, Long>{
 	//vraca sve taskove koje je postavio user sa datim id-em
 	@Query("select t from Task t, RegisteredUser ru where t.user=ru and ru.id=:id")
 	public List<Task> getAllUserTasks(@Param("id") long id);
-	
 }

@@ -4,29 +4,41 @@
 	<h5>Redanje po: najnoviji, najpopularniji, random</h5>
 	<h5>Kad se klikne na odredjeni zadatak otvara se ispod postavka zadatka i ima dugme za rijesi zadatak na koje se otvara konzola iznad ima tekst zadatka pored najbolja rjesenja itd</h5>
 
-	<table class="table">
-		<thead>
-			<tr>
-				<th>Tekst zadatka</th>
-				<th>Broj rjesenja</th>
-				<th>Brisanje</th>
-			</tr>
-		</thead>
-		<tbody ng-repeat="task in tasks" ng-switch on="isSelTask(task)" ng-click="selectTask(task,$index)">
-			<tr ng-class="{sel:selIdx==$index}">
-				<td>{{task.taskText}}</td>
-				<td>1111</td>
-				<td>brisanje---sa provjerom</td>
-			</tr>
-			<tr ng-switch-when="true" class="taskDetails">
-				<td colspan="2">{{task.taskText}}</td>
-				<td colspan="1"><button ng-click="prikaziDetaljeTaska()">Otvori</button></td>
-			</tr>
-		</tbody>
+		<div class="dropdown" style="margin-left: 10%;">
+			Sortiraj po:
+			<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+				<span class="caret"></span></button>
+				<ul class="dropdown-menu">
+					<li><a href="#">Prvo najnoviji</a></li>
+					<li><a href="#">Prvo najstariji</a></li>
+					<li><a href="#">Prvo najpopularniji</a></li>
+				</ul>
+		</div>
 
-	</table>
 
-	<button ng-show="logovan()" style="margin-left: 45%; width:10%" ng-click="prebaciDodajTask()">
-		Dodaj zadatak
-	</button>
-</div>
+		<table class="table">
+			<thead>
+				<tr>
+					<th colspan="4" style="text-align: center;">Naslov zadatka</th>
+					<th colspan="1" style="text-align: center;">Postavio</th>
+					<th colspan="1" style="text-align: center;">Brisanje</th>
+				</tr>
+			</thead>
+			<tbody ng-repeat="task in tasks" ng-switch on="isSelTask(task)" ng-click="selectTask(task,$index)">
+				<tr ng-class="{sel:selIdx==$index}">
+					<td colspan="4" style="text-align: center;">{{task.taskTitle}}</td>
+					<td colspan="1" style="text-align: center;">{{task.user.username}}</td>
+					<td colspan="1" style="text-align: center;"><button class="glyphicon glyphicon-trash"  ng-show="task.imaPrivilegijeBrisanja" ng-click="deleteTask(task, $index)"></button></td>
+				</tr>
+				<tr ng-switch-when="true" class="taskDetails">
+					<td colspan="5">{{task.taskText}}</td>
+					<td colspan="1" style="text-align: right; margin-right: 10%;"><button ng-click="prikaziDetaljeTaska()" class='btn btn-dark otvaranjeZadatkaBtn' ">Više informacija</button></td>
+				</tr>
+			</tbody>
+
+		</table>
+
+		<button ng-show="logovan()" style="margin-left: 45%; width:10%" ng-click="prebaciDodajTask()">
+			Dodaj zadatak
+		</button>
+	</div>
