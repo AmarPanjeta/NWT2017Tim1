@@ -13,6 +13,11 @@ import {DiscussionList} from "./components/discussions/DiscussionList"
 import {ShowDiscussion} from "./components/discussions/ShowDiscussion"
 
 import {Header} from "./components/Header"
+import {Login} from "./components/Login"
+import {Registration} from "./components/Registration"
+
+import $http from './$http';
+import {Console} from './components/Console';
 
 
 //import rest from 'rest-js'
@@ -28,6 +33,7 @@ class App extends Component {
     this.state={users:[],attributes:[],schema:[]};
     this.onCreate = this.onCreate.bind(this);
     this.onDelete=this.onDelete.bind(this);
+    this.printajText=this.printajText.bind(this);
     //this.onDelete = this.onDelete.bind(this);
   }
   componentDidMount(){
@@ -54,7 +60,7 @@ class App extends Component {
         method: 'POST',
         path:"http://localhost:8081/users",
         entity: newEmployee,
-        headers: {'Content-Type': 'application/json'}
+        headers: {'Content-Type': 'text/plain'}
       }).then(response => {
         return client({method: 'GET', path: 'http://localhost:8081/users'}).then(usersCollection=>{
           this.setState({
@@ -81,6 +87,20 @@ class App extends Component {
     })*/
   }
 
+  printajText(){
+    console.log("printam text");
+  }
+
+  handleLogin(username,password){
+    $http.post("http://localhost:8081/user/login",{username:username,password:password}).then(
+      response=>{
+        console.log(response.entity);
+      },reason=>{
+        console.log(reason);
+      }
+    );
+  }
+
   render() {
     return(
       <Router>
@@ -91,6 +111,9 @@ class App extends Component {
           <Route path="/users/:id" component={ShowUser}/>
           <Route exact path="/discussions" component={DiscussionList}/>
           <Route path="/discussions/:id" component={ShowDiscussion}/>
+          <Route path="/login" render={() => <Login printaj={this.handleLogin}/>}/>
+          <Route path="/register" component={Registration}/>
+          <Route path="/console" component={Console}/>
           </div>
       </Router>
     )

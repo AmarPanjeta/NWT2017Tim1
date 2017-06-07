@@ -131,7 +131,7 @@ public class UserController {
 		
 	}
 	
-	@RequestMapping("/login")
+	@RequestMapping(value="/login",produces="text/plain")
 	public String login(@RequestBody UserLoginBody login) throws ServletException{
 		
 		RegisteredUser user=ur.findUserByUsername(login.username);
