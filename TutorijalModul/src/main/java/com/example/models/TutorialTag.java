@@ -11,7 +11,7 @@ public class TutorialTag {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	private String Text;
+	private int Stars;
 	
 	public long getId() {
 		return id;
@@ -21,22 +21,22 @@ public class TutorialTag {
 		this.id = id;
 	}
 
-	public String getText() {
-		return Text;
+	public int getStars() {
+		return this.Stars;
 	}
 
-	public void setText(String text) {
-		Text = text;
+	public void setStars(int Stars) {
+		this.Stars = Stars;
 	}
 
 	public TutorialTag()
 	{}
 	
 	
-	public TutorialTag(Long id, String Tekst)
+	public TutorialTag(Long id, int Stars)
 	{
 		this.id = id;
-		this.Text = Tekst;
+		this.Stars = Stars;
 		
 	}
 }

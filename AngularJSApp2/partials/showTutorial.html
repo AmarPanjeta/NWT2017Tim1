@@ -1,9 +1,88 @@
 <div class="header">
-    <h1 class="detaljnoTask">
-        POJEDINAČNO TUTORIJAL
-    </h1>
+    <div id="tutorials">
 
-    <h3>
-        ....
-    </h3>
+        <!-- PAGE HEADER -->
+        <section class="page_header">
+            <div class="container">
+                <div class="row">
+
+                </div>
+            </div>
+            <!-- CONTAINER -->
+            <div class="container" >
+                <h3 class="pull-left"><b>{{tutorial.title}}</b></h3>
+
+
+            </div><!-- //CONTAINER -->
+        </section><!-- //PAGE HEADER -->
+
+        <section>
+            Tagovi:
+            <ul class="variation">
+                <div class="tagovi" ng-repeat = "tag in tutorial.tags" style="float:left"> <span class ="glyphicon glyphicon-option-vertical"></span>{{tag.text}}</div>
+                <span class ="glyphicon glyphicon-option-vertical"></span>
+            </ul>
+        </section>
+
+        <section>
+            Opis:
+            <ul class="variation">
+                <div class="tagovi" > {{tutorial.about}}</div>
+            </ul>
+        </section>
+
+        <section class=" page-header">
+            Tekst tutorijala:
+            <ul class="variation">
+                <div class="tagovi" > {{tutorial.text}}</div>
+            </ul>
+        </section>
+
+
+
+
+        <html ng-app>
+        <head>
+            <title>AngularJs Simple Comment box Example: DevZone.co.in </title>
+            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+
+        </head>
+        <body>
+        <div id='dv1'>
+            <form >
+                Dodajte komentar
+                <p></p>
+                <form >
+                    <textarea ng-model="komentar" placeholder="Ovdje upišite vaš komentar" style='width:550px'></textarea>
+                    <p></p>
+                    <button ng-click="dodajKomentar()" style='margin-top:10px;'>Dodaj komentar</button>
+
+                    <h4>Comments</h4>
+                    <ul>
+                        <li ng-repeat="comnt in comment"> {{ comnt }} <a  style="float: right;" href="" ng-click="remItem($index)">x</a></li>
+                    </ul>
+                </form>
+        </div>
+
+        Korisnici su ocijenili ovaj tutorijal sa
+        <a class="add_bag" ng-repeat="i in getNumber(starsSum) track by $index" >
+
+            <span class="glyphicon glyphicon-star"></span></a><a class="add_bag" ng-repeat="i in getNumberEmpty(starsSum) track by $index" ><span class="glyphicon glyphicon-star-empty"></span></a>
+
+        <p></p>
+        <div ng-show = "glasanje">Dodajte svoju ocjenu:</div>
+        <a class="add_bag" ng-show = "glasanje" >
+
+            <span ng-show = "upaljena[0]" class="glyphicon glyphicon-star-empty" ng-click="zvijezda(1)"></span><span ng-show = "ugasena[0]" class="glyphicon glyphicon-star" ng-click="zvijezda(1)"></span>
+            <span ng-show = "upaljena[1]" class="glyphicon glyphicon-star-empty" ng-click="zvijezda(2)"></span><span ng-show = "ugasena[1]" class="glyphicon glyphicon-star" ng-click="zvijezda(1)"></span>
+            <span ng-show = "upaljena[2]" class="glyphicon glyphicon-star-empty" ng-click="zvijezda(3)"></span><span ng-show = "ugasena[2]" class="glyphicon glyphicon-star" ng-click="zvijezda(1)"></span>
+            <span ng-show = "upaljena[3]" class="glyphicon glyphicon-star-empty" ng-click="zvijezda(4)"></span><span ng-show = "ugasena[3]" class="glyphicon glyphicon-star" ng-click="zvijezda(1)"></span>
+            <span ng-show = "upaljena[4]" class="glyphicon glyphicon-star-empty" ng-click="zvijezda(5)"></span><span ng-show = "ugasena[4   ]" class="glyphicon glyphicon-star" ng-click="zvijezda(1)"></span>
+        </a>
+        <div ng-show = "!glasanje">Hvala na glasu!</div>
+        </body>
+
+
+
+    </div><!-- //PAGE -->
 </div>

@@ -5,13 +5,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.validator.constraints.Length;
+
 @Entity
 public class Tutorial {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	private String title;
+	@Length(max = 1000000)
 	private String text;
+	@Length(max = 1000)
 	private String about;
 	
 	public long getId() {

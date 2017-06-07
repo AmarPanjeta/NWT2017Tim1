@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,8 @@ import com.example.repositories.TutTagRelRepository;
 import com.example.repositories.TutorialRepository;
 
 @RestController
+@RequestMapping("tag")
+@CrossOrigin
 public class TagController {
 	
 	@Autowired
@@ -34,6 +37,14 @@ public class TagController {
         return new Tag(id.incrementAndGet(), name);
     }
     
+    
+    @RequestMapping("/gettuttags")
+   	public List<Tag> getUserTutTag(@RequestParam("idTut") Long idTut){
+   		Tutorial t = tutr.findOne(idTut);
+   		List<Tag> tag = tutr.getTutTag(t.getId());
+		return tag;
+    
+    }
     
     @RequestMapping("/addTagToTut")
 	public Boolean addTagTut(@RequestParam("idTut") Long idTut,@RequestParam("idTag") Long idTag){

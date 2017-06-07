@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +26,7 @@ import com.example.repositories.UserTutRelRepository;
 
 @RestController
 @RequestMapping("tut")
+@CrossOrigin
 public class TutorialController {
 
 	@Autowired
@@ -59,7 +61,7 @@ public class TutorialController {
 	
 	@RequestMapping("/create")
 	public Tutorial createTutorial(@RequestBody TutorialBody tutorial) throws ServletException{
-		
+		/*
 		Boolean logovan=this.restTemplate.getForObject("http://users-client/user/logged?username="+tutorial.username,Boolean.class);
 		
 		//provjeriti je li admin?
@@ -74,7 +76,7 @@ public class TutorialController {
 			throw new ServletException("Niste admin");
 		}
 		
-   	
+   	*/
 		Tutorial t = new Tutorial();
 		t.setAbout(tutorial.about);
 		t.setText(tutorial.text);
@@ -137,8 +139,18 @@ public class TutorialController {
 		return tut;
 	}
 	
+	
+	@RequestMapping("/gettutbyid" )
+	public Tutorial getTutorialsByName(@RequestParam(value="id") long id){
+		Tutorial tut;
+		
+		tut= tr.findOne(id);
+		
+		return tut;
+	}
+	
 	@RequestMapping("/gettutbytitle" )
-	public List<Tutorial> getTutorialsByName(@RequestParam(value="searchWord") String word){
+	public List<Tutorial> getTutorialsByName(@RequestParam(value="word") String word){
 		List<Tutorial> tut;
 		
 		tut=(List<Tutorial>) tr.findByTitleLike(word);
@@ -148,7 +160,7 @@ public class TutorialController {
 	
 	
 	@RequestMapping("/gettutbycontent" )
-	public List<Tutorial> getTutorialsByContent(@RequestParam(value="searchWord") String word){
+	public List<Tutorial> getTutorialsByContent(@RequestParam(value="word") String word){
 		List<Tutorial> tut;
 		
 		tut=(List<Tutorial>) tr.findByTextLike(word);

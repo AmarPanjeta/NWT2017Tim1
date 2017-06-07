@@ -26,6 +26,7 @@ public class CommentController {
 
 	
 	 final AtomicLong id = new AtomicLong();
+	 @Autowired
 	 private CommentRepository cr ;
 	 
 	 @Autowired
@@ -42,15 +43,31 @@ public class CommentController {
 		private static class CommentBody{
 			public String tekst;
 			public Long idTutorial;
-			public String username;
 		}
 	 
 	    @RequestMapping("/coms")
-	    public Comment tagovi(@RequestParam(value="name") String name, @RequestParam(value="usrId") Long usrId) {
-	        return new Comment(id.incrementAndGet(), name, usrId);
+	    public Comment tagovi(@RequestParam(value="name") String name, @RequestParam(value="usrId") Long usrId, @RequestParam(value="tutId") Long tutId) {
+	        return new Comment(id.incrementAndGet(), name, usrId, tutId);
 	    }
 	    
-	    @RequestMapping("/addcomment")
+	    
+	    @RequestMapping("/create")
+		public boolean createComment(@RequestBody CommentBody comment) throws ServletException{
+			Comment c = new Comment();
+			c.setText(comment.tekst);
+			c.settutId(comment.idTutorial);
+			
+	    	cr.save(c);
+	    	return true;		
+			
+		}
+	    
+	    
+	    
+	    
+	    
+	    
+	    /*@RequestMapping("/addcomment")
 		public Boolean addComment(@RequestBody CommentBody comment) throws ServletException{
 			
 			Boolean logovan=this.restTemplate.getForObject("http://users-client/user/logged?username="+comment.username,Boolean.class);
@@ -59,16 +76,29 @@ public class CommentController {
 				throw new ServletException("Niste logovani");
 			}
 			
-			Tutorial t = tr.findOne(comment.idTutorial);
-			TutorialUser user = tu.findByName(comment.username);
+			
+			//TutorialUser user = tu.findByName(comment.username);
+	    	//Tutorial t = tr.findOne(tutId);
 			Comment c=new Comment();
-			c.setTutId(t);
-			c.setTutUsrID(user);
+			//c.setTutId(t);
+			c.setText(comment.tekst);
+			c.settutId(comment.idTutorial);
+			
+		
+		    //c.setTutUsrID(user);
 			cr.save(c);
 			
 			return true;
 			
-		}
+		}*/
+	    
+	    @RequestMapping("/gettutcoms")
+	   	public List<Comment> getUserTutTag(@RequestParam("idTut") Long idTut){
+	   		Tutorial t = tr.findOne(idTut);
+	   		List<Comment> coms = tr.getTutComs(t.getId());
+			return coms;
+	    
+	    }
 
 	    
 	    
