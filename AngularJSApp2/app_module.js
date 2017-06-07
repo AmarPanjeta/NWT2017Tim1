@@ -26,9 +26,9 @@ app.config(function($routeProvider) {
 	}).when("/addTask",{
 		templateUrl:"../AngularJSApp2/partials/addTask.html",
 		controller:'tasksController'
-	}).when("/showTutorial",{
+	}).when("/showTutorial/:id",{
         templateUrl:"../AngularJSApp2/partials/showTutorial.html",
-       // controller:'showtutorialController'
+        controller:'showTutorialController'
     });
 });
 
