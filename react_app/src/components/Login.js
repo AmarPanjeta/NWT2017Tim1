@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import {Row,Input,Col,Button,Icon,Modal} from 'react-materialize';
 import Klasa from '../klasa';
 import $http from '../$http';
-import {Console} from './Console';
 
 export class Login extends Component{
   constructor(props){
@@ -13,6 +12,7 @@ export class Login extends Component{
     this.handleChangeUsername=this.handleChangeUsername.bind(this);
   }
   render(){
+    console.log(this.props.match.params);
     Klasa.dajBroj();
     return(<Row>
       <Col offset="s2" s={8}>
@@ -31,7 +31,6 @@ export class Login extends Component{
 	}>
 	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
 </Modal>
-  <Console></Console>
     </Row>);
   }
 
@@ -45,6 +44,7 @@ export class Login extends Component{
   onLogin(){
     this.props.printaj(this.state.username,this.state.password);
     console.log(this.state);
+    this.props.history.push("/");
     //this.props.onLoginSubmit()
   }
 

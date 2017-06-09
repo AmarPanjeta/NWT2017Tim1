@@ -30,13 +30,22 @@ client = rest.wrap(mime);
 class App extends Component {
   constructor(props){
     super(props);
-    this.state={users:[],attributes:[],schema:[]};
+    this.state={
+      users:[],
+      logged:localStorage.hasOwnProperty("token"),
+      token:localStorage["token"]!=undefined?localStorage["token"]:"",
+      username:localStorage["username"]
+    };
+
     this.onCreate = this.onCreate.bind(this);
     this.onDelete=this.onDelete.bind(this);
     this.printajText=this.printajText.bind(this);
-    //this.onDelete = this.onDelete.bind(this);
+    this.handleLogout=this.handleLogout.bind(this);
+    this.handleLogin=this.handleLogin.bind(this);
+
   }
-  componentDidMount(){
+  componentDidMount(){/*
+    console.log(this.state.stanje);
     client({method: 'GET', path: 'http://localhost:8081/users'
   }).then(usersCollection => {
 			return client({
@@ -52,7 +61,7 @@ class App extends Component {
 				users: usersCollection.entity._embedded.users,
 				attributes: Object.keys(this.schema.properties)});
         console.log(this.state.users);
-});
+    });*/
   }
 
   onCreate(newEmployee) {
@@ -73,18 +82,6 @@ class App extends Component {
 
   onDelete(id){
     console.log("radi "+id);
-    /*
-    client({
-      method:'DELETE',
-      path:'http://localhost:8081/users/'+id
-    }).then(response => {
-      return client({method: 'GET', path: 'http://localhost:8081/users'}).then(usersCollection=>{
-        this.setState({
-          users: usersCollection.entity._embedded.users,
-          attributes: this.state.attributes
-        })
-      })
-    })*/
   }
 
   printajText(){
@@ -95,10 +92,19 @@ class App extends Component {
     $http.post("http://localhost:8081/user/login",{username:username,password:password}).then(
       response=>{
         console.log(response.entity);
+        this.setState({logged:true,token:response.entity,username:username});
+        localStorage.setItem("token",response.entity);
+        localStorage.setItem("username",username);
       },reason=>{
         console.log(reason);
       }
     );
+  }
+
+  handleLogout(){
+    this.setState({logged:false,token:""});
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
   }
 
   render() {
@@ -106,14 +112,14 @@ class App extends Component {
       <Router>
 
           <div>
-          <Header/>
-          <Route exact path="/users" component={UserList}/>
-          <Route path="/users/:id" component={ShowUser}/>
-          <Route exact path="/discussions" component={DiscussionList}/>
-          <Route path="/discussions/:id" component={ShowDiscussion}/>
-          <Route path="/login" render={() => <Login printaj={this.handleLogin}/>}/>
-          <Route path="/register" component={Registration}/>
-          <Route path="/console" component={Console}/>
+            <Header logged={this.state.logged} logout={this.handleLogout}/>
+            <Route exact path="/users" component={UserList}/>
+            <Route path="/users/:id" component={ShowUser}/>
+            <Route exact path="/discussions" component={DiscussionList}/>
+            <Route path="/discussions/:id" component={ShowDiscussion}/>
+            <Route path="/login" render={(props) => <Login printaj={this.handleLogin} {...props} />}/>
+            <Route path="/register" component={Registration}/>
+            <Route path="/console" component={Console}/>
           </div>
       </Router>
     )
@@ -130,16 +136,3 @@ class Main extends Component{
 }
 
 export default App;
-
-/*
-<div className="App">
-  <div className="App-header">
-    <img src={logo} className="App-logo" alt="logo" />
-    <h2>Welcome to React</h2>
-  </div>
-  <p className="App-intro">
-    To get started, edit <code>src/App.js</code> and save to reload.
-  </p>
-  <CreateDialog attributes={this.state.attributes} onCreate={this.onCreate}/>
-  <UserList users={this.state.users}/>
-</div>*/

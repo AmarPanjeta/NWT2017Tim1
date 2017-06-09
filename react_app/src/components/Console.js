@@ -21,20 +21,23 @@ export class Console extends Component {
       margin:"0px auto"
     };
     return(
-      
+
       <Row>
-      <Col s={8} offset={"s2"}><textarea style={style} onChange={this.handleCodeChange}></textarea></Col>
-      <div style={{textAlign:"center"}}>
-      {!this.state.action && this.state.result!="" && <Col s={8} offset={"s2"}>
-    		<Card className='black lighten-1' textClassName='white-text' title='Result' actions={[<a onClick={this.closeResult}>close</a>]}>
-          Status: {this.state.status}<br/>
-          Output: {this.state.result}
-    		</Card>
-      </Col>
-      }
-      {!this.state.action && <Row><Col s={12}><Button onClick={this.click} style={{backgroundColor:"#ee6e73"}}>Pokreni</Button></Col></Row>}
-      {this.state.action && <Row><Col s={12}><Preloader flashing/></Col></Row>}
-    </div></Row>);
+        <Col s={8} offset={"s2"}>
+          <textarea style={style} onChange={this.handleCodeChange}></textarea>
+        </Col>
+        <div style={{textAlign:"center"}}>
+        {!this.state.action && this.state.result!="" && <Col s={8} offset={"s2"}>
+      		<Card className='black lighten-1' textClassName='white-text' title='Result' actions={[<a onClick={this.closeResult}>close</a>]}>
+            Status: {this.state.status}<br/>
+            Output: {this.state.result}
+      		</Card>
+        </Col>
+        }
+        {!this.state.action && <Row><Col s={12}><Button onClick={this.click} style={{backgroundColor:"#ee6e73"}}>Pokreni</Button></Col></Row>}
+        {this.state.action && <Row><Col s={12}><Preloader flashing/></Col></Row>}
+        </div>
+      </Row>);
 
   }
 
