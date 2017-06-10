@@ -11,6 +11,12 @@ export default class $http{
       method:'GET',
       path:url,
       headers: {'Content-Type': 'application/json'}
+    }).then(
+      response=>{
+        if(response.status.code==500 || response.status.code==406){
+          throw Error(response);
+        }
+        else return response;
     })
   };
 
@@ -20,6 +26,13 @@ export default class $http{
       path:url,
       entity:entity,
       headers: {'Content-Type': 'application/json'}
+    }).then(
+      response=>{
+        if(response.status.code==200) return response;
+        if(response.status.code==500  || response.status.code==406){
+          throw Error(response.entity.message);
+        }
+        else return response;
     })
   };
   /*

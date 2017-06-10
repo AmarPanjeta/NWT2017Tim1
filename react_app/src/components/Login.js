@@ -1,23 +1,33 @@
 import React,{Component} from "react";
 import ReactDOM from 'react-dom';
-import {Row,Input,Col,Button,Icon,Modal} from 'react-materialize';
+import {Row,Input,Col,Button,Icon,Modal,Chip} from 'react-materialize';
 import Klasa from '../klasa';
 import $http from '../$http';
 
 export class Login extends Component{
   constructor(props){
     super(props);
+    this.state={
+      username:"",
+      password:"",
+      notifications:[]
+    }
     this.onLogin=this.onLogin.bind(this);
     this.handleChangePassword=this.handleChangePassword.bind(this);
     this.handleChangeUsername=this.handleChangeUsername.bind(this);
   }
   render(){
-    console.log(this.props.match.params);
-    Klasa.dajBroj();
+    const notifications=this.state.notifications.map((notification)=>(<Chip>
+                <Icon tiny>new_releases</Icon>
+                {notification}
+              </Chip>))
     return(<Row>
       <Col offset="s2" s={8}>
 		    <Input label="Username" s={12} onChange={this.handleChangeUsername}/>
         <Input type="password" label="password" s={12} onChange={this.handleChangePassword}/>
+        <Col s={12}>
+        {notifications}
+        </Col>
         <Button waves='light' onClick={this.onLogin}>button<Icon left>cloud</Icon></Button>
       </Col>
       <br/>
@@ -42,10 +52,7 @@ export class Login extends Component{
   }
 
   onLogin(){
-    this.props.printaj(this.state.username,this.state.password);
-    console.log(this.state);
-    this.props.history.push("/");
-    //this.props.onLoginSubmit()
+    this.props.printaj(this.state.username,this.state.password,this);
   }
 
 }

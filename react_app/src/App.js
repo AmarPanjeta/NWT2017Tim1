@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link,withRouter } from 'react-router-dom'
 
 
 import {UserList} from "./components/users/UserList"
@@ -88,19 +88,24 @@ class App extends Component {
     console.log("printam text");
   }
 
-  handleLogin(username,password){
+  handleLogin(username,password,ctx){
     $http.post("http://localhost:8081/user/login",{username:username,password:password}).then(
       response=>{
-        console.log(response.entity);
-        this.setState({logged:true,token:response.entity,username:username});
-        localStorage.setItem("token",response.entity);
+        this.setState({logged:true,token:response.entity.token,username:username});
+        localStorage.setItem("token",response.entity.token);
         localStorage.setItem("username",username);
-      },reason=>{
-        console.log(reason);
+        ctx.props.history.push("/");
       }
-    );
+    ).catch(error=>{
+      ctx.setState({notifications:[error.message]})
+    });
   }
-
+/*
+,reason=>{
+  console.log("tu smo");
+  ctx.setState({notifications:[]})
+}
+*/
   handleLogout(){
     this.setState({logged:false,token:""});
     localStorage.removeItem("token");
