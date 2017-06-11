@@ -12,20 +12,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.example.models.Comment;
 import com.example.models.Discussion;
 import com.example.models.Interest;
 import com.example.models.RegisteredUser;
+import com.example.repositories.CommentRepository;
 import com.example.repositories.DiscussionRepository;
 import com.example.repositories.InterestRepository;
 import com.example.repositories.UserRepository;
 
-@RequestMapping("/api")
+@RequestMapping("/discussion")
 @RestController
 public class DiscussionController {
 
@@ -43,6 +46,9 @@ public class DiscussionController {
 	
 	@Autowired
 	private RegisteredUserController ruc;
+	
+	@Autowired
+	private CommentRepository cr;
 	
 	@RequestMapping("/delete")
 	public int deleteDiscussion(@RequestParam(value="id") long id, @RequestParam(value="username") String username){
@@ -69,9 +75,15 @@ public class DiscussionController {
 		return 0;
 	}
 	
+	@RequestMapping("/get/{id}")
+	public Discussion getDiscussion(@PathVariable("id") long id){
+		return dr.findOne(id);
+	}
 	
-	
-	
+	@RequestMapping("/getcomments")
+	public List<Comment> getDiscussionComments(@RequestParam("discussionId") long id){
+		return (List<Comment>)cr.getCommentsByDiscussion(id);
+	}
 	@RequestMapping("/autordelete")
 	@PreAuthorize("hasAnyAuthority('admin','moderator') and isAuthenticated()")
 	public int autorDeleteDiscussion(@RequestParam(value="id") long id){

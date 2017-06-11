@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import { Button, Card, Row, Col, Collection,CollectionItem,Icon } from 'react-materialize';
+import { Link } from 'react-router-dom'
 
 
 var rest, mime, client;
@@ -44,7 +45,7 @@ export class Discussion extends Component{
 							<span><b>Zatvorena</b></span>
 						}
 			    </span>
-				<Card className='blue-grey darken-1' textClassName='white-text' title={this.props.discussion.title} actions={[<a href='#'>Prikazi detalje</a>]}>
+				<Card className='blue-grey darken-1' textClassName='white-text' title={this.props.discussion.title} actions={[<Link to={'/discussions/'+this.props.discussion.id}>Prikazi detalje</Link>]}>
 				{this.props.discussion.text}
 				
 				<Icon right>favorite</Icon>
