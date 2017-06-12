@@ -13,7 +13,7 @@ client = rest.wrap(mime);
 export class ShowDiscussion extends Component{
   constructor(props){
     super(props);
-    this.state={discussion:{title:'',description:'',regUser:'',open:''},comments:[]};
+    this.state={discussion:{title:'',description:'',regUser:{username:''},open:''},comments:[],interestedIn:false};
     this.promijeniStatus=this.promijeniStatus.bind(this);
   }
 
@@ -31,14 +31,29 @@ export class ShowDiscussion extends Component{
     componentDidMount(){
       client({
         method:'GET',
-        path:'http://localhost:8082/discussions/'+this.props.match.params.id+'/regUser'
+        path:'http://localhost:8082/discussion/get/'+this.props.match.params.id
       }).then(response=>{
-        console.log("odgovor",response);
+        console.log("odgovor",response.entity);
                 client({
                   method:'GET',
                   path:'http://localhost:8082/discussion/getcomments?discussionId='+this.props.match.params.id
                 }).then(response1=>{
-                  this.setState({user:response.entity,comments:response1.entity});
+
+                  if(localStorage["username"]!=null && localStorage["username"]!=undefined){
+                       client({
+                        method:'GET',
+                        path:'http://localhost:8082/discussion/isinterested?username='+localStorage["username"]+"&id="+this.props.match.params.id
+                      }).then(response2=>{
+                        this.setState({discussion:response.entity,comments:response1.entity,interestedIn:response2.entity});
+                      })
+                    }else{
+                        this.setState({discussion:response.entity,comments:response1.entity});
+                    }
+
+               
+
+                  
+
                 })
         }
       )
@@ -52,25 +67,43 @@ export class ShowDiscussion extends Component{
 
       <Icon>account_circle</Icon>
           <span><b>{this.state.discussion.regUser.username}</b> |
-              {this.state.discussion.open==true &&
+
+          {this.state.discussion.open && localStorage["username"]!=this.state.discussion.regUser.username &&
+          <span><b>Otvorena</b></span>
+            }
+
+          {this.state.discussion.open==false && localStorage["username"]!=this.state.discussion.regUser.username &&
+              <span><b>Zatvorena</b></span>
+            }
+
+
+              {this.state.discussion.open==true && localStorage["username"]==this.state.discussion.regUser.username &&
           
-            <Input name='on' type='switch' value='1' offLabel='Zatvorena' onLabel='Otvorena'/>
+            <Input name='on' type='switch' value='1' offLabel='Zatvorena' onLabel='Otvorena' onChange={this.promijeniStatus}/>
           
             }
 
-          {this.state.discussion.open==false && 
+          {this.state.discussion.open==false && localStorage["username"]==this.state.discussion.regUser.username &&
               
-                <Input name='off' type='switch' value='0' offLabel='Zatvorena' onLabel='Otvorena' onChange={this.promijeniStatus} />
+                <Input name='on' type='switch' value='0' offLabel='Zatvorena' onLabel='Otvorena' onChange={this.promijeniStatus} />
               
             }
           </span>
 
+          {this.state.interestedIn==true &&
+           <a className='btn btn-floating pulse right'> <Icon tiny >grade</Icon></a>}
 
-        <Card className='#00695c teal darken-3' textClassName='white-text' title={this.state.discussion.title} actions={[<Link to={'/discussions/'}>Prikazi komentare</Link>]}>
+
+        <Card className='teal darken-3' textClassName='white-text' title={'Naslov: '+this.state.discussion.title} actions={[<Link to={'#'}>Dodaj Komentar</Link>]}>
           {this.state.discussion.text}
+
+         <hr/>
+          <CommentList comments={this.state.comments}></CommentList>
+
         </Card>
 
-        <CommentList comments={this.state.comments}></CommentList>
+
+        
 
       </Col>
       );

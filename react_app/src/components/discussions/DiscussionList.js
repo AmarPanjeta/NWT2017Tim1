@@ -39,7 +39,7 @@ export class DiscussionList extends Component{
 		
 
 
-				<Collection header='Sve diskusije'>
+				<Collection header='Sve diskusije' style={{textColor:'#00796b'}}>
 				{discussions}
 				</Collection>
 			)
@@ -47,3 +47,8 @@ export class DiscussionList extends Component{
 
 
 }
+
+
+
+
+
