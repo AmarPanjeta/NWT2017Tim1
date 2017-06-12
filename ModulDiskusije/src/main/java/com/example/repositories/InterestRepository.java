@@ -15,9 +15,11 @@ public interface InterestRepository extends CrudRepository<Interest, Long> {
 	
 	@Modifying
 	@Transactional
-	@Query("delete from Interest i where i.regUser.username=:username and i.discuss.id=:discussion")
-	public int deleteinterest(@Param("username") String username, @Param("discussion") Long discussion);
+	@Query("delete from Interest i where i.id in (select i2.id from Interest i2 where i2.regUser.username=:username and i2.discuss.id=:id)")
+	public int deleteinterest(@Param("username") String username, @Param("id") Long id);
 
 	@Query("select count(i) from Interest i where i.regUser.username=:username and i.discuss.id=:discussion")
 	public int isInterested(@Param("username") String username, @Param("discussion") Long discussion);
+	
+
 }

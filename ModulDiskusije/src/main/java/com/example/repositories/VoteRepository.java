@@ -19,7 +19,7 @@ public interface VoteRepository extends CrudRepository<Vote, Long>{
 	//public int deletevote(@Param("user") Long user, @Param("comment") Long comment);
 	
 	@Query("select v from Vote v where v.regUser.id=:userId and v.comment.id=:commentId")
-	public Vote findVoteByUserAndComment(@Param("user") Long userId,@Param("comment") Long commentId);
+	public Vote findVoteByUserAndComment(@Param("userId") Long userId,@Param("commentId") Long commentId);
 	
 	@Query("select count(v) from Vote v where v.comment.id=:id and v.number=1")
 	public int positiveVotesForComment(@Param("id") Long id);

@@ -83,15 +83,19 @@ public class CommentController {
 		
 		Comment c=cr.findOne(id);
 		RegisteredUser user=ur.findByUsername(username);
-		
-		if(vr.findVoteByUserAndComment(user.getId(),id)!=null){
-		Vote v=new Vote();
+		Vote v=vr.findVoteByUserAndComment(user.getId(),id);
+		if(v==null){
+		v=new Vote();
 		v.setComment(c);
 		v.setRegUser(user);
 		v.setNumber(1);
-		vr.save(v);
-		}
 		
+		}else{
+			
+			v.setNumber(1);
+			
+		}
+		vr.save(v);
 		return 1;
 		
 	}
@@ -110,16 +114,11 @@ public class CommentController {
 		
 		if(v!=null){
 		
-			if(v.getNumber()==1){
-				v.setNumber(-1);
-			}
-			else{
-				v.setComment(c);
-				v.setRegUser(user);
-				v.setNumber(-1);
-			}
-		}else{
 			
+				v.setNumber(-1);
+			
+		}else{
+			v=new Vote();
 			v.setComment(c);
 			v.setRegUser(user);
 			v.setNumber(-1);

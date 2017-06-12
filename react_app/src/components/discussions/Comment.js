@@ -16,8 +16,55 @@ export class Comment extends Component{
 	constructor(props){
 		super(props);
 		this.state={positiveVotes:0,negativeVotes:0};
+		this.upVote=this.upVote.bind(this);
+		this.downVote=this.downVote.bind(this);
 	}
 
+
+	downVote(e){
+
+		if(localStorage["username"]!=null && localStorage["username"]!=undefined){
+	       client({
+	       	method:'GET',
+	       	path:'http://localhost:8082/comment/downcomment?username='+localStorage["username"]+"&id="+this.props.comment.id
+	       }).then(response2=>{
+		       	client({
+				method:'GET',
+				path:'http://localhost:8082/comment/positivevotes?id='+this.props.comment.id
+			}).then(response=>{
+				client({
+					method:'GET',
+					path:'http://localhost:8082/comment/negativevotes?id='+this.props.comment.id
+				}).then(response1=>{
+					this.setState({positiveVotes:response.entity,negativeVotes:response1.entity});
+				})
+			})
+	       })
+  		}
+	}
+
+	upVote(e){
+
+		if(localStorage["username"]!=null && localStorage["username"]!=undefined){
+	       client({
+	       	method:'GET',
+	       	path:'http://localhost:8082/comment/upcomment?username='+localStorage["username"]+"&id="+this.props.comment.id
+	       }).then(response2=>{
+	       	   	client({
+				method:'GET',
+				path:'http://localhost:8082/comment/positivevotes?id='+this.props.comment.id
+				}).then(response=>{
+					client({
+						method:'GET',
+						path:'http://localhost:8082/comment/negativevotes?id='+this.props.comment.id
+					}).then(response1=>{
+						this.setState({positiveVotes:response.entity,negativeVotes:response1.entity});
+					})
+				})
+	       })
+  		}
+
+	}
 	componentDidMount(){
 		client({
 			method:'GET',
@@ -59,8 +106,11 @@ export class Comment extends Component{
 			    <Col offset="s10" s={1}>
 					
 					<p>
-						<Icon>favorite</Icon>
+						<span style={{cursor:'pointer'}} className="right" onClick={this.upVote}>
+						<Icon style={{cursor:'pointer'}}>favorite</Icon>
+						
 						{this.state.positiveVotes}
+						</span>
 					</p>
 
 				</Col>
@@ -70,8 +120,11 @@ export class Comment extends Component{
 				<Col s={1}>
 					
 					<p>
-						<Icon>opacity</Icon>
+					<span style={{cursor:'pointer'}} className="right" onClick={this.downVote}>
+					<Icon style={{cursor:'pointer'}}>opacity</Icon>
+
 						{this.state.negativeVotes}
+					</span>
 					</p>
 
 				</Col>

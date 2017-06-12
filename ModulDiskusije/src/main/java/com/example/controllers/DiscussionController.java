@@ -199,17 +199,20 @@ public class DiscussionController {
 	@RequestMapping("/addinterest")
 	public Boolean addInterest(@RequestParam(value="username") String username,@RequestParam(value="id") Long id)throws ServletException{
 		
-		List<Discussion> diskusije;
+		if(ir.isInterested(username,id)==0){
 		
 	
 		
 		RegisteredUser user=ur.findByUsername(username);
+		
+		
 		Discussion d=dr.findOne(id);
 		
 		Interest i=new Interest();
 		i.setDiscuss(d);
 		i.setRegUser(user);
 		ir.save(i);
+		}
 		return true;
 		
 		
@@ -218,11 +221,13 @@ public class DiscussionController {
 	@RequestMapping("/deleteinterest")
 	public Boolean deleteInterest(@RequestParam(value="username") String username,@RequestParam(value="id") Long id)throws ServletException{
 		
-		List<Discussion> diskusije;
+		if(ir.isInterested(username, id)!=0){
+			ir.deleteinterest(username,id);	
+		}
 		
 
 		
-		ir.deleteinterest(username,id);
+		
 		return true;
 		
 		
