@@ -1,5 +1,6 @@
 import React,{Component} from "react";
 import {Discussion} from "./Discussion";
+import { Button, Card, Row, Col, Collection,CollectionItem,Icon } from 'react-materialize';
 
 var rest, mime, client;
 
@@ -35,15 +36,12 @@ export class DiscussionList extends Component{
 			<Discussion key={discussion.id} discussion={discussion}/>);
 
 			return(
-				<table>
-					<tbody>
-						<tr>
-							<th>title</th>
-							<th>text</th>
-						</tr>
-						{discussions}
-					</tbody>
-				</table>
+		
+
+
+				<Collection header='Sve diskusije'>
+				{discussions}
+				</Collection>
 			)
 	}
 
