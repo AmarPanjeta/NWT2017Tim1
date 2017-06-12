@@ -53,14 +53,14 @@ export class Comment extends Component{
 	       	   	client({
 				method:'GET',
 				path:'http://localhost:8082/comment/positivevotes?id='+this.props.comment.id
-				}).then(response=>{
-					client({
-						method:'GET',
-						path:'http://localhost:8082/comment/negativevotes?id='+this.props.comment.id
-					}).then(response1=>{
-						this.setState({positiveVotes:response.entity,negativeVotes:response1.entity});
-					})
+			}).then(response=>{
+				client({
+					method:'GET',
+					path:'http://localhost:8082/comment/negativevotes?id='+this.props.comment.id
+				}).then(response1=>{
+					this.setState({positiveVotes:response.entity,negativeVotes:response1.entity});
 				})
+			})
 	       })
   		}
 

@@ -13,10 +13,11 @@ client = rest.wrap(mime);
 export class ShowDiscussion extends Component{
   constructor(props){
     super(props);
-    this.state={discussion:{title:'',description:'',regUser:{username:''},open:''},comments:[],interestedIn:false,show:false};
+    this.state={discussion:{title:'',description:'',regUser:{username:''},open:''},comments:[],interestedIn:false,show:false,tekst:''};
     this.promijeniStatus=this.promijeniStatus.bind(this);
     this.changeStatus=this.changeStatus.bind(this);
     this.showInput=this.showInput.bind(this);
+    this.addComment=this.addComment.bind(this);
   }
 
   promijeniStatus(e){
@@ -35,7 +36,25 @@ export class ShowDiscussion extends Component{
    this.setState({show:!this.state.show});
  }
 
+addComment(e){
+  e.preventDefault();
+  client({
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    path:'http://localhost:8082/comment/addcomment',
+    entity:{username:localStorage["username"],tekst:this.state.tekst,idDiskusije:this.props.match.params.id}
+  }).then(response=>{
 
+     client({
+      method:'GET',
+      path:'http://localhost:8082/discussion/getcomments?discussionId='+this.props.match.params.id
+            }).then(response1=>{
+              this.setState({comments:response1.entity,tekst:'',show:false});
+            })
+
+  })
+
+}
   changeStatus(e){
 
       if(this.state.interestedIn==true && localStorage["username"]!=null && localStorage["username"]!=undefined){
@@ -89,6 +108,16 @@ export class ShowDiscussion extends Component{
 
 
     render(){
+
+      var actions=[];
+
+      if(!this.state.show && this.state.discussion.open==true) actions.push(<a style={{cursor:"pointer"}} onClick={()=>{this.setState({show:true})}}>Unesi komentar</a>);
+      if(this.state.show && this.state.discussion.open==true){
+          actions.push(<a style={{cursor:"pointer"}} onClick={(e)=>{e.preventDefault();this.setState({show:false,tekst:""})}}>Sakrij polje za komentar</a>)
+          actions.push(<a style={{cursor:"pointer"}} onClick={this.addComment}>Dodaj komentar</a>)
+        }
+        actions.push(<a href="/discussions">Nazad</a>);
+
     return(
 
       <Col m={6} s={12}>
@@ -107,7 +136,7 @@ export class ShowDiscussion extends Component{
 
               {this.state.discussion.open==true && localStorage["username"]==this.state.discussion.regUser.username &&
           
-            <Input name='on' type='switch' value='1' offLabel='Zatvorena' onLabel='Otvorena' onChange={this.promijeniStatus}/>
+            <Input name='on' type='switch' value='1' offLabel='Zatvorena' onLabel='Otvorena' onChange={(e)=>{console.log(e.target.value)}}/>
           
             }
 
@@ -130,12 +159,20 @@ export class ShowDiscussion extends Component{
          
             }
 
-
-        <Card className='teal darken-3' textClassName='white-text' title={'Naslov: '+this.state.discussion.title} actions={[<a style={{cursor:'pointer'}} onClick={this.showInput}>={'#'}>Dodaj Komentar</a>]}>
+        <Card className='teal darken-3' textClassName='white-text' title={'Naslov: '+this.state.discussion.title} actions={actions}>
           {this.state.discussion.text}
 
          <hr/>
           <CommentList comments={this.state.comments}></CommentList>
+
+          {this.state.show && this.state.discussion.open==true &&
+            <Row>
+              <div className="input-field col s12">
+                <textarea className="materialize-textarea" onChange={(e)=>{this.setState({tekst:e.target.value})}}></textarea>
+                <label >Komentar</label>
+              </div>
+            </Row>
+          }
 
         </Card>
 

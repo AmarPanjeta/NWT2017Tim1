@@ -40,15 +40,16 @@ public class CommentController {
 	private RestTemplate restTemplate;
 	
 	@RequestMapping("/addcomment")
-	public Boolean addComment(@RequestParam(value="username") String username,@RequestBody CommentBody comment) throws ServletException{
+	public Boolean addComment(@RequestBody CommentBody comment) throws ServletException{
 		
 	
 		
 		Discussion d=dr.findOne(comment.idDiskusije);
-		RegisteredUser user=ur.findByUsername(username);
+		RegisteredUser user=ur.findByUsername(comment.username);
 		Comment c=new Comment();
 		c.setDiscuss(d);
 		c.setRegUser(user);
+		c.setText(comment.tekst);
 		cr.save(c);
 		
 		return true;
