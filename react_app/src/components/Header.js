@@ -9,6 +9,7 @@ export const Header = (props) => (
       <li><Link to='/console'>Web console</Link></li>
       <li><Link to='/users'>Users</Link></li>
       <li><Link to='/discussions'>Discussions</Link></li>
+      <li><Link to='/tasks'>Tasks</Link></li>
       {!props.logged &&<li><Link to='/register'>Register</Link></li>}
       {!props.logged &&<li><Link to='/login'>Login</Link></li>}
       {props.logged && <li onClick={()=>{if(props.logout!=undefined)props.logout()}}><a>Logout</a></li>}

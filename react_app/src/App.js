@@ -18,6 +18,8 @@ import {Registration} from "./components/Registration"
 
 import $http from './$http';
 import {Console} from './components/Console';
+import {TaskList} from './components/tasks/TaskList';
+import {ShowTask} from './components/tasks/ShowTask';
 
 
 //import rest from 'rest-js'
@@ -122,6 +124,8 @@ class App extends Component {
             <Route path="/users/:id" component={ShowUser}/>
             <Route exact path="/discussions" component={DiscussionList}/>
             <Route path="/discussions/:id" component={ShowDiscussion}/>
+            <Route exact path="/tasks" component={TaskList}/>
+            <Route path="/tasks/:id" component={ShowTask}/>
             <Route path="/login" render={(props) => <Login printaj={this.handleLogin} {...props} />}/>
             <Route path="/register" component={Registration}/>
             <Route path="/console" component={Console}/>
