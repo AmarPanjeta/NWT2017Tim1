@@ -3,6 +3,7 @@ app.service('TaskService', function($http){
 	service.GetAll=GetAll;
     service.GetTasksUser=GetTasksUser;
     service.DeleteTask=DeleteTask;
+    service.UpdateTask=UpdateTask;
 	return service;
 
 
@@ -16,6 +17,10 @@ app.service('TaskService', function($http){
 
     function DeleteTask(taskid){
         return $http.get('http://localhost:8088/task/'+taskid+"/delete").then(handleSuccess, handleError('Brisanje taska nije uspjelo.'));
+    }
+
+    function UpdateTask(task){
+        return $http.put('http://localhost:8088/tasks/'+task.id, task).then(handleSuccess, handleError('Nije moguce napraviti izmjene za taj task.'));
     }
 
 

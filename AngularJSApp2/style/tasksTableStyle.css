@@ -15,7 +15,7 @@
 
 .taskDetails{
 	opacity: 0.75;
-	border:2px solid lightgray;
+	border:none;
 }
 
 .taskDetails button{
@@ -38,4 +38,13 @@
 	margin-top: 10px;
 	margin-bottom: 10px;
 
+}
+
+.prikazsort{
+	border:1px solid lightgray;
+	background-color: white;
+}
+
+.prikazsort:hover{
+	background-color: lightgray;
 }

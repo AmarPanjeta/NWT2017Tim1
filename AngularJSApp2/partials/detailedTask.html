@@ -1,11 +1,31 @@
-<div class="detaljiTaska header">
-	<h3>
-		Odabrani task je: {{odabraniTask.taskText}}
-	</h3>
+<div class="header">
+	<div style="width: 90%; margin-left: 5%; height: 70%; margin-top: 5%; background-color: white; opacity: 0.75; color:black;">
+		<h4 style="text-align: left;"> <b> Naziv taska:</b> {{detaljnitask.taskTitle}}</h4>
+		<h5 style="text-align: left;"> <b> Tekst taska: </b> {{detaljnitask.taskText}}</h5>
+		<h5 style="text-align: left;"> <b>Task postavio: </b> {{detaljnitask.user.username}}</h5>
+		<h5>
+			Ovdje ce ici tekst zadatka na vrhu, sa lijeve strane 10 najboljih rjesenja zadatka, ispod teksta konzola i sa desne strane tok testiranja poslanog zadatka
+		</h5>
 
-	<h5>
-		Ovdje ce ici tekst zadatka na vrhu, sa lijeve strane 10 najboljih rjesenja zadatka, ispod teksta konzola i sa desne strane tok testiranja poslanog zadatka
-	</h5>
+		<button style="margin-left: 5%;" ng-click="prikaziRjesenjaFun()">Prikazi 10 najboljih rjesenja</button>
+		<table class="table" ng-show="prikaziRjesenja">
+			<thead>
+				<th>Rijesio user</th>
+				<th>Broj testova koje prolazi</th>
+				<th>Datum postavljanja rjesenja</th>
+			</thead>
+			<tbody ng-repeat="solution in solutions">
+				<tr>
+					<td>{{solution.user.username}}</td>
+					<td>{{solution.passing}}</td>
+					<td>{{solution.datumPostavljanjaRjesenja}}</td>
+				</tr>
+			</tbody>
+		</table>
 
-	<a href="#/tasks" class="btn btn-dark btn-lg">Vrati na zadatke</a>
+		<div style="text-align: center">
+		<a href="#/tasks" class="btn btn-dark btn-lg">Vrati na zadatke</a>
+		<a href="#/solveTask" class="btn btn-dark btn-lg">Rijesi</a>
+		</div>
+	</div>
 </div>

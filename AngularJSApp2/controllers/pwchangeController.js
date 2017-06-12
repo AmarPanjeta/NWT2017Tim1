@@ -1,6 +1,7 @@
 app.controller('pwchangeController', function($log, $scope, $rootScope, $window, $http){
 	var uredjeni={};
 	$scope.inputTypeUredi="password";
+	$scope.resetPassworda=false;
 
 	$scope.select=function($event){
 		  var checkbox = $event.target;
@@ -45,5 +46,15 @@ app.controller('pwchangeController', function($log, $scope, $rootScope, $window,
 
 		
 	};
+
+	$scope.resetPassword=function()
+	{
+		$scope.resetPassworda=true;
+	}
+
+	$scope.provjeriForgotPw=function()
+	{
+		$scope.resetPasswordaUnesenString=true;
+	}
 
 });
