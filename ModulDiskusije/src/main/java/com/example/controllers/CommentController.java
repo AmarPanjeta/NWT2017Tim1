@@ -20,6 +20,7 @@ import com.example.repositories.DiscussionRepository;
 import com.example.repositories.UserRepository;
 import com.example.repositories.VoteRepository;
 
+@RequestMapping("/comment")
 @RestController
 public class CommentController {
 
@@ -41,11 +42,7 @@ public class CommentController {
 	@RequestMapping("/addcomment")
 	public Boolean addComment(@RequestParam(value="username") String username,@RequestBody CommentBody comment) throws ServletException{
 		
-		Boolean logovan=this.restTemplate.getForObject("http://users-client/user/logged?username="+username,Boolean.class);
-		
-		if(logovan==false){
-			throw new ServletException("Niste logovani");
-		}
+	
 		
 		Discussion d=dr.findOne(comment.idDiskusije);
 		RegisteredUser user=ur.findByUsername(username);
@@ -61,12 +58,7 @@ public class CommentController {
 	@RequestMapping("/removecomment")
 	public Boolean removeComment(@RequestParam(value="username") String username, @RequestParam(value="id") Long id) throws ServletException{
 		
-		Boolean logovan=false;
-		logovan=this.restTemplate.getForObject("http://users-client/user/logged?username="+username,Boolean.class);
-		
-		if (logovan==false){
-			throw new ServletException("Niste logovani");
-		}
+
 		
 		
 		Boolean admin=false;
@@ -87,12 +79,7 @@ public class CommentController {
 	@RequestMapping("/upcomment")
 	public int upComment(@RequestParam(value="username") String username, @RequestParam(value="id") Long id) throws ServletException{
 	
-		Boolean logovan=false;
-		logovan=this.restTemplate.getForObject("http://users-client/user/logged?username="+username,Boolean.class);
-		
-		if (logovan==false){
-			throw new ServletException("Niste logovani");
-		}
+
 		
 		Comment c=cr.findOne(id);
 		RegisteredUser user=ur.findByUsername(username);
@@ -112,13 +99,7 @@ public class CommentController {
 	@RequestMapping("/downcomment")
 	public int downComment(@RequestParam(value="username") String username, @RequestParam(value="id") Long id) throws ServletException{
 	
-		Boolean logovan=false;
-		logovan=this.restTemplate.getForObject("http://users-client/user/logged?username="+username,Boolean.class);
-		
-		if (logovan==false){
-			throw new ServletException("Niste logovani");
-		}
-		
+
 		RegisteredUser user=ur.findByUsername(username);
 		Comment c=cr.findOne(id);
 		

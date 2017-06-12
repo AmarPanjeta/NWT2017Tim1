@@ -18,5 +18,6 @@ public interface InterestRepository extends CrudRepository<Interest, Long> {
 	@Query("delete from Interest i where i.regUser.username=:username and i.discuss.id=:discussion")
 	public int deleteinterest(@Param("username") String username, @Param("discussion") Long discussion);
 
-	
+	@Query("select count(i) from Interest i where i.regUser.username=:username and i.discuss.id=:discussion")
+	public int isInterested(@Param("username") String username, @Param("discussion") Long discussion);
 }

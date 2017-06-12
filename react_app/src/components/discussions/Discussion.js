@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import { Button, Card, Row, Col, Collection,CollectionItem,Icon } from 'react-materialize';
+import { Link } from 'react-router-dom'
 
 
 var rest, mime, client;
@@ -12,7 +13,7 @@ export class Discussion extends Component{
 
 	constructor(props){
 		super(props);
-		this.state={user:{username:'',email:''}};
+		this.state={user:{username:'',email:''},interestedIn:false};
 	}
     
 
@@ -22,7 +23,19 @@ export class Discussion extends Component{
     		path:'http://localhost:8082/discussions/'+this.props.discussion.id+'/regUser'
     	}).then(response=>{
     		console.log("odgovor",response);
-    	this.setState({user:response.entity})
+    		if(localStorage["username"]!=null && localStorage["username"]!=undefined){
+    				client({
+		    			method:'GET',
+		    			path:'http://localhost:8082/discussion/isinterested?username='+localStorage["username"]+"&id="+this.props.discussion.id
+		    		}).then(response1=>{
+		    			this.setState({user:response.entity,interestedIn:response1.entity})
+		    		})
+
+    		}else{
+    			this.setState({user:response.entity});
+    		}
+    		
+    	
     		}
     	)
     }
@@ -44,12 +57,22 @@ export class Discussion extends Component{
 							<span><b>Zatvorena</b></span>
 						}
 			    </span>
-				<Card className='blue-grey darken-1' textClassName='white-text' title={this.props.discussion.title} actions={[<a href='#'>Prikazi detalje</a>]}>
-				{this.props.discussion.text}
+
+            {this.state.interestedIn==true &&
+			  
+			  <a className='btn btn-floating pulse right'> <Icon tiny >grade</Icon></a>
+
+			   
+			
+			}
+				<Card className='teal darken-3' textClassName='white-text' title={'Naslov:'+ this.props.discussion.title} actions={[<Link to={'/discussions/'+this.props.discussion.id}>Prikazi detalje</Link>]}>
+				<span >Tekst diskusije:</span><br/>
 				
-				<Icon right>favorite</Icon>
+				 <blockquote>
+			      {this.props.discussion.text}
+			    </blockquote>
 				
-			    <Icon right>opacity</Icon>
+				
 				
 				</Card>
 			</Col>
