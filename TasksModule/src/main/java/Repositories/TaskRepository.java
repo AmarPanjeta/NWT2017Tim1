@@ -17,4 +17,6 @@ public interface TaskRepository extends CrudRepository<Task, Long>{
 	@Query("select t from Task t, RegisteredUser ru where t.user=ru and ru.id=:id")
 	public List<Task> getAllUserTasks(@Param("id") long id);
 	
+	@Query("select t from Task t")
+	public List<Task> getAllTasks();
 }

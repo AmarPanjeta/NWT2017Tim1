@@ -22,9 +22,16 @@ app.config(function($routeProvider) {
 		templateUrl:"../AngularJSApp2/partials/tasks.html",
 		controller:'tasksController'
 	}).when("/detailedTask", {
-		templateUrl:"../AngularJSApp2/partials/detailedTask.html"
+		templateUrl:"../AngularJSApp2/partials/detailedTask.html",
+		controller:"tasksController"
 	}).when("/addTask",{
 		templateUrl:"../AngularJSApp2/partials/addTask.html",
+		controller:'tasksController'
+	}).when("/editTask", {
+		templateUrl:"../AngularJSApp2/partials/editTask.html",
+		controller:'tasksController'
+	}).when("/solveTask",{
+		templateUrl:"../AngularJSApp2/partials/solveTask.html",
 		controller:'tasksController'
 	}).when("/showTutorial/:id",{
         templateUrl:"../AngularJSApp2/partials/showTutorial.html",

@@ -1,27 +1,23 @@
-app.controller('registrationController', function($log, $scope, $location, $http, $rootScope){
+app.controller('registrationController', function($log, $scope, $location, $http, $rootScope, AuthenticationService, FlashService){
 	$log.log('registration kontroler ucitan');
 	$scope.inputType="password";
-	//napravi usera za registraciju
 	
 	$rootScope.register=function(){
-
-		/*if($scope.password1==$scope.password2)
-		{
-			$scope.user.pw=$scope.password1;
-			$http.post("http://localhost:8080/users-client/user/register",$scope.user).then(function(response){
-				return response.data;
-				$location.path('/');
-			});
-		}*/
 
 		if($scope.password1==$scope.password2)
 		{
 			$scope.user.password=$scope.password1;
-			$log.log($scope.user);
-			$http.post("http://localhost:8081/user/register",$scope.user).then(function(response){
-				$location.path('/');
-				return response.data;
+
+			AuthenticationService.Register($scope.user).then(function(response){
+				if(response.success)
+				{
+					FlashService.Success("Uspjesno ste se registrovali. Potvrdite registraciju emailom kako biste nastavili koristenje C++ ucionice.");
+				}
+
+				else FlashService.Error(response.message);
 			});
+
+			$location.path('/');
 		}
 	}
 

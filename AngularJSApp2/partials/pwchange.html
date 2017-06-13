@@ -1,25 +1,30 @@
 <div id="top" class="header">
-<div class="col-xs-6 col-xs-offset-3">
-	<form id="editForma" name="editForma" ng-submit="sacuvajPromjene()">
-        <div class="form-group" ng-class="{ 'has-error': editForma.password1.$dirty && editForma.password1.$error.required }">
-            <label for="password1">Novi password</label>
-            <input type="{{inputTypeUredi}}" name="password1" id="password1" class="form-control" ng-model="password1" required />
-            <span ng-show="editForma.password1.$dirty && editForma.password1.$error.required" class="help-block">Novi password je obavezno polje!</span>
-        </div>
-        <div class="form-group" ng-class="{ 'has-error': editForma.password2.$dirty && editForma.password2.$error.required }">
-            <label for="password2">Ponovljeni password</label>
-            <input type="{{inputTypeUredi}}" name="password2" id="password2" class="form-control" ng-model="password2" required />
-            <span ng-show="editForma.password.$dirty && editForma.password.$error.required" class="help-block">Password se mora tacno ponoviti!</span>
-        </div>
-        <div class="form-group">
-            <label for="prikazPassworda">Prikazi password:</label>
-            <input type="checkbox" name="prikazPassworda" id="prikazPassworda" ng-click="select($event)">
-        </div>
-        <div class="form-actions">
-            <button type="submit" ng-disabled="editForma.$invalid || dataLoading" class="btn btn-primary">Edit</button>
-            <img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-            <a href="#/" class="btn btn-link">Odustani</a>
-        </div>
-	</form>
-</div>
+    <div class="flashPoruka" ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
+
+    <div class="col-xs-6 col-xs-offset-3">
+        <button class="btn btn-dark btn-lg" style="margin-top: 30%; margin-left: 25%; opacity: 0.75;" ng-click="resetPassword()" ng-show="!resetPassworda">Posalji zahtjev za promjenom passworda</button>
+
+        <div ng-show='resetPassworda' style="margin-top: 30%; margin-left: 25%;"><h4>Unesite string koji ste dobili mailom: </h4><input type="text" name="stringReseta" ng-model="forgotPassword" style="width: 70%;"><br><br><button style="margin-left: 25%; opacity: 0.75;" class="btn btn-dark btn-lg" ng-click="provjeriForgotPw()">OK</button></div>
+
+        <form id="editForma" name="editForma" ng-submit="sacuvajPromjene()" ng-show='resetPasswordaUnesenString' style="margin-top: 10%">
+            <div class="form-group" ng-class="{ 'has-error': editForma.password1.$dirty && editForma.password1.$error.required }">
+                <label for="password1">Novi password</label>
+                <input type="{{inputTypeUredi}}" name="password1" id="password1" class="form-control" ng-model="password1" required />
+                <span ng-show="editForma.password1.$dirty && editForma.password1.$error.required" class="help-block">Novi password je obavezno polje!</span>
+            </div>
+            <div class="form-group" ng-class="{ 'has-error': editForma.password2.$dirty && editForma.password2.$error.required }">
+                <label for="password2">Ponovljeni password</label>
+                <input type="{{inputTypeUredi}}" name="password2" id="password2" class="form-control" ng-model="password2" required />
+                <span ng-show="editForma.password.$dirty && editForma.password.$error.required" class="help-block">Password se mora tacno ponoviti!</span>
+            </div>
+            <div class="form-group">
+                <label for="prikazPassworda">Prikazi password:</label>
+                <input type="checkbox" name="prikazPassworda" id="prikazPassworda" ng-click="select($event)">
+            </div>
+            <div class="form-actions">
+                <button type="submit" ng-disabled="editForma.$invalid || dataLoading" class="btn btn-primary">OK</button>
+                <a href="#/" class="btn btn-link">Odustani</a>
+            </div>
+        </form>
+    </div>
 </div>

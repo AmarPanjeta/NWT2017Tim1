@@ -1,5 +1,8 @@
 package Controllers;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +76,60 @@ public class RegisteredUserController {
 		return solutions;	
 	}
 	
+	@RequestMapping(value="/{id}/solvedTasks")
+	public List<Task> getSolvedTasks(@PathVariable("id") long id) throws Exception
+	{
+		RegisteredUser r=rur.findById(id);
+		
+		if(r.getUsername()==null)
+		{
+			throw new Exception("Ne postoji user sa tim id-em");
+		}
+		
+		List<Solution> solutions =sr.getAllUserSolutions(id);
+		
+		if(solutions.isEmpty())
+		{
+			throw new Exception("Nema rjesenja koja je taj user postavio");
+		}
+		
+		List<Task> solvedTasks=new ArrayList<Task>();
+		
+		for(Solution s:solutions)
+		{
+			solvedTasks.add(s.getTask());
+		}
+		
+		return solvedTasks;
+	}
+	
+	@RequestMapping("/{id}/unsolvedTasks")
+	public List<Task> getUnsolvedTasks(@PathVariable("id") long id) throws Exception
+	{
+		RegisteredUser r=rur.findById(id);
+		
+		if(r.getUsername()==null)
+		{
+			throw new Exception("Ne postoji user sa tim id-em");
+		}
+		
+		List<Solution> solutions =sr.getAllUserSolutions(id);
+		
+		if(solutions.isEmpty())
+		{
+			throw new Exception("Nema rjesenja koja je taj user postavio");
+		}
+		
+		List<Task> unsolvedTasks=tr.getAllTasks();
+		
+		for(Solution s:solutions)
+		{
+			unsolvedTasks.remove(s.getTask());
+		}
+		
+		return unsolvedTasks;
+	}
+	
 	@RequestMapping("/{username}/isAdmin")
 	public Boolean isAdmin(@PathVariable("username") String username)
 	{		
@@ -85,6 +142,19 @@ public class RegisteredUserController {
 	{
 		Boolean log=rt.getForObject("http://users-client/user/logged?username="+username,Boolean.class);
 		return log;
+	}
+	
+	@RequestMapping("/{username}/imaPrivilegije")
+	public Boolean imaPrivilegije(@PathVariable("username") String username) throws Exception
+	{
+		RegisteredUser r=rur.findByUsername(username);
+		
+		if(r.getUsername()==null)
+		{
+			throw new Exception("Ne postoji user sa tim usernameom");
+		}
+		
+		return r.getAdministratorPrivileges();	
 	}
 	
 	
