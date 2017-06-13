@@ -14,13 +14,14 @@
 }
 
 .taskDetails{
-	background-color: transparent;
-	border:2px solid black;
+	opacity: 0.75;
+	border:none;
 }
 
 .taskDetails button{
 	padding:0px;
 	margin: 0px;
+	background-color: gray;
 }
 
 #unosTaskaForma{
@@ -29,4 +30,21 @@
 
 #text, #creatorsSolution{
 	height:60px;
+}
+
+.otvaranjeZadatkaBtn{
+	width:100px;
+	height:30px;	
+	margin-top: 10px;
+	margin-bottom: 10px;
+
+}
+
+.prikazsort{
+	border:1px solid lightgray;
+	background-color: white;
+}
+
+.prikazsort:hover{
+	background-color: lightgray;
 }

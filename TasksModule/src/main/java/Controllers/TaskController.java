@@ -1,7 +1,10 @@
 package Controllers;
 
 import static org.mockito.Matchers.longThat;
+import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +66,29 @@ public class TaskController {
 		return testovi;
 	}
 	
+	
+	@RequestMapping("/all")
+	public List<TaskResponseBody> returnAllTasks()
+	{
+		 List<Task> lista=tr.getAllTasks();
+		 List<TaskResponseBody> vrati=new ArrayList<TaskResponseBody>();
+
+		 for(Task t:lista)
+		 {
+			 TaskResponseBody pom=new TaskResponseBody();
+			 pom.task=t;
+			 pom.brojRjesenja=sr.countSolutionsByTask(pom.task.getId());
+			 pom.rjesenja=sr.getAllTaskSolutions(pom.task.getId());
+			 pom.testovi=testr.getAllTaskTests(pom.task.getId());
+			 			 
+			 vrati.add(pom);
+		 }
+		 
+		 return vrati;
+	}
+	
+	
+	
 	//vraca sva rjesenja za zadatak sa unesenim id-em
 	@RequestMapping(value="/{id}/solutions")
 	public List<Solution> getTaskSolutions(@PathVariable("id") long id) throws Exception
@@ -84,6 +110,28 @@ public class TaskController {
 		return solutions;
 	}
 	
+	//vraca sva rjesenja za zadatak sa unesenim id-em
+		@RequestMapping(value="/{id}/numberofsolutions")
+		public int getNumberOfTaskSolutions(@PathVariable("id") long id) throws Exception
+		{
+			Task t=tr.findById(id);
+			
+			if(t.getTaskText()==null)
+			{
+				throw new Exception("Ne postoji taj task");
+			}
+			
+			List<Solution> solutions=sr.getAllTaskSolutions(id);
+			
+			if(solutions.isEmpty())
+			{
+				return 0;
+				//throw new Exception("Ne postoje rjesenja za zadatak");
+			}
+			
+			return solutions.size();
+		}
+	
 	//vraca 10 najboljih rjesenja za zadatak sa unesenim id-em
 	@RequestMapping(value="/{id}/tenBestSolutions")
 	public List<Solution> getTenBestSolutions(@PathVariable("id") long id) throws Exception
@@ -104,7 +152,7 @@ public class TaskController {
 		
 		if(solutionsOrdered.size()>10)
 		{
-			return solutionsOrdered.subList(0, 9);
+			return solutionsOrdered.subList(0, 10);
 		}
 		
 		return solutionsOrdered;		
@@ -112,7 +160,7 @@ public class TaskController {
 	
 	//dodaje novi task
 	@RequestMapping("/addTask")
-	public void addTask(@RequestBody TaskBody task) throws Exception
+	public Task addTask(@RequestBody TaskBody task) throws Exception
 	{
 		if(task.title==null || task.text==null || task.creatorsSolution==null || task.username==null)
 		{
@@ -137,10 +185,53 @@ public class TaskController {
 		novi.setTaskTitle(task.title);
 		novi.setTaskText(task.text);
 		novi.setCreatorsSolution(task.creatorsSolution);
+		novi.setDatumPostavljanja(new Date());
 		novi.setUser(r);	
 		
 		tr.save(novi);
+		
+		return novi;
 	}
+	
+	@RequestMapping("/addtaskwithtests")
+	public void addTask(@RequestBody TaskAndTestsBody task) throws Exception
+	{
+		if(task.title==null || task.text==null || task.creatorsSolution==null || task.username==null)
+		{
+			throw new Exception("Polja za unos taska nisu popunjena");
+		}
+		
+		RegisteredUser r=rur.findByUsername(task.username);
+		
+		if(r.getUsername()==null)
+		{
+			throw new Exception("Korisnik ne postoji?!");
+		}
+		
+		Task novi=new Task();
+		novi.setTaskTitle(task.title);
+		novi.setTaskText(task.text);
+		novi.setCreatorsSolution(task.creatorsSolution);
+		novi.setDatumPostavljanja(new Date());
+		novi.setUser(r);	
+		
+		tr.save(novi);
+		
+		List<TestBody> testici=task.testovi;
+		
+		for(TestBody t:testici)
+		{
+			Test sacuvaj=new Test();
+			sacuvaj.setInput(t.input);
+			sacuvaj.setOutput(t.output);
+			sacuvaj.setTask(novi);
+			sacuvaj.setTime_ms(null);
+			testr.save(sacuvaj);
+		}
+	}
+	
+	
+	
 	
 	//dodaje test za task
 	@RequestMapping("/{id}/addTest")
@@ -153,7 +244,7 @@ public class TaskController {
 			throw new Exception("Ne postoji taj task");
 		}
 		
-		if(test.input==null || test.output==null || test.time_ms==null)
+		if(test.input==null || test.output==null)
 		{
 			throw new Exception("Polja za unos testa nisu popunjena");
 		}
@@ -168,15 +259,15 @@ public class TaskController {
 		Test novi=new Test();
 		novi.setInput(test.input);
 		novi.setOutput(test.output);
-		novi.setTime_ms(test.time_ms);
+		novi.setTime_ms(null);
 		novi.setTask(t);
 		testr.save(novi);
 		
-		if(!t.getTests().add(novi))
+		/*if(!t.getTests().add(novi))
 		{
 			testr.delete(novi.getId());
 			throw new Exception("Nesto nije okej sa taskom?!");
-		}
+		}*/
 	}
 	
 	//brisanje taska
@@ -193,6 +284,19 @@ public class TaskController {
 		}
 		
 		tr.delete(id);		
+	}
+	
+	@RequestMapping("/{id}/getuser")
+	public RegisteredUser getTasksUser(@PathVariable("id") long id) throws Exception
+	{
+		Task t=tr.findById(id);
+		
+		if(t.getTaskText()==null)
+		{
+			throw new Exception("Ne postoji taj task");
+		}
+		
+		return t.getUser();
 	}
 	
 	//novo rjesenje za task
@@ -213,7 +317,7 @@ public class TaskController {
 			throw new Exception("Korisnik sa tim username-om nije logovan.");
 		}*/
 		
-		RegisteredUser r=rur.findByUsername(t.getUser().getUsername());
+		RegisteredUser r=rur.findByUsername(sb.username);
 		
 		if(r.getUsername()==null)
 		{
@@ -223,9 +327,11 @@ public class TaskController {
 		Solution novi=new Solution();
 		novi.setCode(sb.code);	
 		novi.setUser(r);
-		//ovo dodati uz compilermodule!!!!!!!!!!  novi.setPassing(passing);
+		novi.setTask(t);
+		novi.setDatumPostavljanjaRjesenja(new Date());
+		//ovo dodati uz compilermodule!!!!!!!!!!  
+		novi.setPassing(0);
 		sr.save(novi);
-		
 		if(!t.getSolutions().add(novi))
 		{
 			sr.delete(novi.getId());
@@ -245,10 +351,18 @@ public class TaskController {
 	}	
 	
 	@SuppressWarnings("unused")
+	private static class TaskAndTestsBody{
+		public String title;
+		public String text;
+		public String creatorsSolution;
+		public String username;
+		public List<TestBody> testovi;
+	}	
+	
+	@SuppressWarnings("unused")
 	private static class TestBody{
 		public String input;
 		public String output;
-		public Integer time_ms;
 	}	
 	
 	@SuppressWarnings("unused")
@@ -256,4 +370,15 @@ public class TaskController {
 		public String code;
 		public String username;
 	}	
+	
+	@SuppressWarnings("unused")
+	private static class TaskResponseBody
+	{
+		public Task task;
+		public int brojRjesenja;
+		public List<Test> testovi;
+		public List<Solution> rjesenja;
+	}
+	
+	
 }

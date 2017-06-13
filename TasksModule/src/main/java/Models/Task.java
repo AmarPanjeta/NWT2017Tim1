@@ -1,5 +1,6 @@
 package Models;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -29,6 +32,9 @@ public class Task {
 	private String taskText;
 	private String creatorsSolution;
 	
+	@Temporal(TemporalType.DATE)
+	private Date datumPostavljanja;
+
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="user_id")
 	//@OnDelete(action = OnDeleteAction.CASCADE)
@@ -79,6 +85,13 @@ public class Task {
 	}
 	public void setTaskTitle(String taskTitle) {
 		this.taskTitle = taskTitle;
+	}
+	
+	public Date getDatumPostavljanja() {
+		return datumPostavljanja;
+	}
+	public void setDatumPostavljanja(Date datumPostavljanja) {
+		this.datumPostavljanja = datumPostavljanja;
 	}
 	
 	@JsonIgnore

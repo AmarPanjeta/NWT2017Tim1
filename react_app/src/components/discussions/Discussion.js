@@ -14,8 +14,34 @@ export class Discussion extends Component{
 	constructor(props){
 		super(props);
 		this.state={user:{username:'',email:''},interestedIn:false};
+		this.changeStatus=this.changeStatus.bind(this);
+		
 	}
+
+
     
+
+  
+    changeStatus(e){
+
+    	if(this.state.interestedIn==true && localStorage["username"]!=null && localStorage["username"]!=undefined){
+    	client({
+    		method:'GET',
+    		path:'http://localhost:8082/discussion/deleteinterest?username='+localStorage["username"]+'&id='+this.props.discussion.id
+    	}).then(response=>{
+    		this.setState({interestedIn:false});
+    	})
+    }else if(this.state.interestedIn==false && localStorage["username"]!=null && localStorage["username"]!=undefined){
+    	client({
+    		method:'GET',
+    		path:'http://localhost:8082/discussion/addinterest?username='+localStorage["username"]+'&id='+this.props.discussion.id
+    	}).then(response=>{
+    		this.setState({interestedIn:true});
+    	})
+    }
+
+
+    }
 
     componentDidMount(){
     	client({
@@ -45,8 +71,9 @@ export class Discussion extends Component{
 
 
 
-           <CollectionItem>
-			<Col m={6} s={12}>
+           <CollectionItem >
+           <Row>
+			<Col s={12}>
 			    <Icon>account_circle</Icon>
 			    <span><b>{this.state.user.username}</b> |
 			       	{this.props.discussion.open &&
@@ -60,12 +87,23 @@ export class Discussion extends Component{
 
             {this.state.interestedIn==true &&
 			  
-			  <a className='btn btn-floating pulse right'> <Icon tiny >grade</Icon></a>
+			  <a className='btn btn-floating pulse right' onClick={this.changeStatus}> <Icon tiny >grade</Icon></a>
+
+			   
+			
+			}
+			{this.state.interestedIn==false &&
+			  
+			 <span style={{cursor:'pointer'}} className="right" onClick={this.changeStatus}><Icon right >grade</Icon></span>
 
 			   
 			
 			}
 				<Card className='teal darken-3' textClassName='white-text' title={'Naslov:'+ this.props.discussion.title} actions={[<Link to={'/discussions/'+this.props.discussion.id}>Prikazi detalje</Link>]}>
+				
+				{this.state.user.username==localStorage["username"] &&
+				<span style={{cursor:'pointer'}} onClick={()=>{this.props.deleteDiscussion(this.props.discussion.id)}}><Icon right>delete</Icon></span>
+			}
 				<span >Tekst diskusije:</span><br/>
 				
 				 <blockquote>
@@ -76,6 +114,7 @@ export class Discussion extends Component{
 				
 				</Card>
 			</Col>
+			</Row>
 
 			</CollectionItem>
 		)

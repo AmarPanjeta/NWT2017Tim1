@@ -1,5 +1,6 @@
 package com.example.controllers;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -39,16 +40,21 @@ public class CommentController {
 	@Autowired
 	private RestTemplate restTemplate;
 	
+	@Autowired
+	ScoreController sc;
+	
 	@RequestMapping("/addcomment")
-	public Boolean addComment(@RequestParam(value="username") String username,@RequestBody CommentBody comment) throws ServletException{
+	public Boolean addComment(@RequestBody CommentBody comment) throws ServletException{
 		
 	
 		
 		Discussion d=dr.findOne(comment.idDiskusije);
-		RegisteredUser user=ur.findByUsername(username);
+		RegisteredUser user=ur.findByUsername(comment.username);
 		Comment c=new Comment();
 		c.setDiscuss(d);
 		c.setRegUser(user);
+		c.setText(comment.tekst);
+		c.setCreated(new Date());
 		cr.save(c);
 		
 		return true;
@@ -84,14 +90,20 @@ public class CommentController {
 		Comment c=cr.findOne(id);
 		RegisteredUser user=ur.findByUsername(username);
 		
-		if(vr.findVoteByUserAndComment(user.getId(),id)!=null){
-		Vote v=new Vote();
+		Vote v=vr.findVoteByUserAndComment(user.getId(),id);
+		if(v==null){
+		v=new Vote();
 		v.setComment(c);
 		v.setRegUser(user);
 		v.setNumber(1);
-		vr.save(v);
-		}
 		
+		}else{
+			
+			v.setNumber(1);
+			
+		}
+		vr.save(v);
+		sc.addScore(c.getRegUser().getId());
 		return 1;
 		
 	}
@@ -110,21 +122,17 @@ public class CommentController {
 		
 		if(v!=null){
 		
-			if(v.getNumber()==1){
-				v.setNumber(-1);
-			}
-			else{
-				v.setComment(c);
-				v.setRegUser(user);
-				v.setNumber(-1);
-			}
-		}else{
 			
+				v.setNumber(-1);
+			
+		}else{
+			v=new Vote();
 			v.setComment(c);
 			v.setRegUser(user);
 			v.setNumber(-1);
 		}
 		vr.save(v);
+		sc.addScore(c.getRegUser().getId());
 		return -1;
 	}
 	
@@ -137,6 +145,7 @@ public class CommentController {
 	public int negativeVotes(@RequestParam(value="id") Long id){
 		return vr.negativeVotesForComment(id);
 	}
+	
 	
 	
 	@SuppressWarnings("unused")

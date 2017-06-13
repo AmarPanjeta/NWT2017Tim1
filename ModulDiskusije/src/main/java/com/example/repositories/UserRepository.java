@@ -16,9 +16,4 @@ public interface UserRepository extends CrudRepository<RegisteredUser, Long> {
 
 	RegisteredUser findByUsername(@Param("username") String username);
 	
-	@Query("select ru from RegisteredUser ru,Score s where s.user.id=ru.id order by s.points desc")
-	List<RegisteredUser> getranglist();
-	
-	
-	
 }

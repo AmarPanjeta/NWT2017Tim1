@@ -8,6 +8,7 @@
         e.preventDefault();
         $("#sidebar-wrapper").toggleClass("active");
     });
+
     // Scrolls to the selected menu item on the page
     /*$(function() {
         $('a[href*=#]:not([href=#],[data-toggle],[data-target],[data-slide])').click(function() {
@@ -68,4 +69,4 @@
             that.on('mouseleave', onMapMouseleaveHandler);
         }
         // Enable map zooming with mouse scroll when the user clicks the map
-    $('.map').on('click', onMapClickHandler);*/
+        $('.map').on('click', onMapClickHandler);*/

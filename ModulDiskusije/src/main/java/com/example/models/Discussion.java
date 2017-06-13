@@ -3,16 +3,21 @@ package com.example.models;
 
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Discussion {
@@ -35,6 +40,16 @@ public class Discussion {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date created;
 	
+	@JsonIgnore
+	@OneToMany(mappedBy="discuss",orphanRemoval=true,fetch=FetchType.LAZY)
+	private Set<Comment> comments;
+	
+	public Set<Comment> getComments() {
+		return comments;
+	}
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
+	}
 	public Date getCreated() {
 		return created;
 	}
