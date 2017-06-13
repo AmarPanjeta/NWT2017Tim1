@@ -19,4 +19,5 @@ public interface TaskRepository extends CrudRepository<Task, Long>{
 	
 	@Query("select t from Task t")
 	public List<Task> getAllTasks();
+	
 }

@@ -1,4 +1,4 @@
-app.controller('tasksController', function($log, $http, $rootScope, $scope, $location, $window, AuthenticationService, TaskService, FlashService){
+app.controller('tasksController', function($log, $http, $rootScope, $scope, $location, $window, AuthenticationService, TaskService, FlashService, CompilerService){
 	$log.log('tasks controller ucitan');
 	$scope.selIdx= -1;
 
@@ -11,11 +11,9 @@ app.controller('tasksController', function($log, $http, $rootScope, $scope, $loc
 	$scope.dodavanjeTestova=false;
 
 	TaskService.GetAll().then(function(response){
-
 		if(response.success)
 		{
 			$scope.tasks=response.res;
-			$log.log($scope.tasks);
 			$scope.daLiImaPrivilegije();
 		}
 		
@@ -37,6 +35,12 @@ app.controller('tasksController', function($log, $http, $rootScope, $scope, $loc
 
 	$scope.isSelTask=function(task){
 		return $scope.selectedTask===task;
+	}
+
+	$scope.detaljnitaskodabran=function()
+	{
+		if($rootScope.detaljnitask!=null) return true;
+		else return false;
 	}
 
 	$scope.daLiImaPrivilegije=function()
@@ -68,7 +72,9 @@ app.controller('tasksController', function($log, $http, $rootScope, $scope, $loc
 	$scope.prikaziDetaljeTaska=function(task){
 		if($scope.selectedTask!=null)
 		{
-			$rootScope.detaljnitask=task.task;
+			$rootScope.detaljnitask=task;
+
+
 			$location.path('/detailedTask');
 		}
 	}
@@ -76,6 +82,22 @@ app.controller('tasksController', function($log, $http, $rootScope, $scope, $loc
 	$scope.prebaciDodajTask=function(){
 		$scope.dodavanjeTestova=false;
 		$location.path('/addTask');
+	}
+
+	$scope.prikaziMojaRjesenja=function()
+	{
+		TaskService.GetTaskSolutionsByUser($rootScope.detaljnitask.task.id, $window.localStorage.getItem("authdataUser")).then(function(response){
+			if(response.success)
+			{
+				$scope.mojarjesenja=response.res;
+				$scope.imaMojaRjesenja=true;
+			}
+
+			else
+			{
+				FlashService.Error(response.message, false);
+			}
+		});
 	}
 
 	$scope.dodajNoviTask=function(){
@@ -129,13 +151,61 @@ app.controller('tasksController', function($log, $http, $rootScope, $scope, $loc
 		$location.path('/tasks');
 	}
 
+	$scope.prikaziZadatke=function(koje)
+	{
+		if(koje==='sve')
+		{
+			TaskService.GetAll().then(function(response){
+				if(response.success)
+				{
+					$scope.tasks=response.res;
+					$scope.daLiImaPrivilegije();
+				}
 
-	$scope.deleteTask=function(task, index)
+				else{
+					FlashService.Error(response.message);
+				}
+			});
+		}
+
+		else if(koje==='uradjene')
+		{
+			TaskService.GetSolvedTasks($window.localStorage.getItem("authdataUser")).then(function(response){
+				if(response.success)
+				{
+					$scope.tasks=response.res;
+					$scope.daLiImaPrivilegije();
+				}
+
+				else{
+					FlashService.Error(response.message);
+				}
+			});
+		}
+
+		else if(koje==='neuradjene')
+		{
+			TaskService.GetUnsolvedTasks($window.localStorage.getItem("authdataUser")).then(function(response){
+				if(response.success)
+				{
+					$scope.tasks=response.res;
+					$scope.daLiImaPrivilegije();
+				}
+
+				else{
+					FlashService.Error(response.message);
+				}
+			});
+		}
+	}
+
+
+	$scope.deleteTask=function(task)
 	{
 		TaskService.DeleteTask(task.task.id).then(function(response){
 			if(response.success)
 			{
-				$scope.tasks.splice(index,1);
+				$scope.prikaziZadatke('sve');
 			}
 
 			else
@@ -143,13 +213,7 @@ app.controller('tasksController', function($log, $http, $rootScope, $scope, $loc
 				FlashService.Error(response.message, false);
 			}
 		});
-
-
-		/*$http.get('http://localhost:8088/task/'+task.id+'/delete').then(function(response){
-			$scope.tasks.splice(index,1);
-		});*/
 	}
-
 
 	$scope.setOrder=function(koji)
 	{
@@ -203,7 +267,7 @@ app.controller('tasksController', function($log, $http, $rootScope, $scope, $loc
 	{
 		$scope.solutions=[];
 
-		$http.get('http://localhost:8088/task/'+$rootScope.detaljnitask.id+'/tenBestSolutions').success(function(response){
+		$http.get('http://localhost:8088/task/'+$rootScope.detaljnitask.task.id+'/tenBestSolutions').success(function(response){
 			$scope.solutions=response;
 		}).error(function(response){
 			FlashService.Error('Nemoguce loadati rjesenja za taj task', false);
@@ -217,10 +281,36 @@ app.controller('tasksController', function($log, $http, $rootScope, $scope, $loc
 		$scope.novisolution.username=$window.localStorage.getItem("authdataUser");
 		$log.log($scope.novisolution);
 		
-		$http.post('http://localhost:8088/task/'+$rootScope.detaljnitask.id+"/addSolution",$scope.novisolution).then(function(){
-			$log.log("jeee");
-			$location.path('tasks');
+		$http.post('http://localhost:8088/task/'+$rootScope.detaljnitask.task.id+"/addSolution",$scope.novisolution).then(function(){
+			$scope.kompajliraj={};
+
+			$scope.kompajliraj.code=$scope.novisolution.code;
+			$scope.kompajliraj.username=$scope.novisolution.username;
+			$scope.kompajliraj.tests=[];
+
+			for(var i=0; i<$rootScope.detaljnitask.testovi.length; i++)
+			{
+				$scope.kompajliraj.tests.push($rootScope.detaljnitask.testovi[i].input);
+				$scope.kompajliraj.tests.push($rootScope.detaljnitask.testovi[i].output);
+			}
+
+
+			CompilerService.RunCodeWithTests($scope.kompajliraj).then(function(response){
+				if(response.success)
+				{
+					$log.log(response);
+				}
+
+				else
+				{
+					FlashService.Error(response.message,false);
+				}
+				
+			});
+
+			$location.path('/tasks');
 		});
 	}
+
 
 });

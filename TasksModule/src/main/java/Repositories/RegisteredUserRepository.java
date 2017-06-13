@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import Models.RegisteredUser;
+import Models.Task;
 
 @RepositoryRestResource(path="users",collectionResourceRel="users")
 public interface RegisteredUserRepository extends CrudRepository<RegisteredUser, Long>{
@@ -18,4 +19,7 @@ public interface RegisteredUserRepository extends CrudRepository<RegisteredUser,
 	//vraca usere koji su postavili rjesenje za zadatak
 	@Query("select ru from RegisteredUser ru, Task t, Solution s where s.user=ru and s.task=t and t.id=:id")
 	public List<RegisteredUser> getAllUsersSolvedTask(@Param("id") long id);
+	
+	@Query("select distinct t from Task t, Solution s, RegisteredUser ru where ru.username=:username and s.user=ru and s.task=t")
+	public List<Task> getSolvedTasksByUserUsername(@Param("username") String username);
 }

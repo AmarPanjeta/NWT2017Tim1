@@ -1,13 +1,13 @@
-<div class="header" style="text-align: center">
-<div class="flashPoruka" ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
-	<h3>Rjesavanjeee zadatka</h3>
-	<br>
+<div class="header">
+	<div style="text-align: center; margin-bottom: 2%; margin-top: 5%;">
+		<div class="flashPoruka" ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
+		<h4>Tekst zadatka:</h4>
+		<br>
+		<h5>{{detaljnitask.taskText}}</h5>
 
-	<h5>Tekst zadatka: {{detaljnitask.taskText}}</h5>
-
-	<textarea cols="1000" name="Program" rows="30" placeholder="Unesite C++ rjesenje zadatka" style="width: 50%; height:450px;" ng-model="novisolution.code">
-	</textarea>
-	<br>
-	<button class="btn btn-dark btn-lg logreg" ng-click="rijesiZadatak()">Postavi rjesenje</button>
-
+		<textarea cols="1000" name="Program" rows="30" placeholder="Unesite C++ rjesenje zadatka" style="width: 50%; height:450px;" ng-model="novisolution.code">
+		</textarea>
+		<br>
+		<button class="btn btn-dark btn-lg logreg" ng-click="rijesiZadatak()">Postavi rjesenje</button>
+	</div>
 </div>

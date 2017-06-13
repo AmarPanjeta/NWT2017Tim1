@@ -1,5 +1,4 @@
 <div class="header">
-	<h1>Zadaci</h1>
 	<div class="flashPoruka" ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
 	<!--
 		<div class="dropdown sortiranje" style="margin-left: 10%;">
@@ -14,12 +13,12 @@
 				</ul>
 		</div>
 -->
-		<div style="margin-bottom: 2%">
+		<div style="margin-bottom: 2%; margin-top: 10%;">
 			<div class="btn-toolbar" role="toolbar">
-			<div class="btn-group" role="group" style="margin-left: 15%" id="prikaz">
-				<button type="button" class="btn btn-secondary prikazsort">Svi zadaci</button>
-				<button type="button" class="btn btn-secondary prikazsort">Uradjeni zadaci</button>
-				<button type="button" class="btn btn-secondary prikazsort">Neuradjeni zadaci</button>
+			<div class="btn-group" role="group" style="margin-left: 15%" id="prikaz" ng-show="logovan()">
+				<button type="button" class="btn btn-secondary prikazsort" ng-click="prikaziZadatke('sve')">Svi zadaci</button>
+				<button type="button" class="btn btn-secondary prikazsort" ng-click="prikaziZadatke('uradjene')">Uradjeni zadaci</button>
+				<button type="button" class="btn btn-secondary prikazsort" ng-click="prikaziZadatke('neuradjene')">Neuradjeni zadaci</button>
 			</div>
 
 
@@ -47,7 +46,7 @@
 				<tr ng-class="{sel:selIdx==$index}">
 					<td colspan="4" style="text-align: center;" ng-click="selectTask(task,$index)">{{task.task.taskTitle}}</td>
 					<td colspan="1" style="text-align: center;" ng-click="selectTask(task,$index)">{{task.task.user.username}}</td>
-					<td colspan="1" style="text-align: center;"><button class="glyphicon glyphicon-trash"  ng-show="task.task.imaPrivilegijeBrisanja" ng-click="deleteTask(task, $index)"></button></td>
+					<td colspan="1" style="text-align: center;"><button class="glyphicon glyphicon-trash"  ng-show="task.task.imaPrivilegijeBrisanja" ng-click="deleteTask(task)"></button></td>
 					<td colspan="1" style="text-align: center;"><button class="glyphicon glyphicon-edit"  ng-show="task.task.imaPrivilegijeBrisanja" ng-click="prikaziIzmjenuTaska(task)"></button></td>
 				</tr>
 				<tr ng-switch-when="true" class="taskDetails">
@@ -62,8 +61,7 @@
 				<tr ng-switch-when="true" class="taskDetails">
 					<td colspan="7" style="text-align: center;"><button ng-click="prikaziDetaljeTaska(task)" class='btn btn-dark otvaranjeZadatkaBtn' ">Više informacija</button></td>
 				</tr>
-			</tbody>
-
+			</tbody>	
 		</table>
 
 		<button ng-show="logovan()" style="margin-left: 45%; width:10%" ng-click="prebaciDodajTask()">

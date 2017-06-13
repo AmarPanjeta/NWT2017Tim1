@@ -340,6 +340,23 @@ public class TaskController {
 	}
 	
 	
+	@RequestMapping("/{id}/getsolutionsbyuserandtask/{username}")
+	public List<Solution> getSolutionUserTask(@PathVariable("id") long id, @PathVariable("username") String username) throws Exception
+	{
+		Task t=tr.findById(id);		
+		RegisteredUser ru=rur.findByUsername(username);
+		
+		if(t.getTaskText()==null || ru.getUsername()==null)
+		{
+			throw new Exception("Ne postoji task ili user");
+		}
+		
+		List<Solution> s=sr.getSolutionsByUserAndTask(id, username);
+		return s;
+	}
+	
+
+	
 
 	
 	@SuppressWarnings("unused")
