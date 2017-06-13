@@ -3,6 +3,7 @@ package com.example.controllers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -105,6 +106,7 @@ public class DiscussionController {
     	d.setOpen(true);
     	d.setText(discussion.tekst);
     	d.setTitle(discussion.naziv);
+    	d.setCreated(new Date());
     	
     	RegisteredUser user=ur.findByUsername(discussion.username);
     	
@@ -199,17 +201,20 @@ public class DiscussionController {
 	@RequestMapping("/addinterest")
 	public Boolean addInterest(@RequestParam(value="username") String username,@RequestParam(value="id") Long id)throws ServletException{
 		
-		List<Discussion> diskusije;
+		if(ir.isInterested(username,id)==0){
 		
 	
 		
 		RegisteredUser user=ur.findByUsername(username);
+		
+		
 		Discussion d=dr.findOne(id);
 		
 		Interest i=new Interest();
 		i.setDiscuss(d);
 		i.setRegUser(user);
 		ir.save(i);
+		}
 		return true;
 		
 		
@@ -218,11 +223,13 @@ public class DiscussionController {
 	@RequestMapping("/deleteinterest")
 	public Boolean deleteInterest(@RequestParam(value="username") String username,@RequestParam(value="id") Long id)throws ServletException{
 		
-		List<Discussion> diskusije;
+		if(ir.isInterested(username, id)!=0){
+			ir.deleteinterest(username,id);	
+		}
 		
 
 		
-		ir.deleteinterest(username,id);
+		
 		return true;
 		
 		
