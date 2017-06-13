@@ -40,6 +40,9 @@ public class CommentController {
 	@Autowired
 	private RestTemplate restTemplate;
 	
+	@Autowired
+	ScoreController sc;
+	
 	@RequestMapping("/addcomment")
 	public Boolean addComment(@RequestBody CommentBody comment) throws ServletException{
 		
@@ -86,6 +89,7 @@ public class CommentController {
 		
 		Comment c=cr.findOne(id);
 		RegisteredUser user=ur.findByUsername(username);
+		
 		Vote v=vr.findVoteByUserAndComment(user.getId(),id);
 		if(v==null){
 		v=new Vote();
@@ -99,6 +103,7 @@ public class CommentController {
 			
 		}
 		vr.save(v);
+		sc.addScore(c.getRegUser().getId());
 		return 1;
 		
 	}
@@ -127,6 +132,7 @@ public class CommentController {
 			v.setNumber(-1);
 		}
 		vr.save(v);
+		sc.addScore(c.getRegUser().getId());
 		return -1;
 	}
 	

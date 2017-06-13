@@ -16,6 +16,7 @@ import com.example.repositories.ScoreRepository;
 import com.example.repositories.UserRepository;
 import com.example.repositories.VoteRepository;
 
+@RequestMapping("/score")
 @RestController
 public class ScoreController {
 	
@@ -67,8 +68,9 @@ public class ScoreController {
 	public int addScore(@RequestParam(value="id") Long id){
 		
 		RegisteredUser user=ur.findOne(id);
-		int points=vr.negativeVotesOfUser(id)+vr.positiveVotesOfUser(id);
-		Score s=new Score();
+		int points=-vr.negativeVotesOfUser(id)+vr.positiveVotesOfUser(id);
+		Score s=sr.findByUser(user);
+		if(s==null)s=new Score();
 		s.setUser(user);
 		s.setPoints(points);
 		sr.save(s);
@@ -77,9 +79,9 @@ public class ScoreController {
 	}
 	
 	@RequestMapping("/ranglist")
-	public List<RegisteredUser> ranglist(){
+	public List<Score> ranglist(){
 		
-		return ur.getranglist();		
+		return sr.getscorelist();		
 		
 	}
 

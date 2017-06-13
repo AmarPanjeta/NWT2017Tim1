@@ -11,6 +11,7 @@ import {ShowUser} from "./components/users/ShowUser"
 
 import {DiscussionList} from "./components/discussions/DiscussionList"
 import {ShowDiscussion} from "./components/discussions/ShowDiscussion"
+import {DiscussionModule} from "./components/discussions/DiscussionModule"
 
 import {Header} from "./components/Header"
 import {Login} from "./components/Login"
@@ -122,7 +123,7 @@ class App extends Component {
             <Header logged={this.state.logged} logout={this.handleLogout}/>
             <Route exact path="/users" component={UserList}/>
             <Route path="/users/:id" component={ShowUser}/>
-            <Route exact path="/discussions" component={DiscussionList}/>
+            <Route exact path="/discussions" component={DiscussionModule}/>
             <Route path="/discussions/:id" component={ShowDiscussion}/>
             <Route exact path="/tasks" component={TaskList}/>
             <Route path="/tasks/:id" component={ShowTask}/>

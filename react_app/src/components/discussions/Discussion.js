@@ -72,7 +72,8 @@ export class Discussion extends Component{
 
 
            <CollectionItem >
-			<Col m={6} s={12}>
+           <Row>
+			<Col s={12}>
 			    <Icon>account_circle</Icon>
 			    <span><b>{this.state.user.username}</b> |
 			       	{this.props.discussion.open &&
@@ -101,7 +102,7 @@ export class Discussion extends Component{
 				<Card className='teal darken-3' textClassName='white-text' title={'Naslov:'+ this.props.discussion.title} actions={[<Link to={'/discussions/'+this.props.discussion.id}>Prikazi detalje</Link>]}>
 				
 				{this.state.user.username==localStorage["username"] &&
-				<span style={{cursor:'pointer'}} onClick={()=>{this.props.delete(this.props.discussion.id)}}><Icon right>delete</Icon></span>
+				<span style={{cursor:'pointer'}} onClick={()=>{this.props.deleteDiscussion(this.props.discussion.id)}}><Icon right>delete</Icon></span>
 			}
 				<span >Tekst diskusije:</span><br/>
 				
@@ -113,6 +114,7 @@ export class Discussion extends Component{
 				
 				</Card>
 			</Col>
+			</Row>
 
 			</CollectionItem>
 		)
