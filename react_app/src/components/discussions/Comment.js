@@ -15,12 +15,13 @@ export class Comment extends Component{
 
 	constructor(props){
 		super(props);
-		this.state={positiveVotes:0,negativeVotes:0};
+		this.state={positiveVotes:0,negativeVotes:0,comment:{}};
 		this.upVote=this.upVote.bind(this);
 		this.downVote=this.downVote.bind(this);
+		
 	}
-
-
+    
+ 
 	downVote(e){
 
 		if(localStorage["username"]!=null && localStorage["username"]!=undefined){
@@ -85,7 +86,7 @@ export class Comment extends Component{
 
 
 
-           <CollectionItem>
+           <CollectionItem style={{backgroundColor:'#00695c',borderStyle:'none'}}>
 			<Col m={6} s={12}>
 			    
 				<Card style={{backgroundColor:'#ee6e73'}} textClassName='white-text'>
@@ -93,10 +94,12 @@ export class Comment extends Component{
 				<Icon>account_circle</Icon>
 			    <span>{this.props.comment.regUser.username} 
 			    </span>
+			    <span style={{cursor:'pointer'}} onClick={this.props.delete(this.props.comment.id)}><Icon right>delete</Icon></span>
 			    <br/>
 			    <hr/>
 			    <span>Tekst komentara:</span><br/>
 				{this.props.comment.text}
+
 				
 			
 			    <br/>

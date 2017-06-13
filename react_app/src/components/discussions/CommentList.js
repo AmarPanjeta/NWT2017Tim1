@@ -1,6 +1,7 @@
 import React,{Component} from "react";
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import { Button, Card, Row, Col, Collection,CollectionItem,Icon,Input } from 'react-materialize';
+import '../../index.css';
 
 import {Comment} from "./Comment";
 
@@ -15,19 +16,20 @@ export class CommentList extends Component{
 
 	constructor(props){
 		super(props);
+
 		
 	}
 
 
 	render(){
 		var comments=this.props.comments.map(comment=>
-			<Comment key={comment.id} comment={comment}/>);
+			<Comment key={comment.id} comment={comment} delete={this.props.delete}/>);
 
 			return(
 		
 
-
-				<Collection>
+               
+				<Collection className='granica'>
 				{comments}
 				</Collection>
 			)

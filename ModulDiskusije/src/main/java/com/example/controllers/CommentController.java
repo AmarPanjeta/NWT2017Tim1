@@ -139,6 +139,7 @@ public class CommentController {
 	}
 	
 	
+	
 	@SuppressWarnings("unused")
 	private static class CommentBody{
 		public String tekst;

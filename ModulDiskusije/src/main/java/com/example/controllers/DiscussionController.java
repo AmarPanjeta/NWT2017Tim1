@@ -3,6 +3,7 @@ package com.example.controllers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -105,6 +106,7 @@ public class DiscussionController {
     	d.setOpen(true);
     	d.setText(discussion.tekst);
     	d.setTitle(discussion.naziv);
+    	d.setCreated(new Date());
     	
     	RegisteredUser user=ur.findByUsername(discussion.username);
     	
