@@ -64,28 +64,39 @@ export class TaskList extends Component{
         <CollapsibleItem header={task.taskTitle} icon='whatshot'>
           {task.taskText}
           <br/>
-
-          <Link to={'/tasks/'+task.id}>Tasks</Link>
+          <br/>
+          <Row>
+          <Col s={3}>
+            <Link to={'/tasks/'+task.id}>Detaljno</Link>
+          </Col>
+          <Col s={3}>
+            {this.state.activeTab==2 &&  <Link to={'/edittask/'+task.id}> Izmijeni task </Link>}
+          </Col>
+          <Col s={3}>
+            {this.state.activeTab==2 &&  <Link to={'/tasks/'+task.id}> Tasks </Link>}
+          </Col>
+        </Row>
         </CollapsibleItem>
       ));
     }
+    var logged=localStorage.hasOwnProperty("username");
+    var navigation=[];
+    navigation.push(<CollectionItem href="#!" onClick={this.handleAllTasksClick} active={this.state.activeTab==1}>
+      Svi taskovi  {this.state.activeTab==1 && <Badge>{this.state.tasks.length}</Badge>}
+    </CollectionItem>);
+    if(localStorage.hasOwnProperty("username")) navigation.push(<CollectionItem href="#!" onClick={this.handleMyTasksClick} active={this.state.activeTab==2}>
+     Moji taskovi {this.state.activeTab==2 && <Badge>{this.state.tasks.length}</Badge>}
+    </CollectionItem>);
+    if(localStorage.hasOwnProperty("username")) navigation.push(        	<CollectionItem href="#!" onClick={this.handleNewTask} active={this.state.activeTab==3}>
+            		Dodaj task <Icon tiny right>queue</Icon>
+            	</CollectionItem>);
     return(
 
       <Row>
         <Col s={3}>
+        <h3>Navigacija</h3>
         <Collection>
-        	<CollectionItem href="#!" onClick={this.handleAllTasksClick} active={this.state.activeTab==1}>
-        		Svi taskovi  {this.state.activeTab==1 && <Badge>{this.state.tasks.length}</Badge>}
-        	</CollectionItem>
-        	<CollectionItem href="#!" onClick={this.handleMyTasksClick} active={this.state.activeTab==2}>
-        	 Moji taskovi {this.state.activeTab==2 && <Badge>{this.state.tasks.length}</Badge>}
-        	</CollectionItem>
-        	<CollectionItem href="#!" onClick={this.handleNewTask} active={this.state.activeTab==3}>
-        		Dodaj task <Icon tiny right>queue</Icon>
-        	</CollectionItem>
-        	<CollectionItem href="#!">
-        		Alan
-        	</CollectionItem>
+          {navigation}
         </Collection>
         </Col>
         {

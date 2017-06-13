@@ -339,6 +339,35 @@ public class TaskController {
 		}
 	}
 	
+	@RequestMapping("/{id}/addNewSolution")
+	public void addTaskNewSolution(@PathVariable("id") long id, @RequestBody NewSolutionBody s) throws Exception
+	{
+		Task t=tr.findById(id);
+		
+		if(t.getTaskText()==null)
+		{
+			throw new Exception("Ne postoji taj task");
+		}
+		
+		RegisteredUser r=rur.findByUsername(s.username);
+		
+		if(r.getUsername()==null)
+		{
+			throw new Exception("Korisnik ne postoji?!");
+		}
+		
+		Solution novi=new Solution();
+		
+		novi.setCode(s.code);
+		novi.setUser(r);
+		novi.setTask(t);
+		novi.setDatumPostavljanjaRjesenja(new Date());
+		novi.setPassing(s.passing);
+		
+		sr.save(novi);		
+	}
+	
+	
 	
 	@RequestMapping("/{id}/getsolutionsbyuserandtask/{username}")
 	public List<Solution> getSolutionUserTask(@PathVariable("id") long id, @PathVariable("username") String username) throws Exception
@@ -386,6 +415,13 @@ public class TaskController {
 	private static class SolutionBody{
 		public String code;
 		public String username;
+	}	
+	
+	@SuppressWarnings("unused")
+	private static class NewSolutionBody{
+		public String code;
+		public String username;
+		public int passing;
 	}	
 	
 	@SuppressWarnings("unused")

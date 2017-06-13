@@ -40,7 +40,11 @@ app.controller('tasksController', function($log, $http, $rootScope, $scope, $loc
 	$scope.detaljnitaskodabran=function()
 	{
 		if($rootScope.detaljnitask!=null) return true;
-		else return false;
+		else 
+		{
+			$location.path('/tasks');	
+			return false;
+		}
 	}
 
 	$scope.daLiImaPrivilegije=function()
@@ -74,7 +78,6 @@ app.controller('tasksController', function($log, $http, $rootScope, $scope, $loc
 		{
 			$rootScope.detaljnitask=task;
 
-
 			$location.path('/detailedTask');
 		}
 	}
@@ -90,7 +93,7 @@ app.controller('tasksController', function($log, $http, $rootScope, $scope, $loc
 			if(response.success)
 			{
 				$scope.mojarjesenja=response.res;
-				$scope.imaMojaRjesenja=true;
+				$scope.imaMojaRjesenja=!$scope.imaMojaRjesenja;
 			}
 
 			else
@@ -273,15 +276,14 @@ app.controller('tasksController', function($log, $http, $rootScope, $scope, $loc
 			FlashService.Error('Nemoguce loadati rjesenja za taj task', false);
 		});
 
-		$scope.prikaziRjesenja=true;
+		$scope.prikaziRjesenja=!$scope.prikaziRjesenja;
 	}
 
 	$scope.rijesiZadatak=function()
 	{
 		$scope.novisolution.username=$window.localStorage.getItem("authdataUser");
-		$log.log($scope.novisolution);
 		
-		$http.post('http://localhost:8088/task/'+$rootScope.detaljnitask.task.id+"/addSolution",$scope.novisolution).then(function(){
+		/*$http.post('http://localhost:8088/task/'+$rootScope.detaljnitask.task.id+"/addSolution",$scope.novisolution).then(function(){
 			$scope.kompajliraj={};
 
 			$scope.kompajliraj.code=$scope.novisolution.code;
@@ -294,6 +296,7 @@ app.controller('tasksController', function($log, $http, $rootScope, $scope, $loc
 				$scope.kompajliraj.tests.push($rootScope.detaljnitask.testovi[i].output);
 			}
 
+			$log.log($scope.kompajliraj);
 
 			CompilerService.RunCodeWithTests($scope.kompajliraj).then(function(response){
 				if(response.success)
@@ -309,7 +312,44 @@ app.controller('tasksController', function($log, $http, $rootScope, $scope, $loc
 			});
 
 			$location.path('/tasks');
+		});*/
+
+		$scope.kompajliraj={};
+
+		$scope.kompajliraj.code=$scope.novisolution.code;
+		$scope.kompajliraj.username=$scope.novisolution.username;
+		$scope.kompajliraj.tests=[];
+
+		for(var i=0; i<$rootScope.detaljnitask.testovi.length; i++)
+		{
+			$scope.kompajliraj.tests.push($rootScope.detaljnitask.testovi[i].input);
+			$scope.kompajliraj.tests.push($rootScope.detaljnitask.testovi[i].output);
+		}
+
+		$log.log($scope.kompajliraj);
+
+		CompilerService.RunCodeWithTests($scope.kompajliraj).then(function(response){
+			if(response.success)
+			{
+				$log.log(response);
+
+				//pa ovdje sacuvati solution
+				$scope.novisolution.passing=parseInt(response.res.result,10); /////vjerovatno ce mi ovo trebati?? kod amara je string
+				$http.post('http://localhost:8088/task/'+$rootScope.detaljnitask.task.id+"/addNewSolution",$scope.novisolution).then(function(response){
+					$log.log("jeeeee");
+				});
+
+				$location.path('/tasks');
+			}
+
+			else
+			{
+				FlashService.Error(response.message,false);
+				$location.path('/tasks');
+			}
+
 		});
+
 	}
 
 

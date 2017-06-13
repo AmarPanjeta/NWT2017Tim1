@@ -4,7 +4,7 @@ app.factory('CompilerService',function($http){
 	return service;
 
 	function RunCodeWithTests(kompajliraj){
-		return $http.get('http://localhost:8099/compiler/runwitat',kompajliraj).then(handleSuccess, handleError("Kod se ne moze kompajlirati."));
+		return $http.post('http://localhost:8099/compiler/runwitat',kompajliraj).then(handleSuccess, handleError("Kod se ne moze kompajlirati."));
 	}
 
 	///////////////////////////////////

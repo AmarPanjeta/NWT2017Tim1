@@ -11,6 +11,7 @@ import {ShowUser} from "./components/users/ShowUser"
 
 import {DiscussionList} from "./components/discussions/DiscussionList"
 import {ShowDiscussion} from "./components/discussions/ShowDiscussion"
+import {DiscussionModule} from "./components/discussions/DiscussionModule"
 
 import {Header} from "./components/Header"
 import {Login} from "./components/Login"
@@ -20,6 +21,7 @@ import $http from './$http';
 import {Console} from './components/Console';
 import {TaskList} from './components/tasks/TaskList';
 import {ShowTask} from './components/tasks/ShowTask';
+import {EditTask} from './components/tasks/EditTask';
 
 
 //import rest from 'rest-js'
@@ -112,6 +114,7 @@ class App extends Component {
     this.setState({logged:false,token:""});
     localStorage.removeItem("token");
     localStorage.removeItem("username");
+    window.location = "/";
   }
 
   render() {
@@ -122,10 +125,11 @@ class App extends Component {
             <Header logged={this.state.logged} logout={this.handleLogout}/>
             <Route exact path="/users" component={UserList}/>
             <Route path="/users/:id" component={ShowUser}/>
-            <Route exact path="/discussions" component={DiscussionList}/>
+            <Route exact path="/discussions" component={DiscussionModule}/>
             <Route path="/discussions/:id" component={ShowDiscussion}/>
             <Route exact path="/tasks" component={TaskList}/>
             <Route path="/tasks/:id" component={ShowTask}/>
+            <Route path="/edittask/:id" component={EditTask}/>
             <Route path="/login" render={(props) => <Login printaj={this.handleLogin} {...props} />}/>
             <Route path="/register" component={Registration}/>
             <Route path="/console" component={Console}/>
