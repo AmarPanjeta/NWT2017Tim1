@@ -94,8 +94,11 @@ export class Comment extends Component{
 				<Icon>account_circle</Icon>
 			    <span>{this.props.comment.regUser.username} 
 			    </span>
-			    <span style={{cursor:'pointer'}} onClick={this.props.delete(this.props.comment.id)}><Icon right>delete</Icon></span>
-			    <br/>
+			    {this.props.comment.regUser.username==localStorage["username"] &&
+			    <span style={{cursor:'pointer'}} onClick={()=>{this.props.delete(this.props.comment.id)}}><Icon right>delete</Icon></span>
+			  
+				}
+				  <br/>
 			    <hr/>
 			    <span>Tekst komentara:</span><br/>
 				{this.props.comment.text}

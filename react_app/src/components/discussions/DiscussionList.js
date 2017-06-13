@@ -15,7 +15,24 @@ export class DiscussionList extends Component{
 		super(props);
 		this.state={discussions:[],show:false,naziv:'',tekst:''};
 		this.addDiscussion=this.addDiscussion.bind(this);
+		this.deleteDiscussion=this.deleteDiscussion.bind(this);
 	}
+
+	deleteDiscussion(id){
+    	if(localStorage["username"]!=null && localStorage["username"]!='undefined'){
+    		client({
+    			method:'GET',
+    			path:'http://localhost:8082/discussion/delete?id='+id+"&username="+localStorage["username"]
+    		}).then(response=>{
+    				client({
+						method:'GET',
+						path:'http://localhost:8082/discussions'
+					}).then(response1=>{
+						this.setState({discussions:response1.entity._embedded.discussions,show:false});
+					})
+    		})
+    	}
+    }
 
 	addDiscussion(e){
 		e.preventDefault();
@@ -61,7 +78,7 @@ export class DiscussionList extends Component{
 
 
 		var discussions=this.state.discussions.map(discussion=>
-			<Discussion key={discussion.id} discussion={discussion} />);
+			<Discussion key={discussion.id} discussion={discussion} delete={this.deleteDiscussion} />);
 
 			return(
 		       

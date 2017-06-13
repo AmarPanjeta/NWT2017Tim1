@@ -1,5 +1,6 @@
 package com.example.controllers;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -50,6 +51,7 @@ public class CommentController {
 		c.setDiscuss(d);
 		c.setRegUser(user);
 		c.setText(comment.tekst);
+		c.setCreated(new Date());
 		cr.save(c);
 		
 		return true;
