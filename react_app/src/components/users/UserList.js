@@ -1,5 +1,6 @@
 import React,{Component} from "react";
 import {User} from "./User";
+import {Table} from 'react-materialize';
 
 var rest, mime, client;
 
@@ -34,15 +35,18 @@ export class UserList extends Component{
     var users=this.state.users.map(user=>
     <User key={user.id} user={user}/>);
     return(
-      <table>
-        <tbody>
+      <Table>
+
+				<thead>
           <tr>
             <th>username</th>
             <th>email</th>
           </tr>
+					</thead>
+					<tbody>
           {users}
         </tbody>
-      </table>
+      </Table>
 
     )
   }

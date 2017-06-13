@@ -35,6 +35,34 @@ export default class $http{
         else return response;
     })
   };
+  static put(url,entity){
+    return client({
+      method:'PUT',
+      path:url,
+      entity:entity,
+      headers: {'Content-Type': 'application/json'}
+    }).then(
+      response=>{
+        if(response.status.code==200) return response;
+        if(response.status.code==500  || response.status.code==406){
+          throw Error(response.entity.message);
+        }
+        else return response;
+    })
+  };
+  static delete(url){
+    return client({
+      method:'DELETE',
+      path:url
+    }).then(
+      response=>{
+        if(response.status.code==200) return response;
+        if(response.status.code==500  || response.status.code==406){
+          throw Error(response.entity.message);
+        }
+        else return response;
+    })
+  };
   /*
   static get(url){
     return client({
