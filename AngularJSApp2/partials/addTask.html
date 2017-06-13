@@ -1,4 +1,6 @@
 <div class="header">
+	<div class="flashPoruka" ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
+	
 	<div class="col-xs-6 col-xs-offset-3">
 		<form id="unosTaskaForma" ng-submit="dodajNoviTask()" name="form" role="form" ng-show="!dodavanjeTestova">
 			<div class="form-group" ng-class="{ 'has-error': form.title.$dirty && form.title.$error.required }">
@@ -18,32 +20,48 @@
 			</div>
 
 			<div class="form-actions">
-				<button type="submit" ng-disabled="form.$invalid || dataLoading" class="btn btn-primary">Dodaj zadatak</button>
-				<img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+				<button type="submit" ng-disabled="form.$invalid || dataLoading" class="btn btn-primary">OK</button>
+				<a href="#/tasks" class="btn btn-link">Odustani</a>
 			</div>
 		</form>
 
 
-		Testovi
-		<table class="table">
-			<thead>
-				<th>Input</th>
-				<th>Output</th>
-			</thead>
-		</table>
+
 		<!---dodavanje testova---->
-		<form id="unosTestovaForma" ng-submit="dodajTest()" name="form" role="form" ng-show="dodavanjeTestova">
-			<div class="form-group" ng-class="{ 'has-error': form.input.$dirty && form.input.$error.required }">
-				<label for="input">Input:</label>
-				<input type="text" class="form-control" name="input" id="input" ng-model="noviTest.input">
-				<span ng-show="form.input.$dirty && form.input.$error.required" class="help-block">Input je obavezno polje!</span>
-			</div>
+		<div ng-show="dodavanjeTestova">
+			Testovi:
+			<table class="table">
+				<thead>
+					<th>Input</th>
+					<th>Output</th>
+				</thead>
+				<tbody ng-repeat="test in testovi">
+					<tr>
+						<td>{{test.input}}</td>
+						<td>{{test.output}}</td>
+					</tr>
+				</tbody>
+			</table>
 
-			<div class="form-group" ng-class="{ 'has-error': form.output.$dirty && form.output.$error.required }">
-				<label for="output">Ocekivani output:</label>
-				<input type="text" class="form-control" name="output" id="output" ng-model="noviTest.output">
-				<span ng-show="form.output.$dirty && form.output.$error.required" class="help-block">Ocekivani output je obavezno polje!</span>
-			</div>
-		</form>
+
+			<form id="unosTestovaForma" ng-submit="dodajTest()" name="form" role="form">
+				<div class="form-group" ng-class="{ 'has-error': form.input.$dirty && form.input.$error.required }">
+					<label for="input">Input:</label>
+					<input type="text" class="form-control" name="input" id="input" ng-model="noviTest.input">
+					<span ng-show="form.input.$dirty && form.input.$error.required" class="help-block">Input je obavezno polje!</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': form.output.$dirty && form.output.$error.required }">
+					<label for="output">Ocekivani output:</label>
+					<input type="text" class="form-control" name="output" id="output" ng-model="noviTest.output">
+					<span ng-show="form.output.$dirty && form.output.$error.required" class="help-block">Ocekivani output je obavezno polje!</span>
+				</div>
+
+				<div class="form-actions" style="text-align: center">
+					<button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">Dodaj test</button>
+					<button ng-click="zavrsiDodavanjeTaska()" ng-disabled="!imaTestova" class="btn" >Zavrsi</button>
+				</div>
+			</form>
+		</div>
 	</div>
 </div>

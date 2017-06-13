@@ -12,20 +12,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.example.models.Comment;
 import com.example.models.Discussion;
 import com.example.models.Interest;
 import com.example.models.RegisteredUser;
+import com.example.repositories.CommentRepository;
 import com.example.repositories.DiscussionRepository;
 import com.example.repositories.InterestRepository;
 import com.example.repositories.UserRepository;
 
-@RequestMapping("/api")
+@RequestMapping("/discussion")
 @RestController
 public class DiscussionController {
 
@@ -44,15 +47,13 @@ public class DiscussionController {
 	@Autowired
 	private RegisteredUserController ruc;
 	
+	@Autowired
+	private CommentRepository cr;
+	
 	@RequestMapping("/delete")
 	public int deleteDiscussion(@RequestParam(value="id") long id, @RequestParam(value="username") String username){
 		
-		Boolean logovan=false;
-		logovan=this.restTemplate.getForObject("http://users-client/user/logged?username="+username,Boolean.class);
-		
-		if (logovan==false){
-			return 0;
-		}
+
 		
 		Discussion d=dr.findOne(id);
 		Boolean admin=false;
@@ -69,9 +70,15 @@ public class DiscussionController {
 		return 0;
 	}
 	
+	@RequestMapping("/get/{id}")
+	public Discussion getDiscussion(@PathVariable("id") long id){
+		return dr.findOne(id);
+	}
 	
-	
-	
+	@RequestMapping("/getcomments")
+	public List<Comment> getDiscussionComments(@RequestParam("discussionId") long id){
+		return (List<Comment>)cr.getCommentsByDiscussion(id);
+	}
 	@RequestMapping("/autordelete")
 	@PreAuthorize("hasAnyAuthority('admin','moderator') and isAuthenticated()")
 	public int autorDeleteDiscussion(@RequestParam(value="id") long id){
@@ -91,11 +98,7 @@ public class DiscussionController {
 	@RequestMapping("/create")
 	public Discussion createDiscussion(@RequestBody DiscussionBody discussion) throws ServletException{
 		
-		Boolean logovan=this.restTemplate.getForObject("http://users-client/user/logged?username="+discussion.username,Boolean.class);
-		
-		if(logovan==false){
-			throw new ServletException("Niste logovani");
-		}
+	
     
    	
     	Discussion d=new Discussion();
@@ -114,11 +117,7 @@ public class DiscussionController {
 	@RequestMapping("/changestatus")
 	public Boolean closeDiscussion(@RequestParam(value="id") long id,@RequestParam(value="username") String username) throws ServletException{
 		
-		Boolean logovan=this.restTemplate.getForObject("http://users-client/user/logged?username="+username,Boolean.class);
-		
-		if(logovan==false){
-			throw new ServletException("Niste logovani");
-		}
+	
 		
 		RegisteredUser user=ur.findByUsername(username);
 		Discussion d=dr.findOne(id);
@@ -154,11 +153,7 @@ public class DiscussionController {
 	public List<Discussion> userDiscussions(@RequestParam(value="username") String username,@RequestParam(value="status",required=false) Boolean status) throws ServletException{
 		
 		List<Discussion> diskusije;
-		Boolean logovan=this.restTemplate.getForObject("http://users-client/user/logged?username="+username,Boolean.class);
-		
-		if(logovan==false){
-			throw new ServletException("Niste logovani");
-		}
+
 		
 		if(status!=null){
 			diskusije=dr.getDiscussionsByUsernameAndStatus(username, status);
@@ -187,15 +182,17 @@ public class DiscussionController {
 	public List<Discussion> getDiscussionsByInterestedInStatus(@RequestParam(value="username") String username) throws ServletException{
 		
 		List<Discussion> diskusije;
-		Boolean logovan=this.restTemplate.getForObject("http://users-client/user/logged?username="+username,Boolean.class);
-		
-		if(logovan==false){
-			throw new ServletException("Niste logovani");
-		}
-		
+	
 		diskusije=dr.getInterestingDiscussions(username);
 		return diskusije;
 		
+	}
+	
+	@RequestMapping("isinterested")
+	public Boolean isInterested(@RequestParam(value="username") String username,@RequestParam(value="id") Long id) throws ServletException{
+	
+		
+		return ir.isInterested(username, id)!=0;
 	}
 	
 	
@@ -204,11 +201,7 @@ public class DiscussionController {
 		
 		List<Discussion> diskusije;
 		
-		Boolean logovan=this.restTemplate.getForObject("http://users-client/user/logged?username="+username,Boolean.class);
-		
-		if(logovan==false){
-			throw new ServletException("Niste logovani");
-		}
+	
 		
 		RegisteredUser user=ur.findByUsername(username);
 		Discussion d=dr.findOne(id);
@@ -227,14 +220,7 @@ public class DiscussionController {
 		
 		List<Discussion> diskusije;
 		
-		Boolean logovan=this.restTemplate.getForObject("http://users-client/user/logged?username="+username,Boolean.class);
-		
-		if(logovan==false){
-			throw new ServletException("Niste logovani");
-		}
-		
-		RegisteredUser user=ur.findByUsername(username);
-		Discussion d=dr.findOne(id);
+
 		
 		ir.deleteinterest(username,id);
 		return true;

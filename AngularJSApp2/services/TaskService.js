@@ -4,6 +4,7 @@ app.service('TaskService', function($http){
     service.GetTasksUser=GetTasksUser;
     service.DeleteTask=DeleteTask;
     service.UpdateTask=UpdateTask;
+    service.AddTask=AddTask;
 	return service;
 
 
@@ -13,6 +14,10 @@ app.service('TaskService', function($http){
 
     function GetTasksUser(taskid){
         return $http.get('http://localhost:8088/task/'+taskid+"/getuser").then(handleSuccess, handleError('Nije uspjelo ucitavanje usera za task sa id '+taskid));
+    }
+
+    function AddTask(task){
+        return $http.post('http://localhost:8088/task/addTask',task).then(handleSuccess, handleError('Task se ne moze dodati u bazu'));
     }
 
     function DeleteTask(taskid){

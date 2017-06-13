@@ -31,10 +31,11 @@ app.config(function($routeProvider) {
 		templateUrl:"../AngularJSApp2/partials/editTask.html",
 		controller:'tasksController'
 	}).when("/solveTask",{
-		templateUrl:"../AngularJSApp2/partials/solveTask.html"
-	}).when("/showTutorial",{
+		templateUrl:"../AngularJSApp2/partials/solveTask.html",
+		controller:'tasksController'
+	}).when("/showTutorial/:id",{
         templateUrl:"../AngularJSApp2/partials/showTutorial.html",
-       // controller:'showtutorialController'
+        controller:'showTutorialController'
     });
 });
 

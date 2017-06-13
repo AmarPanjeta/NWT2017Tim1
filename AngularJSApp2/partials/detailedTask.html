@@ -1,11 +1,9 @@
 <div class="header">
+<div class="flashPoruka" ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
 	<div style="width: 90%; margin-left: 5%; height: 70%; margin-top: 5%; background-color: white; opacity: 0.75; color:black;">
 		<h4 style="text-align: left;"> <b> Naziv taska:</b> {{detaljnitask.taskTitle}}</h4>
 		<h5 style="text-align: left;"> <b> Tekst taska: </b> {{detaljnitask.taskText}}</h5>
 		<h5 style="text-align: left;"> <b>Task postavio: </b> {{detaljnitask.user.username}}</h5>
-		<h5>
-			Ovdje ce ici tekst zadatka na vrhu, sa lijeve strane 10 najboljih rjesenja zadatka, ispod teksta konzola i sa desne strane tok testiranja poslanog zadatka
-		</h5>
 
 		<button style="margin-left: 5%;" ng-click="prikaziRjesenjaFun()">Prikazi 10 najboljih rjesenja</button>
 		<table class="table" ng-show="prikaziRjesenja">

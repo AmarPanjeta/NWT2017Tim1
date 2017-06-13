@@ -1,4 +1,5 @@
 <div id="top" class="header">
+<div class="flashPoruka" ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
 <div class="col-xs-6 col-xs-offset-3">
     <form id="registracijaForma" name="registracija" ng-submit="register()" role="form">
         <div class="form-group" ng-class="{ 'has-error': registracija.username.$dirty && registracija.username.$error.required }">

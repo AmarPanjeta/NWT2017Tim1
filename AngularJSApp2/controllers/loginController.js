@@ -4,9 +4,10 @@ app.controller('loginController', function($rootScope,AuthenticationService,$log
 
             if(response.success)
             {
-                $window.localStorage.setItem("authdataToken",response.response);
+                $window.localStorage.setItem("authdataToken",response.response.token);
                 $window.localStorage.setItem("authdataUser", $scope.userLogin.username);
-                $http.defaults.headers.common.Authorization = 'Bearer ' + response;
+
+                $http.defaults.headers.common.Authorization = 'Bearer ' + response.response.token;
                 $rootScope.usernameHello=$scope.userLogin.username;
                 $location.path('/');
             }

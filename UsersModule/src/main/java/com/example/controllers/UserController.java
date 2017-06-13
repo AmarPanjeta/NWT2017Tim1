@@ -131,10 +131,12 @@ public class UserController {
 		
 	}
 	
-	@RequestMapping("/login")
-	public String login(@RequestBody UserLoginBody login) throws ServletException{
+	@RequestMapping(value="/login",produces={"application/json","text/plain"})
+	public LoginResponse login(@RequestBody UserLoginBody login) throws ServletException{
 		
 		RegisteredUser user=ur.findUserByUsername(login.username);
+		
+		if(user==null) throw new ServletException("Korisnicki racun ne postoji");
 		
 		if(!user.isVerified()) throw new ServletException("Morate prvo aktivirati racun!");
 		
@@ -147,7 +149,7 @@ public class UserController {
 				.claim("roles", rr.getrolesbyuser(login.username)).setIssuedAt(new Date()).setExpiration(Date.from(LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.UTC)))
 				.signWith(SignatureAlgorithm.HS256, "secretkey").compact();*/
 			
-			return Jwts.builder().setClaims(claims).setExpiration(Date.from(LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.UTC))).signWith(SignatureAlgorithm.HS256, "secretkey").compact();
+			return new LoginResponse(Jwts.builder().setClaims(claims).setExpiration(Date.from(LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.UTC))).signWith(SignatureAlgorithm.HS256, "secretkey").compact());
 		}
 		
 	}
@@ -305,5 +307,12 @@ public class UserController {
 	private static class ResetPasswordBody{
 		public String password;
 		public String passwordRepeat;
+	}
+	
+	private static class LoginResponse{
+		public String token;
+		public LoginResponse(String token) {
+			this.token=token;
+		}
 	}
 }

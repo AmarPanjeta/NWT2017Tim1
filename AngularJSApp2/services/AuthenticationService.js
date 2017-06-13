@@ -3,6 +3,7 @@ app.service('AuthenticationService', function($http, $window, $log, $q){
 	service.Login=Login;
   service.IsAdmin=IsAdmin;
   service.HasAdmin=HasAdmin;
+  service.Register=Register;
 	return service;
 
 
@@ -28,13 +29,23 @@ app.service('AuthenticationService', function($http, $window, $log, $q){
                });
             }*/
 
-      function Login(un,pw){
+      /*function Login(un,pw){
         return $http({
             url: 'http://localhost:8081/user/login',
             method: 'POST',
             data: {"username":un, "password":pw},
             transformResponse: undefined
           }).then(handleSuccess, handleError('Login nije omogucen. Provjerite pristupne podatke.'));
+      }*/
+
+      function Login(un,pw)
+      {
+        return $http.post('http://localhost:8081/user/login', {"username":un, "password":pw}).then(handleSuccess,handleError("Login nije omogucen"));
+      }
+
+      function Register(user)
+      {
+        return $http.post("http://localhost:8081/user/register", user).then(handleSuccess, handleError("Ne mozete se registrovati sa tim podacima."));
       }
 
       function IsAdmin(un){

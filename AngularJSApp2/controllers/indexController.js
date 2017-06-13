@@ -14,7 +14,6 @@ app.controller('indexController', function($log, $rootScope,$location, $scope, $
 		$window.localStorage.removeItem("authdataUser");
 		$http.defaults.headers.common.Authorization = '';
 		$location.path('/');
-
 	}
 
 });

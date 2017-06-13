@@ -6,21 +6,27 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.validator.constraints.Length;
+
 @Entity
 public class Comment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	private String text;
 	
-	@ManyToOne
-	private Tutorial TutId;
-	@ManyToOne
-	private TutorialUser TutUsrID;
+	@Length(max = 100000)
+	private String text;
+	private long tutId;
+	
+	//@ManyToOne
+	//private Tutorial TutId;
+	//@ManyToOne
+	//private TutorialUser TutUsrID;
 	
 	public long getId() {
 		return id;
 	}
+	
 
 	public void setId(long id) {
 		this.id = id;
@@ -33,7 +39,7 @@ public class Comment {
 	public void setText(String text) {
 		this.text = text;
 	}
-
+/*
 	public Tutorial getTutId() {
 		return TutId;
 	}
@@ -48,18 +54,27 @@ public class Comment {
 
 	public void setTutUsrID(TutorialUser tutUsrID) {
 		TutUsrID = tutUsrID;
-	}
+	}*/
 
 	public Comment()
 	{
 		
 	}
+	public void settutId(Long tutId)
+	{
+		this.tutId = tutId;
+	}
 	
-	public Comment(Long id, String text, Long UsrId){
+	public long gettutId()
+	{
+		return this.tutId;
+	}
+	
+	public Comment(Long id, String text, Long UsrId, Long tutId){
 		this.id = id;
 		this.text = text;
-		TutorialUser tu = new TutorialUser(UsrId);
-		
+		//TutorialUser tu = new TutorialUser(UsrId);
+		this.tutId = tutId;
 		
 	}
 }

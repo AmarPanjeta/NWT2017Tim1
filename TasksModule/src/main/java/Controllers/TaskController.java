@@ -152,7 +152,7 @@ public class TaskController {
 		
 		if(solutionsOrdered.size()>10)
 		{
-			return solutionsOrdered.subList(0, 9);
+			return solutionsOrdered.subList(0, 10);
 		}
 		
 		return solutionsOrdered;		
@@ -160,7 +160,7 @@ public class TaskController {
 	
 	//dodaje novi task
 	@RequestMapping("/addTask")
-	public void addTask(@RequestBody TaskBody task) throws Exception
+	public Task addTask(@RequestBody TaskBody task) throws Exception
 	{
 		if(task.title==null || task.text==null || task.creatorsSolution==null || task.username==null)
 		{
@@ -189,6 +189,8 @@ public class TaskController {
 		novi.setUser(r);	
 		
 		tr.save(novi);
+		
+		return novi;
 	}
 	
 	@RequestMapping("/addtaskwithtests")
@@ -315,7 +317,7 @@ public class TaskController {
 			throw new Exception("Korisnik sa tim username-om nije logovan.");
 		}*/
 		
-		RegisteredUser r=rur.findByUsername(t.getUser().getUsername());
+		RegisteredUser r=rur.findByUsername(sb.username);
 		
 		if(r.getUsername()==null)
 		{
@@ -325,7 +327,10 @@ public class TaskController {
 		Solution novi=new Solution();
 		novi.setCode(sb.code);	
 		novi.setUser(r);
-		//ovo dodati uz compilermodule!!!!!!!!!!  novi.setPassing(passing);
+		novi.setTask(t);
+		novi.setDatumPostavljanjaRjesenja(new Date());
+		//ovo dodati uz compilermodule!!!!!!!!!!  
+		novi.setPassing(0);
 		sr.save(novi);
 		if(!t.getSolutions().add(novi))
 		{

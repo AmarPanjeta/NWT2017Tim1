@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link,withRouter } from 'react-router-dom'
 
 
 import {UserList} from "./components/users/UserList"
@@ -13,6 +13,13 @@ import {DiscussionList} from "./components/discussions/DiscussionList"
 import {ShowDiscussion} from "./components/discussions/ShowDiscussion"
 
 import {Header} from "./components/Header"
+import {Login} from "./components/Login"
+import {Registration} from "./components/Registration"
+
+import $http from './$http';
+import {Console} from './components/Console';
+import {TaskList} from './components/tasks/TaskList';
+import {ShowTask} from './components/tasks/ShowTask';
 
 
 //import rest from 'rest-js'
@@ -25,12 +32,22 @@ client = rest.wrap(mime);
 class App extends Component {
   constructor(props){
     super(props);
-    this.state={users:[],attributes:[],schema:[]};
+    this.state={
+      users:[],
+      logged:localStorage.hasOwnProperty("token"),
+      token:localStorage["token"]!=undefined?localStorage["token"]:"",
+      username:localStorage["username"]
+    };
+
     this.onCreate = this.onCreate.bind(this);
     this.onDelete=this.onDelete.bind(this);
-    //this.onDelete = this.onDelete.bind(this);
+    this.printajText=this.printajText.bind(this);
+    this.handleLogout=this.handleLogout.bind(this);
+    this.handleLogin=this.handleLogin.bind(this);
+
   }
-  componentDidMount(){
+  componentDidMount(){/*
+    console.log(this.state.stanje);
     client({method: 'GET', path: 'http://localhost:8081/users'
   }).then(usersCollection => {
 			return client({
@@ -46,7 +63,7 @@ class App extends Component {
 				users: usersCollection.entity._embedded.users,
 				attributes: Object.keys(this.schema.properties)});
         console.log(this.state.users);
-});
+    });*/
   }
 
   onCreate(newEmployee) {
@@ -54,7 +71,7 @@ class App extends Component {
         method: 'POST',
         path:"http://localhost:8081/users",
         entity: newEmployee,
-        headers: {'Content-Type': 'application/json'}
+        headers: {'Content-Type': 'text/plain'}
       }).then(response => {
         return client({method: 'GET', path: 'http://localhost:8081/users'}).then(usersCollection=>{
           this.setState({
@@ -67,18 +84,34 @@ class App extends Component {
 
   onDelete(id){
     console.log("radi "+id);
-    /*
-    client({
-      method:'DELETE',
-      path:'http://localhost:8081/users/'+id
-    }).then(response => {
-      return client({method: 'GET', path: 'http://localhost:8081/users'}).then(usersCollection=>{
-        this.setState({
-          users: usersCollection.entity._embedded.users,
-          attributes: this.state.attributes
-        })
-      })
-    })*/
+  }
+
+  printajText(){
+    console.log("printam text");
+  }
+
+  handleLogin(username,password,ctx){
+    $http.post("http://localhost:8081/user/login",{username:username,password:password}).then(
+      response=>{
+        this.setState({logged:true,token:response.entity.token,username:username});
+        localStorage.setItem("token",response.entity.token);
+        localStorage.setItem("username",username);
+        ctx.props.history.push("/");
+      }
+    ).catch(error=>{
+      ctx.setState({notifications:[error.message]})
+    });
+  }
+/*
+,reason=>{
+  console.log("tu smo");
+  ctx.setState({notifications:[]})
+}
+*/
+  handleLogout(){
+    this.setState({logged:false,token:""});
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
   }
 
   render() {
@@ -86,11 +119,16 @@ class App extends Component {
       <Router>
 
           <div>
-          <Header/>
-          <Route exact path="/users" component={UserList}/>
-          <Route path="/users/:id" component={ShowUser}/>
-          <Route exact path="/discussions" component={DiscussionList}/>
-          <Route path="/discussions/:id" component={ShowDiscussion}/>
+            <Header logged={this.state.logged} logout={this.handleLogout}/>
+            <Route exact path="/users" component={UserList}/>
+            <Route path="/users/:id" component={ShowUser}/>
+            <Route exact path="/discussions" component={DiscussionList}/>
+            <Route path="/discussions/:id" component={ShowDiscussion}/>
+            <Route exact path="/tasks" component={TaskList}/>
+            <Route path="/tasks/:id" component={ShowTask}/>
+            <Route path="/login" render={(props) => <Login printaj={this.handleLogin} {...props} />}/>
+            <Route path="/register" component={Registration}/>
+            <Route path="/console" component={Console}/>
           </div>
       </Router>
     )
@@ -107,16 +145,3 @@ class Main extends Component{
 }
 
 export default App;
-
-/*
-<div className="App">
-  <div className="App-header">
-    <img src={logo} className="App-logo" alt="logo" />
-    <h2>Welcome to React</h2>
-  </div>
-  <p className="App-intro">
-    To get started, edit <code>src/App.js</code> and save to reload.
-  </p>
-  <CreateDialog attributes={this.state.attributes} onCreate={this.onCreate}/>
-  <UserList users={this.state.users}/>
-</div>*/

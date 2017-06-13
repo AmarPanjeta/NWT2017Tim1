@@ -1,5 +1,6 @@
 <div class="header">
 	<h1>Zadaci</h1>
+	<div class="flashPoruka" ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
 	<!--
 		<div class="dropdown sortiranje" style="margin-left: 10%;">
 			Sortiraj po:
@@ -23,10 +24,10 @@
 
 
 			<div class="btn-group" role="group" style="margin-left: 5%" id="sort">
-				<button type="button" class="btn btn-secondary prikazsort">Najnoviji prvo</button>
-				<button type="button" class="btn btn-secondary prikazsort">Najstariji prvo</button>
-				<button type="button" class="btn btn-secondary prikazsort">Najpopularniji prvo</button>
-				<button type="button" class="btn btn-secondary prikazsort">Nepopularni prvo</button>
+				<button type="button" class="btn btn-secondary prikazsort" ng-click="setOrder('najnoviji')">Najnoviji prvo</button>
+				<button type="button" class="btn btn-secondary prikazsort" ng-click="setOrder('najstariji')">Najstariji prvo</button>
+				<button type="button" class="btn btn-secondary prikazsort" ng-click="setOrder('najpopularniji')">Najpopularniji prvo</button>
+				<button type="button" class="btn btn-secondary prikazsort" ng-click="setOrder('najnepopularniji')">Nepopularni prvo</button>
 			</div>
 			</div>
 
