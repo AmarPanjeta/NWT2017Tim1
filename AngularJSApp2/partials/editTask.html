@@ -1,5 +1,6 @@
 <div class="header">
-<div class="flashPoruka" ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
+	<div class="flashPoruka" ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
+	
 	<div class="col-xs-6 col-xs-offset-3">
 		<form id="editTaskaForma" ng-submit="editujTask()" name="form" role="form" style="margin:5%;">
 			<div class="form-group" ng-class="{ 'has-error': form.title.$dirty && form.title.$error.required }">
@@ -19,8 +20,8 @@
 			</div>
 
 			<div class="form-group">
-				Testovi:
-				<table class="table">
+				<label>Testovi:</label>
+				<table class="table" style="width: 100%; margin:0px;">
 					<thead>
 						<th>Input</th>
 						<th>Output</th>
@@ -37,6 +38,7 @@
 
 			<div class="form-actions" style="text-align: center">
 				<button type="submit" ng-disabled="form.$invalid || dataLoading" class="btn btn-primary">Spasi promjene</button>
+				<a href="#/tasks" class="btn btn-link">Odustani</a>
 			</div>
 		</form>
 	</div>

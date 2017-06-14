@@ -1,8 +1,14 @@
+
 #include <iostream>
 
+using namespace std;
 
-int a,b;
-cin>>b;
-cout<<a+b;
+int main(){
+int a;
+int b;
+cin>>a;
+cout<<a;
+
 return 1;
 }
+

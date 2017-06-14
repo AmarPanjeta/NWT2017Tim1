@@ -5,6 +5,9 @@ app.service('TaskService', function($http){
     service.DeleteTask=DeleteTask;
     service.UpdateTask=UpdateTask;
     service.AddTask=AddTask;
+    service.GetSolvedTasks=GetSolvedTasks;
+    service.GetUnsolvedTasks=GetUnsolvedTasks;
+    service.GetTaskSolutionsByUser=GetTaskSolutionsByUser;
 	return service;
 
 
@@ -28,6 +31,17 @@ app.service('TaskService', function($http){
         return $http.put('http://localhost:8088/tasks/'+task.id, task).then(handleSuccess, handleError('Nije moguce napraviti izmjene za taj task.'));
     }
 
+    function GetSolvedTasks(username){
+        return $http.get('http://localhost:8088/user/'+username+'/solvedTasks').then(handleSuccess, handleError("Nema rijesenih zadataka"));
+    }
+
+    function GetUnsolvedTasks(username){
+        return $http.get('http://localhost:8088/user/'+username+'/unsolvedTasks').then(handleSuccess, handleError("Nema nerijesenih zadataka"));
+    }
+
+    function GetTaskSolutionsByUser(taskid, username){
+        return $http.get('http://localhost:8088/task/'+taskid+'/getsolutionsbyuserandtask/'+username).then(handleSuccess,handleError("Nije ok"));
+    }
 
 
 ///////////////////////////////////

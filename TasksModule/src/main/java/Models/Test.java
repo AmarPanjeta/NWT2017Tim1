@@ -23,7 +23,7 @@ public class Test {
 	private String output;
 	private Integer time_ms;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="task_id")
 	//@OnDelete(action = OnDeleteAction.CASCADE)
 	private Task task;

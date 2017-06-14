@@ -49,7 +49,7 @@ public class MailService {
     public void sendResetPasswordMail(String email, String forgotPassword){
     	SimpleMailMessage msg=new SimpleMailMessage();
     	msg.setTo(email);
-    	msg.setText("Link za reset vaseg password-a je http://localhost:8081/user/resetpassword/"+forgotPassword);
+    	msg.setText("Kod za reset vaseg password-a je "+forgotPassword);
     	msg.setReplyTo("nismomi@gmail.com");
     	msg.setFrom("nismomi@noreply.com");
     	try{

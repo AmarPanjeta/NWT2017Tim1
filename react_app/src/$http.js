@@ -13,8 +13,8 @@ export default class $http{
       headers: {'Content-Type': 'application/json'}
     }).then(
       response=>{
-        if(response.status.code==500 || response.status.code==406){
-          throw Error(response);
+        if(response.status.code==500  || response.status.code==406){
+          throw Error(response.entity.message);
         }
         else return response;
     })

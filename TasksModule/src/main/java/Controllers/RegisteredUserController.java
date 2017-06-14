@@ -14,9 +14,11 @@ import org.springframework.web.client.RestTemplate;
 import Models.RegisteredUser;
 import Models.Solution;
 import Models.Task;
+import Models.Test;
 import Repositories.RegisteredUserRepository;
 import Repositories.SolutionRepository;
 import Repositories.TaskRepository;
+import Repositories.TestRepository;
 
 @RestController
 @RequestMapping(value="/user")
@@ -33,6 +35,9 @@ public class RegisteredUserController {
 	
 	@Autowired
 	private RestTemplate rt;
+	
+	@Autowired
+	private TestRepository testr;
 	
 	//taskovi usera sa unesenim id-em
 	@RequestMapping(value="/{id}/tasks")
@@ -76,58 +81,85 @@ public class RegisteredUserController {
 		return solutions;	
 	}
 	
-	@RequestMapping(value="/{id}/solvedTasks")
-	public List<Task> getSolvedTasks(@PathVariable("id") long id) throws Exception
+	@RequestMapping(value="/{username}/solvedTasks")
+	public List<TaskResponseBody> getSolvedTasks(@PathVariable("username") String username) throws Exception
 	{
-		RegisteredUser r=rur.findById(id);
+		RegisteredUser r=rur.findByUsername(username);
 		
 		if(r.getUsername()==null)
 		{
 			throw new Exception("Ne postoji user sa tim id-em");
 		}
 		
-		List<Solution> solutions =sr.getAllUserSolutions(id);
+		List<Task> lista=rur.getSolvedTasksByUserUsername(r.getUsername());
+		List<TaskResponseBody> solvedTasks=new ArrayList<TaskResponseBody>();
 		
-		if(solutions.isEmpty())
+		for(Task t:lista)
 		{
-			throw new Exception("Nema rjesenja koja je taj user postavio");
-		}
-		
-		List<Task> solvedTasks=new ArrayList<Task>();
-		
-		for(Solution s:solutions)
-		{
-			solvedTasks.add(s.getTask());
+			TaskResponseBody pom=new TaskResponseBody();
+			pom.task=t;
+			pom.brojRjesenja=sr.countSolutionsByTask(pom.task.getId());
+			pom.rjesenja=sr.getAllTaskSolutions(pom.task.getId());
+		    pom.testovi=testr.getAllTaskTests(pom.task.getId());
+		    
+		    solvedTasks.add(pom);
 		}
 		
 		return solvedTasks;
 	}
 	
-	@RequestMapping("/{id}/unsolvedTasks")
-	public List<Task> getUnsolvedTasks(@PathVariable("id") long id) throws Exception
+	@RequestMapping("/{username}/unsolvedTasks")
+	public List<TaskResponseBody> getUnsolvedTasks(@PathVariable("username") String username) throws Exception
 	{
-		RegisteredUser r=rur.findById(id);
+		RegisteredUser r=rur.findByUsername(username);
 		
 		if(r.getUsername()==null)
 		{
 			throw new Exception("Ne postoji user sa tim id-em");
 		}
 		
-		List<Solution> solutions =sr.getAllUserSolutions(id);
+		List<Solution> solutions =sr.getAllUserSolutions(r.getId());
+		List<Task> lista=tr.getAllTasks();
+		List<TaskResponseBody> unsolvedTasks=new ArrayList<TaskResponseBody>();
+		
 		
 		if(solutions.isEmpty())
 		{
-			throw new Exception("Nema rjesenja koja je taj user postavio");
+			for(Task t:lista)
+			{
+				 TaskResponseBody pom=new TaskResponseBody();
+				 pom.task=t;
+				 pom.brojRjesenja=sr.countSolutionsByTask(pom.task.getId());
+				 pom.rjesenja=sr.getAllTaskSolutions(pom.task.getId());
+				 pom.testovi=testr.getAllTaskTests(pom.task.getId());
+				 			 
+				 unsolvedTasks.add(pom);
+			}
+			
+			return unsolvedTasks;
 		}
 		
-		List<Task> unsolvedTasks=tr.getAllTasks();
-		
-		for(Solution s:solutions)
+		else
 		{
-			unsolvedTasks.remove(s.getTask());
+			for(Solution s:solutions)
+			{
+				lista.remove(s.getTask());
+			}
+			
+			for(Task t:lista)
+			{
+				 TaskResponseBody pom=new TaskResponseBody();
+				 pom.task=t;
+				 pom.brojRjesenja=sr.countSolutionsByTask(pom.task.getId());
+				 pom.rjesenja=sr.getAllTaskSolutions(pom.task.getId());
+				 pom.testovi=testr.getAllTaskTests(pom.task.getId());
+				 			 
+				 unsolvedTasks.add(pom);
+			}
+			
+			return unsolvedTasks;
 		}
 		
-		return unsolvedTasks;
 	}
 	
 	@RequestMapping("/{username}/isAdmin")
@@ -155,6 +187,16 @@ public class RegisteredUserController {
 		}
 		
 		return r.getAdministratorPrivileges();	
+	}
+	
+	
+	@SuppressWarnings("unused")
+	private static class TaskResponseBody
+	{
+		public Task task;
+		public int brojRjesenja;
+		public List<Test> testovi;
+		public List<Solution> rjesenja;
 	}
 	
 	

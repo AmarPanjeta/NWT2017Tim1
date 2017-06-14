@@ -1,6 +1,7 @@
 import React,{Component} from "react";
 import ReactDOM from 'react-dom';
 import {Row,Input,Col,Button,Icon,Modal,Chip} from 'react-materialize';
+import {Link} from 'react-router-dom';
 import Klasa from '../klasa';
 import $http from '../$http';
 
@@ -28,19 +29,13 @@ export class Login extends Component{
         <Col s={12}>
         {notifications}
         </Col>
-        <Button waves='light' onClick={this.onLogin}>button<Icon left>cloud</Icon></Button>
+        <Col s={12}>
+        <Button waves='light' onClick={this.onLogin}>PRIJAVA<Icon left>check</Icon></Button>
+        <Button waves='light' className="right" onClick={()=>{this.props.history.push('/forgotpassword')}}>Zaboravljena sifra<Icon left>refresh</Icon></Button>
+        </Col>
       </Col>
       <br/>
-      <div>
 
-      </div>
-      <Modal
-	header='Modal Header'
-	trigger={
-		<Button waves='light'>MODAL</Button>
-	}>
-	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
-</Modal>
     </Row>);
   }
 
