@@ -16,6 +16,7 @@ import {DiscussionModule} from "./components/discussions/DiscussionModule"
 import {Header} from "./components/Header"
 import {Login} from "./components/Login"
 import {Registration} from "./components/Registration"
+import {ForgotPassword} from "./components/ForgotPassword"
 
 import $http from './$http';
 import {Console} from './components/Console';
@@ -133,6 +134,7 @@ class App extends Component {
             <Route path="/login" render={(props) => <Login printaj={this.handleLogin} {...props} />}/>
             <Route path="/register" component={Registration}/>
             <Route path="/console" component={Console}/>
+            <Route path="/forgotpassword" component={ForgotPassword}/>
           </div>
       </Router>
     )

@@ -165,10 +165,10 @@ public class UserController {
 	}
 	
 	@RequestMapping("/sendrequest")
-	public void sendRequest(@RequestParam("email") String email){
+	public void sendRequest(@RequestParam("email") String email) throws ServletException{
 		
 		RegisteredUser user=ur.findUserByEmail(email);
-		
+		if(user==null) throw new ServletException("Email nije vezan ni za jedan korisnicki racun.");
 		try{
 			
 			Links link=lr.findByUserUsername(user.getUsername());
@@ -191,6 +191,11 @@ public class UserController {
 		}
 	}
 	
+	@RequestMapping("/checkresetcode/{forgotPassword}")
+	public void check(@PathVariable("forgotPassword") String forgotPassword)throws ServletException{
+		Links link=lr.findByForgotPassword(forgotPassword);
+		if(link==null) throw new ServletException("Unijeli ste neispravan kod!");
+	}
 	
 	@RequestMapping("/resetpassword/{forgotPassword}")
 	public void resetPassword(@PathVariable("forgotPassword") String forgotPassword,@RequestBody ResetPasswordBody body){
