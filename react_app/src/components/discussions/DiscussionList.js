@@ -176,7 +176,7 @@ export class DiscussionList extends Component{
 
 				{discussions}
 				
-                <Card className='teal darken-3' textClassName='white-text' title='Dodavanje diskusije: ' actions={actions}>
+                <Card style={{backgroundColor:'#009688'}} textClassName='white-text' title='Dodavanje diskusije: ' actions={actions}>
 		          
 
 		         <hr/>

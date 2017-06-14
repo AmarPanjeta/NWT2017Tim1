@@ -1,4 +1,5 @@
 import React,{Component} from "react";
+import '../../index.css';
 import { Link } from 'react-router-dom'
 import { Button, Card, Row, Col, Collection,CollectionItem,Icon,Input } from 'react-materialize';
 import {CommentList} from "./CommentList";
@@ -154,7 +155,12 @@ addComment(e){
 
     return(
 
+
+
       <Col m={6} s={12}>
+
+       <h3 style={{color:'#00695c'}} className='center-align'>Prikaz pojedinacne diskusije</h3>
+     <hr/>
 
       <Icon>account_circle</Icon>
           <span ><b>{this.state.discussion.regUser.username}</b> | <i>Status: </i>
@@ -190,7 +196,8 @@ addComment(e){
          
             }
 
-        <Card className='teal darken-3' textClassName='white-text' title={'Naslov: '+this.state.discussion.title} actions={actions}>
+        <Card  style={{color:'#00695c'}} actions={actions}>
+        <h5 style={{color:'#00695c'}}>{'Naslov: '+this.state.discussion.title} </h5>
           {this.state.discussion.text}
 
          <hr/>
@@ -198,12 +205,14 @@ addComment(e){
 
           {this.state.show && this.state.discussion.open==true &&
             <Row>
-              <div className="input-field col s12">
+              <div className="input-field col s12" >
                 <textarea className="materialize-textarea" onChange={(e)=>{this.setState({tekst:e.target.value})}}></textarea>
                 <label >Komentar</label>
               </div>
             </Row>
           }
+
+         
 
         </Card>
 

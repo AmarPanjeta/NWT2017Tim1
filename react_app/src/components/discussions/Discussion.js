@@ -99,10 +99,10 @@ export class Discussion extends Component{
 			   
 			
 			}
-				<Card className='teal darken-3' textClassName='white-text' title={'Naslov:'+ this.props.discussion.title} actions={[<Link to={'/discussions/'+this.props.discussion.id}>Prikazi detalje</Link>]}>
+				<Card style={{backgroundColor:'#009688'}} textClassName='white-text' title={'Naslov:'+ this.props.discussion.title} actions={[<Link to={'/discussions/'+this.props.discussion.id}>Prikazi detalje</Link>]}>
 				
 				{this.state.user.username==localStorage["username"] &&
-				<span style={{cursor:'pointer'}} onClick={()=>{this.props.deleteDiscussion(this.props.discussion.id)}}><Icon right>delete</Icon></span>
+				<span style={{cursor:'pointer'}} onClick={()=>{this.props.delete(this.props.discussion.id)}}><Icon right>delete</Icon></span>
 			}
 				<span >Tekst diskusije:</span><br/>
 				

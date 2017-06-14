@@ -86,10 +86,10 @@ export class Comment extends Component{
 
 
 
-           <CollectionItem style={{backgroundColor:'#00695c',borderStyle:'none'}}>
+           <CollectionItem style={{backgroundColor:'white',borderStyle:'#00695c'}}>
 			<Col m={6} s={12}>
 			    
-				<Card style={{backgroundColor:'#ee6e73'}} textClassName='white-text'>
+				<Card style={{backgroundColor:'#009688'}} textClassName='white-text'>
 
 				<Icon>account_circle</Icon>
 			    <span>{this.props.comment.regUser.username} 
