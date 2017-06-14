@@ -1,7 +1,9 @@
 app.controller('pwchangeController', function($log, $scope, $rootScope, $window, $http, FlashService, $location){
 	var uredjeni={};
 	$scope.inputTypeUredi="password";
+	$scope.sendrequestpw=true;
 	$scope.resetPassworda=false;
+	$scope.resetPasswordaUnesenString=false;
 
 	if($window.localStorage.getItem('authdataToken')!=null)
 	{
@@ -29,7 +31,9 @@ app.controller('pwchangeController', function($log, $scope, $rootScope, $window,
 			if(response.status==200)
 			{
 				FlashService.Success("Aktivacijski kod poslan je na Vas mail.", false);
+				$scope.sendrequestpw=false;
 				$scope.resetPassworda=true;
+				$scope.resetPasswordaUnesenString=false;
 			}
 
 			else
@@ -46,27 +50,25 @@ app.controller('pwchangeController', function($log, $scope, $rootScope, $window,
 		$http.get('http://localhost:8081/links/search/findByUserUsername?username='+$window.localStorage.getItem("authdataUser").toString()).then(function(response){
 			if($scope.forgotPassword===response.data.forgotPassword)
 			{
-				$log.log("jesteee");
+				$scope.sendrequestpw=false;
 				$scope.resetPassworda=false;
 				$scope.resetPasswordaUnesenString=true;
 			}
 
 			else
 			{
-				$log.log("nijee");
-				$location.path('/pwchange');
 				FlashService.Error("Niste unijeli tacan aktivacijski kod. Pokusajte ponovo.", false);
+				$location.path('/pwchange');
 			}
 		});
 	};
 
-	$scope.sacuvajPromjene=function(){
+	$scope.promijeni=function(){
 		if($scope.password1==$scope.password2)
 		{
 			$http.post('http://localhost:8081/user/resetpassword/'+$scope.forgotPassword,{"password":$scope.password1, "passwordRepeat":$scope.password1}).then(function(response){
-				$location.path('/');
-				$log.log("okej");
 				FlashService.Success("Uspjesno ste resetovali password.", false);
+				$location.path('/');
 			});
 		}
 	};		

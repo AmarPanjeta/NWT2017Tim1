@@ -28,5 +28,8 @@ public interface SolutionRepository extends CrudRepository<Solution, Long>{
 	
 	@Query("select count(s) from Solution s where s.task.id=:id")
 	public int countSolutionsByTask(@Param("id") long id);
+	
+	@Query("select s from Solution s where s.user.username=:username and s.task.id=:taskid")
+	public List<Solution> getSolutionsByUserAndTask(@Param("taskid") long taskid, @Param("username") String username);
 		
 }

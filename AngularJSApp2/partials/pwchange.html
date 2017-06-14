@@ -2,11 +2,11 @@
     <div class="flashPoruka" ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
 
     <div class="col-xs-6 col-xs-offset-3">
-        <button class="btn btn-dark btn-lg" style="margin-top: 30%; margin-left: 25%; opacity: 0.75;" ng-click="resetPassword()" ng-show="!resetPassworda">Posalji zahtjev za promjenom passworda</button>
+        <button class="btn btn-dark btn-lg" style="margin-top: 30%; margin-left: 25%; opacity: 0.75;" ng-click="resetPassword()" ng-show="sendrequestpw">Posalji zahtjev za promjenom passworda</button>
 
         <div ng-show='resetPassworda' style="margin-top: 30%; margin-left: 25%;"><h4>Unesite string koji ste dobili mailom: </h4><input type="text" name="stringReseta" ng-model="forgotPassword" style="width: 70%;"><br><br><button style="margin-left: 25%; opacity: 0.75;" class="btn btn-dark btn-lg" ng-click="provjeriForgotPw()">OK</button></div>
 
-        <form id="editForma" name="editForma" ng-submit="sacuvajPromjene()" ng-show='resetPasswordaUnesenString' style="margin-top: 10%">
+        <form id="editForma" name="editForma" ng-submit="promijeni()" ng-show='resetPasswordaUnesenString' style="margin-top: 10%">
             <div class="form-group" ng-class="{ 'has-error': editForma.password1.$dirty && editForma.password1.$error.required }">
                 <label for="password1">Novi password</label>
                 <input type="{{inputTypeUredi}}" name="password1" id="password1" class="form-control" ng-model="password1" required />

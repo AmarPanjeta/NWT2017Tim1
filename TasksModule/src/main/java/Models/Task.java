@@ -35,9 +35,9 @@ public class Task {
 	@Temporal(TemporalType.DATE)
 	private Date datumPostavljanja;
 
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="user_id")
-	//@OnDelete(action = OnDeleteAction.CASCADE)
+	@OnDelete(action = OnDeleteAction.NO_ACTION)
 	private RegisteredUser user;
 	
 	@OneToMany(mappedBy="task", orphanRemoval=true)

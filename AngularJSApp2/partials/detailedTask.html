@@ -1,11 +1,14 @@
 <div class="header">
-<div class="flashPoruka" ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
-	<div style="width: 90%; margin-left: 5%; height: 70%; margin-top: 5%; background-color: white; opacity: 0.75; color:black;">
-		<h4 style="text-align: left;"> <b> Naziv taska:</b> {{detaljnitask.taskTitle}}</h4>
-		<h5 style="text-align: left;"> <b> Tekst taska: </b> {{detaljnitask.taskText}}</h5>
-		<h5 style="text-align: left;"> <b>Task postavio: </b> {{detaljnitask.user.username}}</h5>
+	<div class="flashPoruka" ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
+	
 
-		<button style="margin-left: 5%;" ng-click="prikaziRjesenjaFun()">Prikazi 10 najboljih rjesenja</button>
+	<div style="width: 90%; margin-left: 5%; height: 70%; margin-top: 5%; background-color: white; opacity: 0.75; color:black;" ng-show="detaljnitaskodabran()">
+		<h3 style="text-align: left;"> <b> Naziv taska:</b> {{detaljnitask.task.taskTitle}}</h3>
+		<h4 style="text-align: left;"> <b> Tekst taska: </b> {{detaljnitask.task.taskText}}</h4>
+		<h4 style="text-align: left;"> <b>Task postavio: </b> {{detaljnitask.task.user.username}}</h4>
+
+		<button ng-click="prikaziRjesenjaFun()" class="btn btn-dark btn-lg">Prikazi 10 najboljih rjesenja</button>
+		
 		<table class="table" ng-show="prikaziRjesenja">
 			<thead>
 				<th>Rijesio user</th>
@@ -21,9 +24,31 @@
 			</tbody>
 		</table>
 
-		<div style="text-align: center">
+
+		<button ng-click="prikaziMojaRjesenja()" class="btn btn-dark btn-lg">Prikazi moja rjesenja</button>
+		<table class="table" ng-show="imaMojaRjesenja">
+			<thead>
+				<th>Kod</th>
+				<th>Broj testova koje prolazi</th>
+				<th>Datum postavljanja rjesenja</th>
+			</thead>
+			<tbody ng-repeat="solution in mojarjesenja">
+				<tr>
+					<td>{{solution.code}}</td>
+					<td>{{solution.passing}}</td>
+					<td>{{solution.datumPostavljanjaRjesenja}}</td>
+				</tr>
+			</tbody>
+		</table>
+
 		<a href="#/tasks" class="btn btn-dark btn-lg">Vrati na zadatke</a>
 		<a href="#/solveTask" class="btn btn-dark btn-lg">Rijesi</a>
+
+		<!--
+		<div style="text-align: center">
+			<a href="#/tasks" class="btn btn-dark btn-lg">Vrati na zadatke</a>
+			<a href="#/solveTask" class="btn btn-dark btn-lg">Rijesi</a>
 		</div>
+		-->
 	</div>
 </div>
