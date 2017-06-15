@@ -16,12 +16,11 @@ public class Comment {
 	
 	@Length(max = 100000)
 	private String text;
-	private long tutId;
 	
-	//@ManyToOne
-	//private Tutorial TutId;
-	//@ManyToOne
-	//private TutorialUser TutUsrID;
+	@ManyToOne
+	private Tutorial TutId;
+	@ManyToOne
+	private TutorialUser TutUsrID;
 	
 	public long getId() {
 		return id;
@@ -39,7 +38,7 @@ public class Comment {
 	public void setText(String text) {
 		this.text = text;
 	}
-/*
+
 	public Tutorial getTutId() {
 		return TutId;
 	}
@@ -54,27 +53,18 @@ public class Comment {
 
 	public void setTutUsrID(TutorialUser tutUsrID) {
 		TutUsrID = tutUsrID;
-	}*/
+	}
 
 	public Comment()
 	{
 		
 	}
-	public void settutId(Long tutId)
-	{
-		this.tutId = tutId;
-	}
-	
-	public long gettutId()
-	{
-		return this.tutId;
-	}
 	
 	public Comment(Long id, String text, Long UsrId, Long tutId){
 		this.id = id;
 		this.text = text;
-		//TutorialUser tu = new TutorialUser(UsrId);
-		this.tutId = tutId;
+		TutorialUser tu = new TutorialUser(UsrId);
+		
 		
 	}
 }

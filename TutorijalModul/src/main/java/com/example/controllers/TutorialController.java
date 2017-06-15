@@ -107,7 +107,10 @@ public class TutorialController {
 	
 	@RequestMapping("/delete")
 	public int deleteTutorial(@RequestParam(value="id") Long id, @RequestParam(value="username") String username){
-		
+		Tutorial t = tr.findOne(id);
+		tr.delete(t);
+		return 1;
+		/*
 		Boolean logovan=false;
 		logovan=this.restTemplate.getForObject("http://users-client/user/logged?username="+username,Boolean.class);
 		
@@ -127,7 +130,7 @@ public class TutorialController {
 			return 1;
 		}
 		
-		return 0;
+		return 0;*/
 	}
 	
 	@RequestMapping("/getTutorials")

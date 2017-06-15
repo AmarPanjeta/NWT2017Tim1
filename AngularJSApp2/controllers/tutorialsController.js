@@ -1,13 +1,14 @@
-app.controller('tutorialsController', function($log, $scope, $location, $http, $rootScope){
+app.controller('tutorialsController', function($log, $scope, $location, $http, $rootScope, AuthenticationService, $window){
     $log.log('tutorials kontroler ucitan');
 
     $rootScope.tutorials = [];
     $rootScope.search = "";
 
-    $rootScope.admin = false;
+    $rootScope.admin = true;
     $rootScope.prikazi = "Prikazi vise";
     $rootScope.show = false;
     $rootScope.j = 0;
+    $rootScope.ucitano = false;
 
     $http.get("http://localhost:8085/tut/getTutorials").then(function(res){
         $rootScope.tutorials = res.data;
@@ -28,10 +29,13 @@ app.controller('tutorialsController', function($log, $scope, $location, $http, $
             $http.get("http://localhost:8085/startag/gettutkorisnickitagsuma?idTut=" + tut.id).then(function(res) {
 
                 tut.stars = res.data;
+                $rootScope.ucitano = true;
             });
         });
 
     });
+
+
 
     $rootScope.showTutorial = function(id){
         $location.path('/showTutorial/' + id);
@@ -41,7 +45,9 @@ app.controller('tutorialsController', function($log, $scope, $location, $http, $
     }
 
     $rootScope.getNumberEmpty = function(num) {
-        return new Array(5-num);
+        if(num == NaN || num == undefined) return new Array(5);
+        else return new Array(5-num);
+
     }
 
     $rootScope.pretraga = function () {
@@ -91,6 +97,22 @@ app.controller('tutorialsController', function($log, $scope, $location, $http, $
             $rootScope.prikazi = "Prikazi vise";
         }
     };
+
+    $rootScope.dodaj = function () {
+        $location.path('/addTutorial');
+    }
+
+    $rootScope.brisi = function (id) {
+        $http.post('http://localhost:8085/tut/delete?id='+id+'&username=ivona').then(function () {
+            $http.get("http://localhost:8085/tut/getTutorials").then(function(res) {
+                $rootScope.tutorials = res.data;
+            });
+        })
+    }
+
+    $rootScope.uredi = function (id) {
+        $location.path('/editTutorial/'+id);
+    }
 
 
 

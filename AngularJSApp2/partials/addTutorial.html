@@ -1,0 +1,67 @@
+<div class="header">
+    <div id="tutorials">
+
+        <!-- PAGE HEADER -->
+        <section class="page_header">
+            <div class="container">
+                <div class="row">
+
+                </div>
+            </div>
+            <!-- CONTAINER -->
+            <div class="container" >
+                Unos novog tutorijala:
+
+
+            </div><!-- //CONTAINER -->
+        </section><!-- //PAGE HEADER -->
+
+        <section>
+            Naslov tutorijala:
+            <form >
+                <textarea ng-model="naslov" placeholder="Naslov" style='width:550px'></textarea>
+                <p></p>
+
+            </form>
+
+
+
+
+            Opis:
+            <form >
+                <textarea ng-model="opis" placeholder="Opis" style='width:550px'></textarea>
+                <p></p>
+
+            </form>
+
+        Tekst tutorijala:
+        <form >
+            <textarea ng-model="tekst" placeholder="Tekst" style='width:550px'></textarea>
+            <p></p>
+
+        </form>
+        </section>
+        <div style="color:darkred">{{nokTekst}}</div>
+        <section class=" page-header">
+            <td class="product-name">
+                <a ng-click="dodaj()">Dodaj</a>
+                <ul class="variation" ng-show ="show">
+
+                </ul>
+            </td>
+            <td class="product-name">
+                <a ng-click="odustani()">Odustani</a>
+                <ul class="variation" ng-show ="show">
+
+                </ul>
+            </td>
+        </section>
+
+
+
+
+
+
+
+    </div><!-- //PAGE -->
+</div>

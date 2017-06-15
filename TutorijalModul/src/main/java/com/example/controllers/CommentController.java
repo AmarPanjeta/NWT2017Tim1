@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import javax.servlet.ServletException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +23,7 @@ import com.example.repositories.TutorialUserRepository;
 
 @RestController
 @RequestMapping("comment")
+@CrossOrigin	
 public class CommentController {
 
 	
@@ -39,10 +41,12 @@ public class CommentController {
 	 @Autowired
 	 private RestTemplate restTemplate;
 	 
+	 
 	 @SuppressWarnings("unused")
 		private static class CommentBody{
 			public String tekst;
-			public Long idTutorial;
+			public Long tutId;
+			public String username;
 		}
 	 
 	    @RequestMapping("/coms")
@@ -51,7 +55,7 @@ public class CommentController {
 	    }
 	    
 	    
-	    @RequestMapping("/create")
+	    /*@RequestMapping("/create")
 		public boolean createComment(@RequestBody CommentBody comment) throws ServletException{
 			Comment c = new Comment();
 			c.setText(comment.tekst);
@@ -60,40 +64,35 @@ public class CommentController {
 	    	cr.save(c);
 	    	return true;		
 			
-		}
+		}*/
 	    
 	    
-	    
-	    
-	    
-	    
-	    /*@RequestMapping("/addcomment")
+	    @RequestMapping("/addcomment")
 		public Boolean addComment(@RequestBody CommentBody comment) throws ServletException{
-			
+			/*
 			Boolean logovan=this.restTemplate.getForObject("http://users-client/user/logged?username="+comment.username,Boolean.class);
 			
 			if(logovan==false){
 				throw new ServletException("Niste logovani");
 			}
 			
-			
-			//TutorialUser user = tu.findByName(comment.username);
-	    	//Tutorial t = tr.findOne(tutId);
+			*/
+			TutorialUser user = tu.findByName(comment.username);
+	    	Tutorial t = tr.findOne(comment.tutId);
 			Comment c=new Comment();
-			//c.setTutId(t);
+			c.setTutId(t);
 			c.setText(comment.tekst);
-			c.settutId(comment.idTutorial);
 			
 		
-		    //c.setTutUsrID(user);
+		    c.setTutUsrID(user);
 			cr.save(c);
 			
 			return true;
 			
-		}*/
+		}
 	    
 	    @RequestMapping("/gettutcoms")
-	   	public List<Comment> getUserTutTag(@RequestParam("idTut") Long idTut){
+	   	public List<Comment> getTutComs(@RequestParam("idTut") Long idTut){
 	   		Tutorial t = tr.findOne(idTut);
 	   		List<Comment> coms = tr.getTutComs(t.getId());
 			return coms;

@@ -4,6 +4,7 @@ app.controller('showTutorialController', function($log, $routeParams, $rootScope
 	$rootScope.tutorial;
 	$rootScope.komentar = "";
 	$rootScope.starsSum;
+	$rootScope.komentari;
 	$rootScope.upaljena = [1,1,1,1,1];
 	$rootScope.ugasena = [0,0,0,0,0];
 	$rootScope.glasanje = true;
@@ -29,12 +30,21 @@ app.controller('showTutorialController', function($log, $routeParams, $rootScope
 				});
 			});
 
+		$log.log("jap");
+        $http.get("http://localhost:8085/comment/gettutcoms?idTut=" + $rootScope.id).then(function(res) {
+
+            $rootScope.komentari = res.data;
+            $log.log("id: " + $rootScope.id +" ... "  + $rootScope.komentari[0].text);
+        });
+
     $rootScope.getNumber = function(num) {
         return new Array(num);
     }
 
     $rootScope.getNumberEmpty = function(num) {
-        return new Array(5-num);
+    	$log.log(num);
+        if(num == NaN || num == undefined) return new Array(5);
+        else return new Array(5-num);
     }
 
     $rootScope.zvijezda = function (broj) {

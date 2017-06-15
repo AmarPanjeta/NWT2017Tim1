@@ -71,12 +71,17 @@
 
 
 								<td ><a class="add_bag" ng-repeat="i in getNumber(t.stars) track by $index" ><span class="glyphicon glyphicon-star"></span></a><a class="add_bag" ng-repeat="i in getNumberEmpty(t.stars) track by $index" ><span class="glyphicon glyphicon-star-empty"></span></a></td>
-								<td ><a class="add_bag"  ><span ></span></a></td>
-								<td class="product-remove" ng-show ="admin"><a href="javascript:void(0);" >Uredi <span ></span> </a></td>
-								<td class="product-remove" ng-show ="admin"><a href="javascript:void(0);" ><span >Brisi</span> </a></td>
+
+								<td class="product-remove"><a ng-click="uredi(t.id)">Uredi</a></td>
+								<td class="product-remove"><a ng-click="brisi(t.id)">Brisi</a></td>
 
 							</tr>
+							<td class="product-name">
+								<a ng-click="dodaj()">Dodaj novi tutorijal</a>
+								<ul class="variation" ng-show ="show">
 
+								</ul>
+							</td>
 
 							</tbody>
 						</table>

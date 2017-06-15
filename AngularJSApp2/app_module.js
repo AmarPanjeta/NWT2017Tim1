@@ -36,6 +36,12 @@ app.config(function($routeProvider) {
 	}).when("/showTutorial/:id",{
         templateUrl:"../AngularJSApp2/partials/showTutorial.html",
         controller:'showTutorialController'
+    }).when("/addTutorial",{
+        templateUrl:"../AngularJSApp2/partials/addTutorial.html",
+        controller:'addTutorialController'
+    }).when("/editTutorial/:id",{
+        templateUrl:"../AngularJSApp2/partials/editTutorial.html",
+        controller:'editTutorialController'
     });
 });
 

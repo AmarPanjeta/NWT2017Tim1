@@ -32,7 +32,7 @@ public interface TutorialRepository extends CrudRepository<Tutorial, Long>{
 		@Query("select ttr.tagId from Tutorial t, TutTagRel ttr where ttr.tutId = t.id and t.id = :id")
 		public List<Tag> getTutTag(@Param("id") Long id);
 		
-		@Query("select c from Comment c where c.tutId = id")
-		List<Comment> getTutComs(long id);
+		@Query("select c from Comment c, Tutorial t where t.id = :id and c.TutId = t")
+		public List<Comment> getTutComs(@Param("id") Long id);
 
 }

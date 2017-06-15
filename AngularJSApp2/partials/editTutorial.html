@@ -1,0 +1,64 @@
+<div class="header">
+    <div id="tutorials">
+
+        <!-- PAGE HEADER -->
+        <section class="page_header">
+            <div class="container">
+                <div class="row">
+
+                </div>
+            </div>
+            <!-- CONTAINER -->
+            <div class="container" >
+                Promijenite polja koja zelite:
+
+
+            </div><!-- //CONTAINER -->
+        </section><!-- //PAGE HEADER -->
+
+        <section>
+            Naslov tutorijala:
+            <form >
+                <textarea type="text" class="form-control" name="username" ng-model="tutorial.title"
+                          autocomplete="false" value="" required style='width:550px'></textarea>
+
+
+
+            Opis:
+
+                <textarea type="textarea" class="form-control" name="username" ng-model="tutorial.about"
+                          autocomplete="false" value="" required style='width:550px'></textarea>
+
+
+
+            Tekst tutorijala:
+
+                <textarea type="text" class="form-control" name="username" ng-model="tutorial.text"
+                          autocomplete="false" value="" required style='width:550px'></textarea>
+
+            </form>
+        </section>
+        <div style="color:darkred">{{nokTekst}}</div>
+        <section class=" page-header">
+            <td class="product-name">
+                <a ng-click="dodaj()">Sacuvaj promjene</a>
+                <ul class="variation" ng-show ="show">
+
+                </ul>
+            </td>
+            <td class="product-name">
+                <a ng-click="odustani()">Odustani</a>
+                <ul class="variation" ng-show ="show">
+
+                </ul>
+            </td>
+        </section>
+
+
+
+
+
+
+
+    </div><!-- //PAGE -->
+</div>
